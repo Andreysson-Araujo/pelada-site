@@ -17,18 +17,7 @@ function ImportarLista({ onImportar }) {
     event.target.value = "";
   }
 
-  return (
-    <label className="botao-importar">
-      📂 Importar lista
-
-      <input
-        type="file"
-        accept=".txt"
-        onChange={selecionarArquivo}
-        hidden
-      />
-    </label>
-  );
+  
 }
 
 export default ImportarLista;
