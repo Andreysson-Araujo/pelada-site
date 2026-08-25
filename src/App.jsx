@@ -5,6 +5,7 @@ import Filtros from "./components/Filtros";
 import ListaJogadores from "./components/ListaJogadores";
 import Resumo from "./components/Resumo";
 import Ranking from "./pages/Ranking";
+import Timer from "./components/Timer/Timer";
 
 import "./style.css";
 
@@ -207,6 +208,22 @@ function App() {
       </div>
     );
   }
+
+  if (pagina === "timer") {
+  return (
+    <div className="app">
+
+      <Header
+        total={jogadores.length}
+        pagina={pagina}
+        setPagina={setPagina}
+      />
+
+      <Timer />
+
+    </div>
+  );
+}
 
   /* =========================
      DASHBOARD

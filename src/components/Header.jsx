@@ -28,6 +28,8 @@ function Header({ total, pagina, setPagina }) {
           Dashboard
         </button>
 
+        
+
         <button
           className={
             pagina === "jogadores"
@@ -52,6 +54,19 @@ function Header({ total, pagina, setPagina }) {
           }
         >
           Ranking
+        </button>
+
+        <button
+          className={
+            pagina === "timer"
+              ? "nav-active"
+              : ""
+          }
+          onClick={() =>
+            setPagina("timer")
+          }
+        >
+          Timer
         </button>
 
       </nav>
