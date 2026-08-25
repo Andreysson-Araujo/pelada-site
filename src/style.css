@@ -1,0 +1,1684 @@
+/* =========================================================
+   RESET / BASE
+========================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  width: 100%;
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+
+  width: 100%;
+  min-height: 100vh;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  background: #0f1117;
+  color: #ffffff;
+
+  overflow-x: hidden;
+}
+
+button,
+input,
+select {
+  font-family: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.app {
+  width: 100%;
+  min-height: 100vh;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.header {
+  width: 100%;
+  height: 72px;
+
+  background: #171a22;
+  border-bottom: 1px solid #292d38;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 40px;
+
+  position: relative;
+  z-index: 10;
+}
+
+
+/* LOGO */
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  min-width: 0;
+}
+
+.logo > span {
+  font-size: 26px;
+  flex-shrink: 0;
+}
+
+.logo div {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.logo strong {
+  font-size: 17px;
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+
+.logo span {
+  font-size: 10px;
+  color: #858b99;
+  letter-spacing: 2px;
+}
+
+
+/* NAVEGAÇÃO */
+
+nav {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+nav button {
+  border: none;
+
+  background: transparent;
+  color: #858b99;
+
+  padding: 10px 18px;
+
+  border-radius: 8px;
+
+  font-size: 13px;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+nav button:hover {
+  background: #222631;
+  color: #ffffff;
+}
+
+nav button.nav-active {
+  background: #222631;
+  color: #ffffff;
+}
+
+
+/* INFORMAÇÃO DO HEADER */
+
+.header-info {
+  color: #858b99;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   DASHBOARD
+========================================================= */
+
+.dashboard {
+  width: 100%;
+  max-width: 1400px;
+
+  margin: 0 auto;
+
+  padding: 45px 40px 70px;
+}
+
+
+/* TÍTULO */
+
+.dashboard-title {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  margin-bottom: 30px;
+}
+
+.subtitle {
+  display: block;
+
+  color: #7d8493;
+
+  font-size: 11px;
+  letter-spacing: 2px;
+}
+
+.dashboard-title h1 {
+  margin: 6px 0 0;
+
+  font-size: 36px;
+  line-height: 1.1;
+}
+
+
+/* ARQUIVO */
+
+.arquivo-info {
+  color: #777f8e;
+
+  font-size: 13px;
+
+  padding: 9px 13px;
+
+  border: 1px solid #292d38;
+  border-radius: 8px;
+
+  background: #171a22;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   RESUMO DOS JOGADORES
+========================================================= */
+
+.resumo {
+  display: grid;
+
+  grid-template-columns:
+    repeat(5, minmax(0, 1fr));
+
+  gap: 14px;
+
+  margin-bottom: 25px;
+}
+
+.card-resumo {
+  min-width: 0;
+
+  background: #171a22;
+
+  border: 1px solid #292d38;
+  border-radius: 12px;
+
+  padding: 20px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 14px;
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.card-resumo:hover {
+  transform: translateY(-2px);
+  border-color: #363c49;
+}
+
+.card-resumo > span {
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.card-resumo div {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.card-resumo strong {
+  font-size: 22px;
+}
+
+.card-resumo small {
+  color: #777f8e;
+  font-size: 11px;
+}
+
+
+/* =========================================================
+   FILTROS
+========================================================= */
+
+.filtros {
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(280px, 1fr)
+    190px
+    170px;
+
+  gap: 12px;
+
+  margin-bottom: 18px;
+}
+
+
+/* PESQUISA */
+
+.campo-pesquisa {
+  width: 100%;
+  height: 50px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 11px;
+
+  padding: 0 16px;
+
+  background: #171a22;
+
+  border: 1px solid #292d38;
+  border-radius: 10px;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.campo-pesquisa span {
+  color: #777f8e;
+
+  font-size: 15px;
+
+  flex-shrink: 0;
+}
+
+.campo-pesquisa:focus-within {
+  border-color: #4b5363;
+
+  background: #1a1e27;
+
+  box-shadow:
+    0 0 0 3px
+    rgba(255, 255, 255, 0.025);
+}
+
+.campo-pesquisa input {
+  width: 100%;
+  height: 100%;
+
+  border: none;
+  outline: none;
+
+  background: transparent;
+
+  color: #ffffff;
+
+  font-size: 14px;
+}
+
+.campo-pesquisa input::placeholder {
+  color: #626a79;
+}
+
+
+/* SELECTS */
+
+.filtros select {
+  width: 100%;
+  height: 50px;
+
+  padding: 0 14px;
+
+  border: 1px solid #292d38;
+  border-radius: 10px;
+
+  background: #171a22;
+  color: #dfe3ea;
+
+  font-size: 13px;
+
+  outline: none;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.filtros select:hover {
+  background: #1b1f28;
+  border-color: #363c49;
+}
+
+.filtros select:focus {
+  border-color: #4b5363;
+}
+
+
+/* =========================================================
+   RESULTADO
+========================================================= */
+
+.resultado-info {
+  display: flex;
+  align-items: center;
+
+  min-height: 20px;
+
+  margin-bottom: 12px;
+
+  color: #777f8e;
+
+  font-size: 13px;
+}
+
+.resultado-info strong {
+  margin: 0 3px;
+
+  color: #ffffff;
+
+  font-weight: 600;
+}
+
+
+/* =========================================================
+   LISTA DE JOGADORES
+========================================================= */
+
+.lista-jogadores {
+  width: 100%;
+
+  background: #171a22;
+
+  border: 1px solid #292d38;
+  border-radius: 14px;
+
+  overflow: hidden;
+}
+
+
+/* CABEÇALHO */
+
+.lista-header {
+  display: grid;
+
+  grid-template-columns:
+    2fr
+    1.3fr
+    1.2fr
+    1fr
+    1fr;
+
+  align-items: center;
+
+  gap: 20px;
+
+  padding: 15px 22px;
+
+  background: #1d2029;
+
+  color: #707786;
+
+  font-size: 11px;
+  font-weight: bold;
+
+  letter-spacing: 1px;
+}
+
+
+/* JOGADOR */
+
+.jogador {
+  display: grid;
+
+  grid-template-columns:
+    2fr
+    1.3fr
+    1.2fr
+    1fr
+    1fr;
+
+  align-items: center;
+
+  gap: 20px;
+
+  padding: 18px 22px;
+
+  border-top: 1px solid #292d38;
+
+  transition:
+    background 0.15s ease;
+}
+
+.jogador:hover {
+  background: #1c2029;
+}
+
+
+/* NOME */
+
+.jogador-nome {
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+
+  gap: 13px;
+}
+
+.jogador-nome strong {
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+
+/* AVATAR */
+
+.avatar {
+  width: 38px;
+  height: 38px;
+
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  background: #292e39;
+
+  color: #ffffff;
+
+  font-weight: bold;
+}
+
+
+/* ESTRELAS */
+
+.estrelas {
+  font-size: 13px;
+
+  white-space: nowrap;
+}
+
+
+/* BADGES */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+
+  width: fit-content;
+
+  padding: 7px 10px;
+
+  border-radius: 7px;
+
+  font-size: 12px;
+}
+
+.goleiro {
+  background: #28252d;
+  color: #d3a8ff;
+}
+
+.linha {
+  background: #202d28;
+  color: #79d9a7;
+}
+
+
+/* =========================================================
+   BOTÕES / AÇÕES
+========================================================= */
+
+.acoes {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.botao-importar,
+.botao-exportar,
+.botao-limpar {
+  height: 42px;
+
+  padding: 0 16px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 8px;
+
+  border: 1px solid #303541;
+
+  background: #1b1f28;
+
+  color: #ffffff;
+
+  font-size: 13px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.botao-importar:hover,
+.botao-exportar:hover {
+  background: #262b36;
+  border-color: #3a4150;
+}
+
+.botao-limpar {
+  width: 42px;
+  padding: 0;
+}
+
+.botao-limpar:hover {
+  background: #382426;
+  border-color: #543338;
+}
+
+
+/* =========================================================
+   MENSAGENS
+========================================================= */
+
+.mensagem {
+  margin-bottom: 20px;
+
+  padding: 14px 18px;
+
+  border-radius: 9px;
+
+  background: #1b2029;
+
+  border: 1px solid #303541;
+
+  color: #dce1e8;
+
+  animation: aparecer 0.2s ease;
+}
+
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* =========================================================
+   ESTADOS
+========================================================= */
+
+.estado {
+  width: 100%;
+  min-height: 100vh;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 30px;
+
+  background: #0f1117;
+
+  color: #ffffff;
+
+  text-align: center;
+}
+
+.estado span {
+  font-size: 45px;
+
+  margin-bottom: 10px;
+}
+
+.estado h2 {
+  margin: 0 0 8px;
+}
+
+.estado p {
+  max-width: 500px;
+
+  color: #777f8e;
+
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   RANKING
+========================================================= */
+
+.ranking-page {
+  width: 100%;
+  max-width: 1400px;
+
+  margin: 0 auto;
+
+  padding: 45px 40px 70px;
+}
+
+.ranking-title {
+  margin-bottom: 30px;
+}
+
+.ranking-title h1 {
+  margin: 7px 0 5px;
+
+  font-size: 36px;
+}
+
+.ranking-title p {
+  margin: 0;
+
+  color: #777f8e;
+}
+
+
+/* =========================================================
+   RANKING - CARDS PRINCIPAIS
+========================================================= */
+
+.ranking-resumo {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: 16px;
+
+  margin-bottom: 16px;
+}
+
+.ranking-card {
+  position: relative;
+
+  min-width: 0;
+
+  overflow: hidden;
+
+  background: #171a22;
+
+  border: 1px solid #292d38;
+
+  border-radius: 14px;
+
+  padding: 22px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 15px;
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.ranking-card:hover {
+  transform: translateY(-3px);
+}
+
+.ranking-card > span {
+  width: 48px;
+  height: 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border-radius: 12px;
+
+  font-size: 24px;
+}
+
+.ranking-card div {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 3px;
+}
+
+.ranking-card strong {
+  font-size: 25px;
+}
+
+.ranking-card small {
+  color: #777f8e;
+}
+
+
+/* CORES */
+
+.ranking-card-gols {
+  border-color: rgba(255, 159, 67, 0.25);
+}
+
+.ranking-card-gols > span {
+  background: rgba(255, 159, 67, 0.12);
+}
+
+.ranking-card-gols strong {
+  color: #ff9f43;
+}
+
+
+.ranking-card-assistencias {
+  border-color: rgba(77, 171, 247, 0.25);
+}
+
+.ranking-card-assistencias > span {
+  background: rgba(77, 171, 247, 0.12);
+}
+
+.ranking-card-assistencias strong {
+  color: #4dabf7;
+}
+
+
+.ranking-card-jogadores {
+  border-color: rgba(177, 151, 252, 0.25);
+}
+
+.ranking-card-jogadores > span {
+  background: rgba(177, 151, 252, 0.12);
+}
+
+.ranking-card-jogadores strong {
+  color: #b197fc;
+}
+
+
+.ranking-card-goleiros {
+  border-color: rgba(81, 207, 102, 0.25);
+}
+
+.ranking-card-goleiros > span {
+  background: rgba(81, 207, 102, 0.12);
+}
+
+.ranking-card-goleiros strong {
+  color: #51cf66;
+}
+
+
+/* =========================================================
+   RANKING - CARDS EXTRAS
+========================================================= */
+
+.ranking-extra {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: 16px;
+
+  margin-bottom: 30px;
+}
+
+.extra-card {
+  min-width: 0;
+
+  background: #14171e;
+
+  border: 1px solid #252a34;
+
+  border-radius: 12px;
+
+  padding: 17px 20px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+}
+
+.extra-card > span {
+  font-size: 21px;
+
+  flex-shrink: 0;
+}
+
+.extra-card div {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 3px;
+}
+
+.extra-card strong {
+  font-size: 14px;
+
+  white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+}
+
+.extra-card small {
+  color: #626a79;
+
+  font-size: 11px;
+}
+
+
+/* =========================================================
+   RANKING - PÓDIO
+========================================================= */
+
+.podio {
+  display: grid;
+
+  grid-template-columns:
+    1fr
+    1.15fr
+    1fr;
+
+  align-items: end;
+
+  gap: 16px;
+
+  margin-bottom: 30px;
+}
+
+.podio-card {
+  min-width: 0;
+
+  min-height: 170px;
+
+  background: #171a22;
+
+  border: 1px solid #292d38;
+
+  border-radius: 15px;
+
+  padding: 25px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 8px;
+
+  text-align: center;
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.podio-card:hover {
+  transform: translateY(-4px);
+}
+
+.podio-card.primeiro {
+  min-height: 205px;
+
+  border-color: rgba(255, 193, 7, 0.4);
+
+  background:
+    radial-gradient(
+      circle at top,
+      rgba(255, 193, 7, 0.1),
+      transparent 60%
+    ),
+    #171a22;
+}
+
+.podio-card.segundo {
+  border-color: rgba(192, 192, 192, 0.25);
+}
+
+.podio-card.terceiro {
+  border-color: rgba(205, 127, 50, 0.25);
+}
+
+.podio-card strong {
+  max-width: 100%;
+
+  font-size: 18px;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+.podio-card small {
+  color: #777f8e;
+}
+
+.medalha {
+  font-size: 36px;
+}
+
+
+/* =========================================================
+   RANKING - GRÁFICOS
+========================================================= */
+
+.graficos {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 18px;
+
+  margin-bottom: 25px;
+}
+
+.grafico-card {
+  min-width: 0;
+
+  background: #171a22;
+
+  border: 1px solid #292d38;
+
+  border-radius: 15px;
+
+  padding: 22px;
+}
+
+.grafico-gols {
+  border-top: 3px solid #ff9f43;
+}
+
+.grafico-assistencias {
+  border-top: 3px solid #4dabf7;
+}
+
+.grafico-header {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 15px;
+
+  margin-bottom: 15px;
+}
+
+.grafico-header > div {
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  min-width: 0;
+}
+
+.grafico-header span {
+  font-size: 20px;
+
+  flex-shrink: 0;
+}
+
+.grafico-header h2 {
+  margin: 0;
+
+  font-size: 16px;
+}
+
+.grafico-header small {
+  color: #626a79;
+
+  font-size: 10px;
+
+  letter-spacing: 1px;
+
+  white-space: nowrap;
+}
+
+.grafico-wrapper {
+  width: 100%;
+  height: 350px;
+
+  min-width: 0;
+}
+
+.grafico-vazio {
+  width: 100%;
+  height: 350px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  color: #626a79;
+
+  text-align: center;
+}
+
+.grafico-vazio span {
+  font-size: 35px;
+
+  margin-bottom: 10px;
+}
+
+.grafico-vazio p {
+  margin: 0;
+}
+
+
+/* =========================================================
+   RANKING - LISTAS
+========================================================= */
+
+.ranking-listas {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 18px;
+}
+
+.ranking-lista {
+  min-width: 0;
+
+  background: #171a22;
+
+  border: 1px solid #292d38;
+
+  border-radius: 14px;
+
+  overflow: hidden;
+}
+
+.lista-ranking-header {
+  padding: 18px 20px;
+
+  border-bottom: 1px solid #292d38;
+
+  background: #1b1f28;
+}
+
+.lista-ranking-header > div {
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+}
+
+.lista-ranking-header span {
+  font-size: 18px;
+}
+
+.lista-ranking-header h2 {
+  margin: 0;
+
+  font-size: 15px;
+}
+
+.ranking-item {
+  display: grid;
+
+  grid-template-columns:
+    35px
+    minmax(0, 1fr)
+    auto;
+
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 14px 20px;
+
+  border-bottom: 1px solid #242832;
+
+  transition:
+    background 0.15s ease;
+}
+
+.ranking-item:hover {
+  background: #1c2029;
+}
+
+.ranking-item:last-child {
+  border-bottom: none;
+}
+
+.posicao {
+  color: #626a79;
+
+  font-size: 12px;
+}
+
+.nome-ranking {
+  min-width: 0;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+
+  font-size: 14px;
+}
+
+.ranking-item strong {
+  font-size: 13px;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   RESPONSIVIDADE - TABLET
+========================================================= */
+
+@media (max-width: 1100px) {
+
+  .resumo {
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+  }
+
+  .ranking-resumo {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .ranking-extra {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .graficos {
+    grid-template-columns: 1fr;
+  }
+
+  .ranking-listas {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+
+/* =========================================================
+   RESPONSIVIDADE - TABLET PEQUENO
+========================================================= */
+
+@media (max-width: 900px) {
+
+  .header {
+    padding: 0 25px;
+  }
+
+  .header-info {
+    display: none;
+  }
+
+  .filtros {
+    grid-template-columns:
+      1fr
+      1fr;
+  }
+
+  .campo-pesquisa {
+    grid-column: 1 / -1;
+  }
+
+  .lista-header,
+  .jogador {
+    grid-template-columns:
+      2fr
+      1fr
+      1fr
+      0.8fr
+      0.8fr;
+  }
+
+}
+
+
+/* =========================================================
+   RESPONSIVIDADE - CELULAR
+========================================================= */
+
+@media (max-width: 700px) {
+
+  /* HEADER */
+
+  .header {
+    height: 64px;
+
+    padding: 0 16px;
+  }
+
+  .logo {
+    gap: 8px;
+  }
+
+  .logo > span {
+    font-size: 22px;
+  }
+
+  .logo strong {
+    font-size: 14px;
+  }
+
+  .logo span {
+    font-size: 8px;
+    letter-spacing: 1.5px;
+  }
+
+  nav {
+    gap: 3px;
+  }
+
+  nav button {
+    padding: 8px 10px;
+
+    font-size: 11px;
+  }
+
+
+  /* DASHBOARD */
+
+  .dashboard {
+    padding: 30px 16px 50px;
+  }
+
+  .dashboard-title {
+    align-items: flex-start;
+
+    flex-direction: column;
+
+    gap: 15px;
+
+    margin-bottom: 22px;
+  }
+
+  .dashboard-title h1 {
+    font-size: 29px;
+  }
+
+  .arquivo-info {
+    font-size: 11px;
+  }
+
+
+  /* RESUMO */
+
+  .resumo {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    gap: 10px;
+
+    margin-bottom: 20px;
+  }
+
+  .card-resumo {
+    padding: 15px;
+
+    gap: 9px;
+  }
+
+  .card-resumo > span {
+    font-size: 20px;
+  }
+
+  .card-resumo strong {
+    font-size: 19px;
+  }
+
+  .card-resumo small {
+    font-size: 9px;
+  }
+
+
+  /* FILTROS */
+
+  .filtros {
+    grid-template-columns: 1fr;
+
+    gap: 9px;
+  }
+
+  .campo-pesquisa {
+    grid-column: auto;
+
+    height: 48px;
+  }
+
+  .filtros select {
+    height: 48px;
+  }
+
+
+  /* LISTA */
+
+  .lista-jogadores {
+    border: none;
+
+    background: transparent;
+
+    overflow: visible;
+  }
+
+  .lista-header {
+    display: none;
+  }
+
+  .jogador {
+    display: grid;
+
+    grid-template-columns:
+      1fr
+      1fr;
+
+    gap: 12px;
+
+    margin-bottom: 10px;
+
+    padding: 16px;
+
+    background: #171a22;
+
+    border: 1px solid #292d38;
+
+    border-radius: 12px;
+  }
+
+  .jogador:hover {
+    background: #1b1f28;
+  }
+
+  .jogador-nome {
+    grid-column: 1 / -1;
+  }
+
+  .jogador-nome strong {
+    font-size: 14px;
+  }
+
+  .avatar {
+    width: 36px;
+    height: 36px;
+  }
+
+  .badge {
+    justify-self: start;
+  }
+
+
+  /* RESULTADO */
+
+  .resultado-info {
+    margin-bottom: 10px;
+
+    font-size: 12px;
+  }
+
+
+  /* RANKING */
+
+  .ranking-page {
+    padding: 30px 16px 50px;
+  }
+
+  .ranking-title {
+    margin-bottom: 22px;
+  }
+
+  .ranking-title h1 {
+    font-size: 29px;
+  }
+
+  .ranking-resumo {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    gap: 10px;
+  }
+
+  .ranking-card {
+    padding: 15px;
+
+    gap: 9px;
+  }
+
+  .ranking-card > span {
+    width: 40px;
+    height: 40px;
+
+    font-size: 20px;
+  }
+
+  .ranking-card strong {
+    font-size: 20px;
+  }
+
+  .ranking-card small {
+    font-size: 10px;
+  }
+
+  .ranking-extra {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    gap: 10px;
+  }
+
+  .extra-card {
+    padding: 14px;
+  }
+
+  .podio {
+    grid-template-columns: 1fr;
+
+    align-items: stretch;
+  }
+
+  .podio-card,
+  .podio-card.primeiro {
+    min-height: 145px;
+  }
+
+  .podio-card.primeiro {
+    order: -1;
+  }
+
+  .graficos {
+    grid-template-columns: 1fr;
+  }
+
+  .grafico-card {
+    padding: 16px;
+  }
+
+  .grafico-wrapper {
+    height: 300px;
+  }
+
+  .ranking-listas {
+    grid-template-columns: 1fr;
+  }
+
+  .ranking-item {
+    padding: 13px 15px;
+  }
+
+}
+
+
+/* =========================================================
+   RESPONSIVIDADE - CELULAR PEQUENO
+========================================================= */
+
+@media (max-width: 450px) {
+
+  .header {
+    padding: 0 12px;
+  }
+
+  .logo strong {
+    font-size: 13px;
+  }
+
+  .logo span {
+    display: none;
+  }
+
+  nav button {
+    padding: 7px 8px;
+
+    font-size: 10px;
+  }
+
+
+  .dashboard,
+  .ranking-page {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+
+  .resumo {
+    grid-template-columns: 1fr;
+  }
+
+
+  .ranking-resumo {
+    grid-template-columns: 1fr;
+  }
+
+
+  .ranking-extra {
+    grid-template-columns: 1fr;
+  }
+
+
+  .grafico-wrapper {
+    height: 280px;
+  }
+
+
+  .grafico-header h2 {
+    font-size: 14px;
+  }
+
+
+  .ranking-item {
+    grid-template-columns:
+      28px
+      minmax(0, 1fr)
+      auto;
+
+    gap: 7px;
+  }
+
+
+  .nome-ranking {
+    font-size: 13px;
+  }
+
+
+  .ranking-item strong {
+    font-size: 12px;
+  }
+
+}
+
+
+/* =========================================================
+   TELAS MUITO PEQUENAS
+========================================================= */
+
+@media (max-width: 360px) {
+
+  .header {
+    height: 60px;
+  }
+
+  .logo > span {
+    display: none;
+  }
+
+  .logo strong {
+    font-size: 12px;
+  }
+
+  nav button {
+    padding: 6px;
+
+    font-size: 9px;
+  }
+
+  .dashboard-title h1,
+  .ranking-title h1 {
+    font-size: 26px;
+  }
+
+}
