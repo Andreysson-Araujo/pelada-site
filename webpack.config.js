@@ -1,15 +1,15 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = {
-  mode: "development",
-
   entry: "./src/index.jsx",
 
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "bundle.js",
     clean: true,
+    publicPath: "/",
   },
 
   module: {
@@ -18,6 +18,14 @@ module.exports = {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         use: "babel-loader",
+      },
+
+      {
+        test: /\.css$/,
+        use: [
+          "style-loader",
+          "css-loader",
+        ],
       },
     ],
   },
@@ -30,10 +38,20 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: "./public/index.html",
     }),
+
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: "./public/jogadores.txt",
+          to: "jogadores.txt",
+        },
+      ],
+    }),
   ],
 
   devServer: {
     port: 3000,
     open: true,
+    historyApiFallback: true,
   },
 };

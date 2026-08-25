@@ -1,0 +1,37 @@
+⚽ PELADA APP
+📋 LISTA DE JOGADORES
+━━━━━━━━━━━━━━━━━━━━
+
+👤 Ciro | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
+👤 TensaCrazy | ⭐ 1 | GOLEIRO | ⚽ 0 | 🅰️ 0
+👤 Drey | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
+👤 Bala | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
+👤 Jhon | ⭐ 3 | GOLEIRO | ⚽ 0 | 🅰️ 0
+👤 Carlin | ⭐ 1 | GOLEIRO | ⚽ 0 | 🅰️ 0
+👤 Roger | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
+👤 Pedro Rói | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
+👤 Icaro | ⭐ 2 | LINHA | ⚽ 4 | 🅰️ 4
+👤 Mikael | ⭐ 2 | LINHA | ⚽ 4 | 🅰️ 4
+👤 Saulo | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
+👤 Erick | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
+👤 Gustavo | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
+👤 Bruno | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
+👤 Quilrio | ⭐ 1 | LINHA | ⚽ 1 | 🅰️ 0
+👤 Euzébio Jr | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
+👤 Luiz | ⭐ 1 | LINHA | ⚽ 1 | 🅰️ 0
+👤 Thal | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
+👤 Ícaro | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
+👤 Zé Neto | ⭐ 1 | LINHA | ⚽ 1 | 🅰️ 0
+👤 Pedro Arco | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
+👤 Cristiano | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
+👤 Matheus Valente | ⭐ 1 | LINHA | ⚽ 2 | 🅰️ 4
+👤 Fabio | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
+👤 Ricardinho | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
+👤 Kauê | ⭐ 1 | LINHA | ⚽ 3 | 🅰️ 3
+👤 Renan Jordi | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
+👤 Android | ⭐ 1 | LINHA | ⚽ 1 | 🅰️ 0
+👤 Lucas | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
+👤 Zé coelho | ⭐ 1 | LINHA | ⚽ 1 | 🅰️ 0
+
+━━━━━━━━━━━━━━━━━━━━
+🔐 PELADA_APP_V1
