@@ -1,5 +1,6 @@
 import React from "react";
 
+
 function ImportarLista({ onImportar }) {
   function selecionarArquivo(event) {
     const arquivo = event.target.files[0];

@@ -4,7 +4,6 @@ import {
   Bar,
   BarChart,
   CartesianGrid,
-  ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
@@ -15,9 +14,9 @@ function Ranking() {
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState("");
 
-  // =========================
+  // =========================================================
   // CARREGAR JOGADORES
-  // =========================
+  // =========================================================
 
   useEffect(() => {
     async function carregarJogadores() {
@@ -83,6 +82,8 @@ function Ranking() {
           });
         });
 
+        console.log("JOGADORES CARREGADOS:", jogadoresLidos);
+
         setJogadores(jogadoresLidos);
       } catch (error) {
         console.error(error);
@@ -95,9 +96,9 @@ function Ranking() {
     carregarJogadores();
   }, []);
 
-  // =========================
+  // =========================================================
   // ESTATÍSTICAS
-  // =========================
+  // =========================================================
 
   const estatisticas = useMemo(() => {
     const gols = jogadores.reduce(
@@ -126,9 +127,9 @@ function Ranking() {
     };
   }, [jogadores]);
 
-  // =========================
+  // =========================================================
   // ARTILHEIROS
-  // =========================
+  // =========================================================
 
   const artilheiros = useMemo(() => {
     return [...jogadores]
@@ -142,9 +143,9 @@ function Ranking() {
       .slice(0, 10);
   }, [jogadores]);
 
-  // =========================
+  // =========================================================
   // ASSISTÊNCIAS
-  // =========================
+  // =========================================================
 
   const melhoresAssistentes = useMemo(() => {
     return [...jogadores]
@@ -158,9 +159,9 @@ function Ranking() {
       .slice(0, 10);
   }, [jogadores]);
 
-  // =========================
+  // =========================================================
   // RANKING DE ESTRELAS
-  // =========================
+  // =========================================================
 
   const rankingEstrelas = useMemo(() => {
     return [...jogadores]
@@ -174,9 +175,9 @@ function Ranking() {
       .slice(0, 10);
   }, [jogadores]);
 
-  // =========================
+  // =========================================================
   // DADOS DOS GRÁFICOS
-  // =========================
+  // =========================================================
 
   const dadosGols = useMemo(() => {
     return artilheiros.map((jogador) => ({
@@ -192,9 +193,16 @@ function Ranking() {
     }));
   }, [melhoresAssistentes]);
 
-  // =========================
+  // =========================================================
+  // DEBUG DOS GRÁFICOS
+  // =========================================================
+
+  console.log("DADOS GOLS:", dadosGols);
+  console.log("DADOS ASSISTÊNCIAS:", dadosAssistencias);
+
+  // =========================================================
   // TOOLTIP
-  // =========================
+  // =========================================================
 
   const tooltipStyle = {
     backgroundColor: "#1b1f28",
@@ -204,9 +212,9 @@ function Ranking() {
     boxShadow: "0 10px 30px rgba(0, 0, 0, 0.35)",
   };
 
-  // =========================
+  // =========================================================
   // CARREGANDO
-  // =========================
+  // =========================================================
 
   if (carregando) {
     return (
@@ -220,9 +228,9 @@ function Ranking() {
     );
   }
 
-  // =========================
+  // =========================================================
   // ERRO
-  // =========================
+  // =========================================================
 
   if (erro) {
     return (
@@ -238,19 +246,20 @@ function Ranking() {
     );
   }
 
-  // =========================
+  // =========================================================
   // TELA
-  // =========================
+  // =========================================================
 
   return (
     <main className="ranking-page">
 
-      {/* =========================
+      {/* =====================================================
           CABEÇALHO
-      ========================= */}
+      ===================================================== */}
 
       <div className="ranking-title">
         <div>
+
           <span className="subtitle">
             ESTATÍSTICAS
           </span>
@@ -262,16 +271,18 @@ function Ranking() {
           <p>
             Desempenho geral dos jogadores
           </p>
+
         </div>
       </div>
 
-      {/* =========================
+      {/* =====================================================
           CARDS DE RESUMO
-      ========================= */}
+      ===================================================== */}
 
       <section className="ranking-resumo">
 
         <div className="ranking-card ranking-card-gols">
+
           <span>⚽</span>
 
           <div>
@@ -283,9 +294,11 @@ function Ranking() {
               Gols marcados
             </small>
           </div>
+
         </div>
 
         <div className="ranking-card ranking-card-assistencias">
+
           <span>🅰️</span>
 
           <div>
@@ -297,9 +310,11 @@ function Ranking() {
               Assistências
             </small>
           </div>
+
         </div>
 
         <div className="ranking-card ranking-card-jogadores">
+
           <span>👥</span>
 
           <div>
@@ -311,9 +326,11 @@ function Ranking() {
               Jogadores
             </small>
           </div>
+
         </div>
 
         <div className="ranking-card ranking-card-goleiros">
+
           <span>🧤</span>
 
           <div>
@@ -325,13 +342,14 @@ function Ranking() {
               Goleiros
             </small>
           </div>
+
         </div>
 
       </section>
 
-      {/* =========================
+      {/* =====================================================
           PÓDIO
-      ========================= */}
+      ===================================================== */}
 
       <section className="podio">
 
@@ -391,26 +409,28 @@ function Ranking() {
 
       </section>
 
-      {/* =========================
+      {/* =====================================================
           GRÁFICOS
-      ========================= */}
+      ===================================================== */}
 
       <section className="graficos">
 
-        {/* =========================
+        {/* ===================================================
             GRÁFICO DE GOLS
-        ========================= */}
+        =================================================== */}
 
-        <div className="grafico-card">
+        <div className="grafico-card grafico-gols">
 
           <div className="grafico-header">
 
             <div>
+
               <span>⚽</span>
 
               <h2>
                 Artilheiros
               </h2>
+
             </div>
 
             <small>
@@ -419,26 +439,33 @@ function Ranking() {
 
           </div>
 
-          <div className="grafico-container">
+          <div
+            className="grafico-container"
+            style={{
+              width: "100%",
+              height: "350px",
+              minHeight: "350px",
+              overflowX: "auto",
+            }}
+          >
 
-            <ResponsiveContainer
-              width="100%"
-              height={350}
-            >
+            {dadosGols.length > 0 ? (
 
               <BarChart
+                width={600}
+                height={350}
                 data={dadosGols}
                 layout="vertical"
                 margin={{
                   top: 10,
-                  right: 20,
-                  left: 10,
+                  right: 30,
+                  left: 20,
                   bottom: 10,
                 }}
               >
 
                 <CartesianGrid
-                  stroke="rgba(255, 255, 255, 0.08)"
+                  stroke="rgba(255, 255, 255, 0.15)"
                   strokeDasharray="4 4"
                   horizontal={false}
                 />
@@ -446,22 +473,14 @@ function Ranking() {
                 <XAxis
                   type="number"
                   allowDecimals={false}
-                  stroke="#6b7280"
-                  tick={{
-                    fill: "#9ca3af",
-                    fontSize: 11,
-                  }}
+                  stroke="#ffffff"
                 />
 
                 <YAxis
                   type="category"
                   dataKey="nome"
-                  width={100}
-                  stroke="#6b7280"
-                  tick={{
-                    fill: "#d1d5db",
-                    fontSize: 11,
-                  }}
+                  width={110}
+                  stroke="#ffffff"
                 />
 
                 <Tooltip
@@ -471,7 +490,7 @@ function Ranking() {
                     fontWeight: "600",
                   }}
                   itemStyle={{
-                    color: "#22c55e",
+                    color: "#ff9f43",
                   }}
                   cursor={{
                     fill: "rgba(255,255,255,0.04)",
@@ -481,7 +500,7 @@ function Ranking() {
                 <Bar
                   dataKey="gols"
                   name="Gols"
-                  fill="#22c55e"
+                  fill="#ff9f43"
                   radius={[
                     0,
                     6,
@@ -493,26 +512,42 @@ function Ranking() {
 
               </BarChart>
 
-            </ResponsiveContainer>
+            ) : (
+
+              <div className="grafico-vazio">
+
+                <span>
+                  ⚽
+                </span>
+
+                <p>
+                  Nenhum gol registrado.
+                </p>
+
+              </div>
+
+            )}
 
           </div>
 
         </div>
 
-        {/* =========================
+        {/* ===================================================
             GRÁFICO DE ASSISTÊNCIAS
-        ========================= */}
+        =================================================== */}
 
-        <div className="grafico-card">
+        <div className="grafico-card grafico-assistencias">
 
           <div className="grafico-header">
 
             <div>
+
               <span>🅰️</span>
 
               <h2>
                 Assistências
               </h2>
+
             </div>
 
             <small>
@@ -521,26 +556,33 @@ function Ranking() {
 
           </div>
 
-          <div className="grafico-container">
+          <div
+            className="grafico-container"
+            style={{
+              width: "100%",
+              height: "350px",
+              minHeight: "350px",
+              overflowX: "auto",
+            }}
+          >
 
-            <ResponsiveContainer
-              width="100%"
-              height={350}
-            >
+            {dadosAssistencias.length > 0 ? (
 
               <BarChart
+                width={600}
+                height={350}
                 data={dadosAssistencias}
                 layout="vertical"
                 margin={{
                   top: 10,
-                  right: 20,
-                  left: 10,
+                  right: 30,
+                  left: 20,
                   bottom: 10,
                 }}
               >
 
                 <CartesianGrid
-                  stroke="rgba(255, 255, 255, 0.08)"
+                  stroke="rgba(255, 255, 255, 0.15)"
                   strokeDasharray="4 4"
                   horizontal={false}
                 />
@@ -548,22 +590,14 @@ function Ranking() {
                 <XAxis
                   type="number"
                   allowDecimals={false}
-                  stroke="#6b7280"
-                  tick={{
-                    fill: "#9ca3af",
-                    fontSize: 11,
-                  }}
+                  stroke="#ffffff"
                 />
 
                 <YAxis
                   type="category"
                   dataKey="nome"
-                  width={100}
-                  stroke="#6b7280"
-                  tick={{
-                    fill: "#d1d5db",
-                    fontSize: 11,
-                  }}
+                  width={110}
+                  stroke="#ffffff"
                 />
 
                 <Tooltip
@@ -573,7 +607,7 @@ function Ranking() {
                     fontWeight: "600",
                   }}
                   itemStyle={{
-                    color: "#3b82f6",
+                    color: "#4dabf7",
                   }}
                   cursor={{
                     fill: "rgba(255,255,255,0.04)",
@@ -583,7 +617,7 @@ function Ranking() {
                 <Bar
                   dataKey="assistencias"
                   name="Assistências"
-                  fill="#3b82f6"
+                  fill="#4dabf7"
                   radius={[
                     0,
                     6,
@@ -595,7 +629,21 @@ function Ranking() {
 
               </BarChart>
 
-            </ResponsiveContainer>
+            ) : (
+
+              <div className="grafico-vazio">
+
+                <span>
+                  🅰️
+                </span>
+
+                <p>
+                  Nenhuma assistência registrada.
+                </p>
+
+              </div>
+
+            )}
 
           </div>
 
@@ -603,24 +651,28 @@ function Ranking() {
 
       </section>
 
-      {/* =========================
-          LISTAS
-      ========================= */}
+      {/* =====================================================
+          LISTAS DO RANKING
+      ===================================================== */}
 
       <section className="ranking-listas">
 
-        {/* ARTILHEIROS */}
+        {/* ===================================================
+            ARTILHEIROS
+        =================================================== */}
 
         <div className="ranking-lista">
 
           <div className="lista-ranking-header">
 
             <div>
+
               <span>⚽</span>
 
               <h2>
                 Artilheiros
               </h2>
+
             </div>
 
             <small>
@@ -631,6 +683,7 @@ function Ranking() {
 
           {artilheiros.map(
             (jogador, index) => (
+
               <div
                 className="ranking-item"
                 key={jogador.id}
@@ -649,13 +702,62 @@ function Ranking() {
                 </strong>
 
               </div>
+
             )
           )}
 
         </div>
 
-        {/* MELHORES AVALIADOS */}
+        {/* ===================================================
+            MELHORES AVALIADOS
+        =================================================== */}
 
+        <div className="ranking-lista">
+
+          <div className="lista-ranking-header">
+
+            <div>
+
+              <span>⭐</span>
+
+              <h2>
+                Melhores avaliados
+              </h2>
+
+            </div>
+
+            <small>
+              Top 10
+            </small>
+
+          </div>
+
+          {rankingEstrelas.map(
+            (jogador, index) => (
+
+              <div
+                className="ranking-item"
+                key={jogador.id}
+              >
+
+                <span className="posicao">
+                  {index + 1}
+                </span>
+
+                <span className="nome-ranking">
+                  {jogador.nome}
+                </span>
+
+                <strong>
+                  {"⭐".repeat(jogador.estrelas)}
+                </strong>
+
+              </div>
+
+            )
+          )}
+
+        </div>
 
       </section>
 

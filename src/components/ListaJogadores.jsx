@@ -1,5 +1,6 @@
 import React from "react";
 
+
 function ListaJogadores({ jogadores }) {
   if (jogadores.length === 0) {
     return (
@@ -13,6 +14,8 @@ function ListaJogadores({ jogadores }) {
 
   return (
     <section className="lista-jogadores">
+
+      {/* CABEÇALHO DESKTOP */}
       <div className="lista-header">
         <span>JOGADOR</span>
         <span>AVALIAÇÃO</span>
@@ -21,37 +24,97 @@ function ListaJogadores({ jogadores }) {
         <span>ASSISTÊNCIAS</span>
       </div>
 
-      {jogadores.map((jogador) => (
-        <div className="jogador" key={jogador.id}>
-          <div className="jogador-nome">
-            <div className="avatar">
-              {jogador.nome.charAt(0).toUpperCase()}
+      {jogadores.map((jogador) => {
+
+        const inicial =
+          jogador.nome?.charAt(0)?.toUpperCase() || "?";
+
+        const isGoleiro =
+          jogador.tipo?.toUpperCase() === "GOLEIRO";
+
+        return (
+          <div className="jogador" key={jogador.id}>
+
+            {/* JOGADOR */}
+            <div className="jogador-nome">
+
+              <div className="avatar">
+                {inicial}
+              </div>
+
+              <div className="jogador-identidade">
+                <strong>{jogador.nome}</strong>
+
+                {/* MOSTRADO NO CELULAR */}
+                <span className="posicao-mobile">
+                  {isGoleiro ? "🧤 Goleiro" : "⚽ Linha"}
+                </span>
+              </div>
+
             </div>
 
-            <strong>{jogador.nome}</strong>
-          </div>
+            {/* ESTRELAS */}
+            <div className="estrelas">
+              {"⭐".repeat(jogador.estrelas || 0)}
+            </div>
 
-          <div className="estrelas">
-            {"⭐".repeat(jogador.estrelas)}
-          </div>
+            {/* POSIÇÃO DESKTOP */}
+            <div className="posicao-desktop">
 
-          <div>
-            {jogador.goleiro ? (
-              <span className="badge goleiro">
-                🧤 Goleiro
+              {isGoleiro ? (
+                <span className="badge goleiro">
+                  🧤 Goleiro
+                </span>
+              ) : (
+                <span className="badge linha">
+                  ⚽ Linha
+                </span>
+              )}
+
+            </div>
+
+            {/* GOLS */}
+            <div className="estatistica jogador-gols">
+
+              <span className="estatistica-icone">
+                ⚽
               </span>
-            ) : (
-              <span className="badge linha">
-                ⚽ Linha
+
+              <div>
+                <strong>
+                  {jogador.gols || 0}
+                </strong>
+
+                <small>
+                  Gols
+                </small>
+              </div>
+
+            </div>
+
+            {/* ASSISTÊNCIAS */}
+            <div className="estatistica jogador-assistencias">
+
+              <span className="estatistica-icone">
+                🅰️
               </span>
-            )}
+
+              <div>
+                <strong>
+                  {jogador.assistencias || 0}
+                </strong>
+
+                <small>
+                  Assistências
+                </small>
+              </div>
+
+            </div>
+
           </div>
+        );
+      })}
 
-          <strong>{jogador.gols}</strong>
-
-          <strong>{jogador.assistencias}</strong>
-        </div>
-      ))}
     </section>
   );
 }
