@@ -1,5 +1,5 @@
 import React from "react";
-
+import "./ListaJogadores.css";
 
 function ListaJogadores({ jogadores }) {
   if (jogadores.length === 0) {

@@ -1,4 +1,7 @@
 import React from "react";
+import "./Header.css";
+
+
 
 function Header({ total, pagina, setPagina }) {
   return (
@@ -66,7 +69,7 @@ function Header({ total, pagina, setPagina }) {
             setPagina("timer")
           }
         >
-          Timer
+          Tempo
         </button>
 
       </nav>

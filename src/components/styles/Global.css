@@ -1,0 +1,56 @@
+/* RESET / BASE */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  width: 100%;
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  background: #0f1117;
+  color: #ffffff;
+
+  overflow-x: hidden;
+}
+
+button,
+input,
+select {
+  font-family: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+img {
+  max-width: 100%;
+}
+
+/* ACESSIBILIDADE / TOUCH */
+
+@media (hover: none) {
+  .card-resumo:hover,
+  .ranking-card:hover,
+  .podio-card:hover {
+    transform: none;
+  }
+
+  .jogador:hover,
+  .ranking-item:hover {
+    background: inherit;
+  }
+}

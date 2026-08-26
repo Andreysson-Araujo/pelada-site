@@ -1,0 +1,86 @@
+/* =========================
+   RESUMO
+========================= */
+
+.resumo {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.resumo-card {
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 10px;
+  padding: 18px;
+  text-align: center;
+  transition: 0.2s ease;
+}
+
+.resumo-card:hover {
+  border-color: #ccc;
+  transform: translateY(-2px);
+}
+
+.resumo-card h3 {
+  margin: 0 0 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #666;
+}
+
+.resumo-card .valor {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  color: #222;
+}
+
+.resumo-card .descricao {
+  margin-top: 5px;
+  font-size: 12px;
+  color: #888;
+}
+
+/* =========================
+   ÍCONES / DESTAQUES
+========================= */
+
+.resumo-card .icone {
+  margin-bottom: 8px;
+  font-size: 24px;
+}
+
+.resumo-card.destaque {
+  border-color: #222;
+}
+
+.resumo-card.destaque .valor {
+  color: #111;
+}
+
+/* =========================
+   RESPONSIVO
+========================= */
+
+@media (max-width: 900px) {
+  .resumo {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .resumo {
+    grid-template-columns: 1fr;
+  }
+
+  .resumo-card {
+    padding: 16px;
+  }
+
+  .resumo-card .valor {
+    font-size: 24px;
+  }
+}

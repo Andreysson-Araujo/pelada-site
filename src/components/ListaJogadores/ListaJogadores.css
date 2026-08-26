@@ -1,0 +1,311 @@
+/* =========================
+   LISTA DE JOGADORES
+========================= */
+
+.lista-jogadores {
+  width: 100%;
+}
+
+/* =========================
+   CABEÇALHO DA LISTA
+========================= */
+
+.lista-header {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+
+  align-items: center;
+
+  padding: 12px 20px;
+
+  color: #888;
+  font-size: 11px;
+  font-weight: 700;
+
+  letter-spacing: 0.5px;
+}
+
+/* =========================
+   JOGADOR
+========================= */
+
+.jogador {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+
+  align-items: center;
+
+  min-height: 72px;
+  padding: 12px 20px;
+
+  background: #fff;
+
+  border: 1px solid #e8e8e8;
+  border-radius: 10px;
+
+  margin-bottom: 8px;
+
+  transition: all 0.2s ease;
+}
+
+.jogador:hover {
+  border-color: #ccc;
+  transform: translateY(-1px);
+}
+
+/* =========================
+   NOME DO JOGADOR
+========================= */
+
+.jogador-nome {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  background: #222;
+  color: #fff;
+
+  border-radius: 50%;
+
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.jogador-identidade {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.jogador-identidade strong {
+  color: #222;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.posicao-mobile {
+  display: none;
+
+  font-size: 11px;
+  color: #888;
+}
+
+/* =========================
+   ESTRELAS
+========================= */
+
+.estrelas {
+  font-size: 15px;
+  letter-spacing: 1px;
+}
+
+/* =========================
+   POSIÇÃO
+========================= */
+
+.posicao-desktop {
+  display: flex;
+  align-items: center;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+
+  padding: 5px 9px;
+
+  border-radius: 20px;
+
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.badge.goleiro {
+  background: #eef6ff;
+  color: #3575b8;
+}
+
+.badge.linha {
+  background: #f1f1f1;
+  color: #555;
+}
+
+/* =========================
+   ESTATÍSTICAS
+========================= */
+
+.estatistica {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.estatistica-icone {
+  font-size: 17px;
+}
+
+.estatistica div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.estatistica strong {
+  color: #222;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.estatistica small {
+  color: #999;
+  font-size: 10px;
+}
+
+/* =========================
+   ESTADO VAZIO
+========================= */
+
+.vazio {
+  width: 100%;
+
+  padding: 60px 20px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+}
+
+.vazio span {
+  font-size: 42px;
+  margin-bottom: 12px;
+}
+
+.vazio h2 {
+  margin: 0 0 8px;
+
+  color: #222;
+
+  font-size: 20px;
+}
+
+.vazio p {
+  margin: 0;
+
+  color: #888;
+
+  font-size: 14px;
+}
+
+/* =========================
+   RESPONSIVO
+========================= */
+
+@media (max-width: 768px) {
+
+  .lista-header {
+    display: none;
+  }
+
+  .jogador {
+    display: grid;
+
+    grid-template-columns: 1fr auto;
+
+    gap: 12px;
+
+    padding: 14px 16px;
+  }
+
+  .jogador-nome {
+    min-width: 0;
+  }
+
+  .avatar {
+    width: 40px;
+    height: 40px;
+  }
+
+  .jogador-identidade strong {
+    font-size: 14px;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .posicao-mobile {
+    display: block;
+  }
+
+  .estrelas {
+    grid-column: 2;
+    grid-row: 1;
+
+    text-align: right;
+  }
+
+  .posicao-desktop {
+    display: none;
+  }
+
+  .estatistica {
+    grid-column: span 1;
+  }
+
+  .jogador-gols {
+    grid-column: 1;
+  }
+
+  .jogador-assistencias {
+    grid-column: 2;
+    justify-self: end;
+  }
+}
+
+/* =========================
+   CELULAR PEQUENO
+========================= */
+
+@media (max-width: 480px) {
+
+  .jogador {
+    padding: 12px;
+  }
+
+  .avatar {
+    width: 36px;
+    height: 36px;
+
+    font-size: 13px;
+  }
+
+  .estrelas {
+    font-size: 13px;
+  }
+
+  .estatistica-icone {
+    font-size: 15px;
+  }
+
+  .estatistica strong {
+    font-size: 14px;
+  }
+
+  .estatistica small {
+    font-size: 9px;
+  }
+}
