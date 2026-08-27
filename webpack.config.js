@@ -45,6 +45,10 @@ module.exports = {
           from: "./public/jogadores.txt",
           to: "jogadores.txt",
         },
+        {
+          from: "./public/cards.txt",
+          to: "cards.txt",
+        }
       ],
     }),
   ],
