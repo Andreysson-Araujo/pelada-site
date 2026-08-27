@@ -1,0 +1,283 @@
+.cards-page {
+  width: 100%;
+  padding: 30px;
+}
+
+.cards-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 30px;
+}
+
+.cards-subtitle {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  opacity: 0.6;
+  margin-bottom: 5px;
+}
+
+.cards-header h1 {
+  margin: 0;
+  font-size: 32px;
+}
+
+.cards-header p {
+  margin-top: 8px;
+  opacity: 0.6;
+}
+
+.cards-arquivo {
+  padding: 10px 15px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  font-size: 14px;
+}
+
+/* =========================
+   GRID
+========================= */
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(220px, 1fr)
+  );
+  gap: 20px;
+}
+
+/* =========================
+   CARD
+========================= */
+
+.card-jogador {
+  min-height: 300px;
+  padding: 20px;
+
+  border-radius: 16px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #252525,
+      #111
+    );
+
+  border: 1px solid rgba(
+    255,
+    255,
+    255,
+    0.08
+  );
+
+  box-shadow:
+    0 10px 30px
+    rgba(0, 0, 0, 0.3);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.card-jogador:hover {
+  transform: translateY(-5px);
+
+  box-shadow:
+    0 15px 35px
+    rgba(0, 0, 0, 0.45);
+}
+
+/* =========================
+   TOPO
+========================= */
+
+.card-topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  font-size: 12px;
+
+  opacity: 0.7;
+}
+
+.card-topo strong {
+  font-size: 14px;
+}
+
+/* =========================
+   NOME
+========================= */
+
+.card-nome {
+  margin-top: 45px;
+
+  font-size: 23px;
+  font-weight: 800;
+}
+
+.card-tipo {
+  margin-top: 5px;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  letter-spacing: 1px;
+
+  opacity: 0.6;
+}
+
+/* =========================
+   ATRIBUTOS
+========================= */
+
+.card-atributos {
+  margin-top: auto;
+
+  display: grid;
+  grid-template-columns:
+    repeat(2, 1fr);
+
+  gap: 12px;
+
+  padding-top: 25px;
+}
+
+.card-atributos div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-atributos span {
+  font-size: 11px;
+  opacity: 0.6;
+}
+
+.card-atributos strong {
+  font-size: 18px;
+}
+
+/* =========================
+   ESTADOS
+========================= */
+
+.cards-estado {
+  min-height: 400px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+}
+
+.cards-estado span {
+  font-size: 45px;
+  margin-bottom: 15px;
+}
+
+.cards-estado h2 {
+  margin: 0;
+}
+
+.cards-estado p {
+  opacity: 0.6;
+}
+
+/* =========================
+   RESPONSIVO
+========================= */
+
+@media (max-width: 700px) {
+
+  .cards-page {
+    padding: 20px;
+  }
+
+  .cards-header {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .cards-header h1 {
+    font-size: 25px;
+  }
+
+  .cards-grid {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+
+}
+
+@media (max-width: 450px) {
+
+  .cards-grid {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+/* =========================
+   OVR
+========================= */
+
+.card-ovr {
+  width: 72px;
+  height: 72px;
+
+  border-radius: 50%;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  background: linear-gradient(
+    145deg,
+    #ffd84d,
+    #c99600
+  );
+
+  border: 3px solid #fff;
+
+  box-shadow:
+    0 0 0 3px rgba(255, 216, 77, 0.25),
+    0 6px 15px rgba(0, 0, 0, 0.4);
+
+  flex-shrink: 0;
+}
+
+.card-ovr span {
+  font-size: 10px;
+
+  font-weight: 900;
+
+  letter-spacing: 1px;
+
+  color: #111;
+
+  line-height: 1;
+}
+
+.card-ovr strong {
+  font-size: 30px;
+
+  font-weight: 900;
+
+  line-height: 1;
+
+  color: #111;
+
+  margin-top: 3px;
+}

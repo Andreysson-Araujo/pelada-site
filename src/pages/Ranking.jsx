@@ -1,4 +1,9 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, {
+  useEffect,
+  useMemo,
+  useState
+} from "react";
+
 import "./Ranking.css";
 
 import {
@@ -10,255 +15,554 @@ import {
   YAxis,
 } from "recharts";
 
-function Ranking() {
-  const [jogadores, setJogadores] = useState([]);
+import {
+  calcularOVRJogador
+} from "../pages/Cards/cardUtils"
+
+
+function Ranking({ jogadores: jogadoresProps }) {
+
+  const [jogadores, setJogadores] = useState(
+    jogadoresProps || []
+  );
+
+  const [cards, setCards] = useState([]);
+
   const [carregando, setCarregando] = useState(true);
+
   const [erro, setErro] = useState("");
 
+
   // =========================================================
-  // CARREGAR JOGADORES
+  // ATUALIZAR JOGADORES RECEBIDOS DO APP
   // =========================================================
 
   useEffect(() => {
-    async function carregarJogadores() {
+
+    if (jogadoresProps) {
+      setJogadores(jogadoresProps);
+    }
+
+  }, [jogadoresProps]);
+
+
+  // =========================================================
+  // CARREGAR CARDS.TXT
+  // =========================================================
+
+  useEffect(() => {
+
+    async function carregarCards() {
+
       try {
-        const resposta = await fetch("/jogadores.txt");
+
+        const resposta = await fetch("/cards.txt");
 
         if (!resposta.ok) {
-          throw new Error("Não foi possível carregar jogadores.txt");
+          throw new Error(
+            "Não foi possível carregar cards.txt"
+          );
         }
 
         const texto = await resposta.text();
 
-        if (!texto.includes("PELADA_APP_V1")) {
-          throw new Error("Arquivo de jogadores inválido.");
+        if (!texto.includes("PELADA_CARDS_V1")) {
+          throw new Error(
+            "Arquivo cards.txt inválido."
+          );
         }
 
-        const jogadoresLidos = [];
+        const cardsLidos = [];
 
-        texto.split("\n").forEach((linha, index) => {
-          const textoLinha = linha.trim();
+        texto
+          .split("\n")
+          .forEach((linha) => {
 
-          if (!textoLinha.startsWith("👤")) {
-            return;
-          }
+            const textoLinha =
+              linha.trim();
 
-          const partes = textoLinha
-            .split("|")
-            .map((parte) => parte.trim());
+            // Ignora cabeçalhos e linhas vazias
+            if (!textoLinha.startsWith("🆔")) {
+              return;
+            }
 
-          if (partes.length < 5) {
-            return;
-          }
+            const partes =
+              textoLinha
+                .split("|")
+                .map(
+                  (parte) =>
+                    parte.trim()
+                );
 
-          jogadoresLidos.push({
-            id: index,
+            /*
+             * Formato:
+             *
+             * 🆔 001 | ATA 20 | DEF 20 |
+             * VEL 20 | PAS 20 | DRI 20
+             */
 
-            nome: partes[0]
-              .replace("👤", "")
-              .trim(),
+            if (partes.length < 6) {
+              console.warn(
+                "Linha de card inválida:",
+                textoLinha
+              );
 
-            estrelas:
+              return;
+            }
+
+
+            // =================================================
+            // ID
+            // =================================================
+
+            const id =
+              partes[0]
+                .replace("🆔", "")
+                .trim();
+
+            if (!id) {
+              return;
+            }
+
+
+            // =================================================
+            // ATRIBUTOS
+            // =================================================
+
+            const ataque =
               Number(
                 partes[1]
-                  .replace("⭐", "")
+                  .replace("ATA", "")
                   .trim()
-              ) || 0,
+              ) || 0;
 
-            tipo: partes[2].toUpperCase(),
+            const defesa =
+              Number(
+                partes[2]
+                  .replace("DEF", "")
+                  .trim()
+              ) || 0;
 
-            gols:
+            const velocidade =
               Number(
                 partes[3]
-                  .replace("⚽", "")
+                  .replace("VEL", "")
                   .trim()
-              ) || 0,
+              ) || 0;
 
-            assistencias:
+            const passe =
               Number(
                 partes[4]
-                  .replace("🅰️", "")
+                  .replace("PAS", "")
                   .trim()
-              ) || 0,
+              ) || 0;
+
+            const drible =
+              Number(
+                partes[5]
+                  .replace("DRI", "")
+                  .trim()
+              ) || 0;
+
+
+            // =================================================
+            // SALVAR CARD
+            // =================================================
+
+            cardsLidos.push({
+
+              id,
+
+              atributos: {
+                ataque,
+                defesa,
+                velocidade,
+                passe,
+                drible,
+              },
+
+            });
+
           });
-        });
 
-        console.log("JOGADORES CARREGADOS:", jogadoresLidos);
 
-        setJogadores(jogadoresLidos);
+        console.log(
+          "CARDS DO RANKING:",
+          cardsLidos
+        );
+
+
+        setCards(cardsLidos);
+
       } catch (error) {
+
         console.error(error);
-        setErro(error.message);
+
+        setErro(
+          error.message
+        );
+
       } finally {
+
         setCarregando(false);
+
       }
+
     }
 
-    carregarJogadores();
+    carregarCards();
+
   }, []);
+
+
+  // =========================================================
+  // VINCULAR JOGADORES + CARDS
+  // =========================================================
+
+  const jogadoresComOVR = useMemo(() => {
+
+    return jogadores.map(
+      (jogador) => {
+
+        const card =
+          cards.find(
+            (item) =>
+              item.id === jogador.id
+          );
+
+
+        /*
+         * Se não encontrou card,
+         * utiliza atributos zerados.
+         */
+
+        const jogadorComCard = {
+
+          ...jogador,
+
+          atributos:
+            card?.atributos || {
+
+              ataque: 0,
+              defesa: 0,
+              velocidade: 0,
+              passe: 0,
+              drible: 0,
+
+            },
+
+        };
+
+
+        // =====================================================
+        // CALCULAR OVR
+        // =====================================================
+
+        const ovr =
+          calcularOVRJogador(
+            jogadorComCard
+          );
+
+
+        return {
+
+          ...jogadorComCard,
+
+          ovr,
+
+        };
+
+      }
+    );
+
+  }, [jogadores, cards]);
+
 
   // =========================================================
   // ESTATÍSTICAS
   // =========================================================
 
   const estatisticas = useMemo(() => {
-    const gols = jogadores.reduce(
-      (total, jogador) => total + jogador.gols,
-      0
-    );
 
-    const assistencias = jogadores.reduce(
-      (total, jogador) => total + jogador.assistencias,
-      0
-    );
+    const gols =
+      jogadores.reduce(
+        (total, jogador) =>
+          total + jogador.gols,
+        0
+      );
 
-    const goleiros = jogadores.filter(
-      (jogador) => jogador.tipo === "GOLEIRO"
-    ).length;
 
-    const linha = jogadores.filter(
-      (jogador) => jogador.tipo === "LINHA"
-    ).length;
+    const assistencias =
+      jogadores.reduce(
+        (total, jogador) =>
+          total + jogador.assistencias,
+        0
+      );
+
+
+    const goleiros =
+      jogadores.filter(
+        (jogador) =>
+          jogador.tipo === "GOLEIRO"
+      ).length;
+
+
+    const linha =
+      jogadores.filter(
+        (jogador) =>
+          jogador.tipo === "LINHA"
+      ).length;
+
 
     return {
+
       gols,
       assistencias,
       goleiros,
       linha,
+
     };
+
   }, [jogadores]);
+
 
   // =========================================================
   // ARTILHEIROS
   // =========================================================
 
   const artilheiros = useMemo(() => {
+
     return [...jogadores]
       .sort((a, b) => {
+
         if (b.gols !== a.gols) {
-          return b.gols - a.gols;
+
+          return (
+            b.gols -
+            a.gols
+          );
+
         }
 
-        return a.nome.localeCompare(b.nome);
+        return a.nome.localeCompare(
+          b.nome,
+          "pt-BR"
+        );
+
       })
       .slice(0, 10);
+
   }, [jogadores]);
+
 
   // =========================================================
   // ASSISTÊNCIAS
   // =========================================================
 
-  const melhoresAssistentes = useMemo(() => {
-    return [...jogadores]
-      .sort((a, b) => {
-        if (b.assistencias !== a.assistencias) {
-          return b.assistencias - a.assistencias;
-        }
+  const melhoresAssistentes =
+    useMemo(() => {
 
-        return a.nome.localeCompare(b.nome);
-      })
-      .slice(0, 10);
-  }, [jogadores]);
+      return [...jogadores]
+        .sort((a, b) => {
+
+          if (
+            b.assistencias !==
+            a.assistencias
+          ) {
+
+            return (
+              b.assistencias -
+              a.assistencias
+            );
+
+          }
+
+          return a.nome.localeCompare(
+            b.nome,
+            "pt-BR"
+          );
+
+        })
+        .slice(0, 10);
+
+    }, [jogadores]);
+
 
   // =========================================================
-  // RANKING DE ESTRELAS
+  // MELHORES AVALIADOS
+  // AGORA USA O OVR DOS CARDS
   // =========================================================
 
-  const rankingEstrelas = useMemo(() => {
-    return [...jogadores]
-      .sort((a, b) => {
-        if (b.estrelas !== a.estrelas) {
-          return b.estrelas - a.estrelas;
-        }
+  const melhoresAvaliados =
+    useMemo(() => {
 
-        return a.nome.localeCompare(b.nome);
-      })
-      .slice(0, 10);
-  }, [jogadores]);
+      return [...jogadoresComOVR]
+        .sort((a, b) => {
+
+          // Primeiro: maior OVR
+
+          if (b.ovr !== a.ovr) {
+
+            return (
+              b.ovr -
+              a.ovr
+            );
+
+          }
+
+
+          // Desempate: maior quantidade
+          // de estrelas
+
+          if (
+            b.estrelas !==
+            a.estrelas
+          ) {
+
+            return (
+              b.estrelas -
+              a.estrelas
+            );
+
+          }
+
+
+          // Segundo desempate:
+          // nome
+
+          return a.nome.localeCompare(
+            b.nome,
+            "pt-BR"
+          );
+
+        })
+        .slice(0, 10);
+
+    }, [jogadoresComOVR]);
+
 
   // =========================================================
   // DADOS DOS GRÁFICOS
   // =========================================================
 
-  const dadosGols = useMemo(() => {
-    return artilheiros.map((jogador) => ({
-      nome: jogador.nome,
-      gols: jogador.gols,
-    }));
-  }, [artilheiros]);
+  const dadosGols =
+    useMemo(() => {
 
-  const dadosAssistencias = useMemo(() => {
-    return melhoresAssistentes.map((jogador) => ({
-      nome: jogador.nome,
-      assistencias: jogador.assistencias,
-    }));
-  }, [melhoresAssistentes]);
+      return artilheiros.map(
+        (jogador) => ({
 
-  // =========================================================
-  // DEBUG DOS GRÁFICOS
-  // =========================================================
+          nome: jogador.nome,
 
-  console.log("DADOS GOLS:", dadosGols);
-  console.log("DADOS ASSISTÊNCIAS:", dadosAssistencias);
+          gols: jogador.gols,
+
+        })
+      );
+
+    }, [artilheiros]);
+
+
+  const dadosAssistencias =
+    useMemo(() => {
+
+      return melhoresAssistentes.map(
+        (jogador) => ({
+
+          nome: jogador.nome,
+
+          assistencias:
+            jogador.assistencias,
+
+        })
+      );
+
+    }, [melhoresAssistentes]);
+
 
   // =========================================================
   // TOOLTIP
   // =========================================================
 
   const tooltipStyle = {
+
     backgroundColor: "#1b1f28",
+
     border: "1px solid #343a48",
+
     borderRadius: "10px",
+
     color: "#ffffff",
-    boxShadow: "0 10px 30px rgba(0, 0, 0, 0.35)",
+
+    boxShadow:
+      "0 10px 30px rgba(0, 0, 0, 0.35)",
+
   };
+
 
   // =========================================================
   // CARREGANDO
   // =========================================================
 
   if (carregando) {
+
     return (
+
       <div className="estado">
+
         <span>📊</span>
 
         <h2>
           Carregando ranking...
         </h2>
+
       </div>
+
     );
+
   }
+
 
   // =========================================================
   // ERRO
   // =========================================================
 
   if (erro) {
+
     return (
+
       <div className="estado">
+
         <span>❌</span>
 
         <h2>
           Erro ao carregar ranking
         </h2>
 
-        <p>{erro}</p>
+        <p>
+          {erro}
+        </p>
+
       </div>
+
     );
+
   }
+
 
   // =========================================================
   // TELA
   // =========================================================
 
   return (
+
     <main className="ranking-page">
+
 
       {/* =====================================================
           CABEÇALHO
       ===================================================== */}
 
       <div className="ranking-title">
+
         <div>
 
           <span className="subtitle">
@@ -274,7 +578,9 @@ function Ranking() {
           </p>
 
         </div>
+
       </div>
+
 
       {/* =====================================================
           CARDS DE RESUMO
@@ -282,11 +588,13 @@ function Ranking() {
 
       <section className="ranking-resumo">
 
+
         <div className="ranking-card ranking-card-gols">
 
           <span>⚽</span>
 
           <div>
+
             <strong>
               {estatisticas.gols}
             </strong>
@@ -294,15 +602,18 @@ function Ranking() {
             <small>
               Gols marcados
             </small>
+
           </div>
 
         </div>
+
 
         <div className="ranking-card ranking-card-assistencias">
 
           <span>🅰️</span>
 
           <div>
+
             <strong>
               {estatisticas.assistencias}
             </strong>
@@ -310,15 +621,18 @@ function Ranking() {
             <small>
               Assistências
             </small>
+
           </div>
 
         </div>
+
 
         <div className="ranking-card ranking-card-jogadores">
 
           <span>👥</span>
 
           <div>
+
             <strong>
               {jogadores.length}
             </strong>
@@ -326,15 +640,18 @@ function Ranking() {
             <small>
               Jogadores
             </small>
+
           </div>
 
         </div>
+
 
         <div className="ranking-card ranking-card-goleiros">
 
           <span>🧤</span>
 
           <div>
+
             <strong>
               {estatisticas.goleiros}
             </strong>
@@ -342,17 +659,20 @@ function Ranking() {
             <small>
               Goleiros
             </small>
+
           </div>
 
         </div>
 
       </section>
 
+
       {/* =====================================================
           PÓDIO
       ===================================================== */}
 
       <section className="podio">
+
 
         {/* SEGUNDO */}
 
@@ -372,6 +692,7 @@ function Ranking() {
 
         </div>
 
+
         {/* PRIMEIRO */}
 
         <div className="podio-card primeiro">
@@ -389,6 +710,7 @@ function Ranking() {
           </small>
 
         </div>
+
 
         {/* TERCEIRO */}
 
@@ -410,14 +732,16 @@ function Ranking() {
 
       </section>
 
+
       {/* =====================================================
           GRÁFICOS
       ===================================================== */}
 
       <section className="graficos">
 
+
         {/* ===================================================
-            GRÁFICO DE GOLS
+            GOLS
         =================================================== */}
 
         <div className="grafico-card grafico-gols">
@@ -439,6 +763,7 @@ function Ranking() {
             </small>
 
           </div>
+
 
           <div
             className="grafico-container"
@@ -494,7 +819,8 @@ function Ranking() {
                     color: "#ff9f43",
                   }}
                   cursor={{
-                    fill: "rgba(255,255,255,0.04)",
+                    fill:
+                      "rgba(255,255,255,0.04)",
                   }}
                 />
 
@@ -533,8 +859,9 @@ function Ranking() {
 
         </div>
 
+
         {/* ===================================================
-            GRÁFICO DE ASSISTÊNCIAS
+            ASSISTÊNCIAS
         =================================================== */}
 
         <div className="grafico-card grafico-assistencias">
@@ -556,6 +883,7 @@ function Ranking() {
             </small>
 
           </div>
+
 
           <div
             className="grafico-container"
@@ -611,7 +939,8 @@ function Ranking() {
                     color: "#4dabf7",
                   }}
                   cursor={{
-                    fill: "rgba(255,255,255,0.04)",
+                    fill:
+                      "rgba(255,255,255,0.04)",
                   }}
                 />
 
@@ -652,11 +981,13 @@ function Ranking() {
 
       </section>
 
+
       {/* =====================================================
           LISTAS DO RANKING
       ===================================================== */}
 
       <section className="ranking-listas">
+
 
         {/* ===================================================
             ARTILHEIROS
@@ -681,6 +1012,7 @@ function Ranking() {
             </small>
 
           </div>
+
 
           {artilheiros.map(
             (jogador, index) => (
@@ -709,6 +1041,7 @@ function Ranking() {
 
         </div>
 
+
         {/* ===================================================
             MELHORES AVALIADOS
         =================================================== */}
@@ -728,12 +1061,13 @@ function Ranking() {
             </div>
 
             <small>
-              Top 10
+              Top 10 OVR
             </small>
 
           </div>
 
-          {rankingEstrelas.map(
+
+          {melhoresAvaliados.map(
             (jogador, index) => (
 
               <div
@@ -749,8 +1083,8 @@ function Ranking() {
                   {jogador.nome}
                 </span>
 
-                <strong>
-                  {"⭐".repeat(jogador.estrelas)}
+                <strong className="valor-ovr">
+                  OVR {jogador.ovr}
                 </strong>
 
               </div>
@@ -763,7 +1097,9 @@ function Ranking() {
       </section>
 
     </main>
+
   );
+
 }
 
 export default Ranking;

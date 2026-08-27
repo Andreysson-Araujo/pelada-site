@@ -6,6 +6,7 @@ import ListaJogadores from "./components/ListaJogadores/ListaJogadores";
 import Resumo from "./components/Resumo";
 import Ranking from "./pages/Ranking";
 import Timer from "./components/Timer/Timer";
+import CardsPage from "./pages/Cards/CardsPage";
 
 import "./style.css";
 
@@ -13,13 +14,15 @@ function App() {
   const [jogadores, setJogadores] = useState([]);
 
   const [pesquisa, setPesquisa] = useState("");
+
   const [estrelas, setEstrelas] = useState("todas");
+
   const [tipo, setTipo] = useState("todos");
 
-  // NOVO: ordem dos jogadores
   const [ordem, setOrdem] = useState("recentes");
 
   const [carregando, setCarregando] = useState(true);
+
   const [erro, setErro] = useState("");
 
   const [pagina, setPagina] = useState("dashboard");
@@ -48,6 +51,7 @@ function App() {
         }
 
         const linhas = texto.split("\n");
+
         const jogadoresLidos = [];
 
         linhas.forEach((linha, index) => {
@@ -61,46 +65,105 @@ function App() {
             .split("|")
             .map((parte) => parte.trim());
 
-          if (partes.length < 5) {
+          /*
+            Formato:
+
+            👤 Ciro | 🆔 001 | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
+          */
+
+          if (partes.length < 6) {
+            console.warn(
+              "Linha de jogador inválida:",
+              textoLinha
+            );
+
             return;
           }
+
+          /* =========================
+             ID
+          ========================= */
+
+          const id = partes[1]
+            .replace("🆔", "")
+            .trim();
+
+          if (!id) {
+            console.warn(
+              "Jogador sem ID:",
+              textoLinha
+            );
+
+            return;
+          }
+
+          /* =========================
+             NOME
+          ========================= */
 
           const nome = partes[0]
             .replace("👤", "")
             .trim();
 
+          /* =========================
+             ESTRELAS
+          ========================= */
+
           const estrelas =
             Number(
-              partes[1]
+              partes[2]
                 .replace("⭐", "")
                 .trim()
             ) || 0;
 
-          // Normaliza o tipo
-          const tipo = partes[2]
+          /* =========================
+             TIPO
+          ========================= */
+
+          const tipo = partes[3]
             .trim()
             .toUpperCase();
 
+          /* =========================
+             GOLS
+          ========================= */
+
           const gols =
             Number(
-              partes[3]
+              partes[4]
                 .replace("⚽", "")
                 .trim()
             ) || 0;
 
+          /* =========================
+             ASSISTÊNCIAS
+          ========================= */
+
           const assistencias =
             Number(
-              partes[4]
+              partes[5]
                 .replace("🅰️", "")
                 .trim()
             ) || 0;
 
+          /* =========================
+             JOGADOR
+          ========================= */
+
           jogadoresLidos.push({
-            id: index,
+            id,
+
+            // Usado somente para ordenação
+            ordemCadastro: index,
+
             nome,
+
             estrelas,
+
             tipo,
+
             gols,
+
             assistencias,
           });
         });
@@ -114,6 +177,7 @@ function App() {
 
       } catch (error) {
         console.error(error);
+
         setErro(error.message);
 
       } finally {
@@ -129,76 +193,84 @@ function App() {
   ========================= */
 
   const jogadoresFiltrados = useMemo(() => {
+    const filtrados = jogadores.filter(
+      (jogador) => {
 
-    // Primeiro filtra
-    const filtrados = jogadores.filter((jogador) => {
+        /* Pesquisa */
 
-      // Pesquisa por nome
-      const nomeMatch =
-        jogador.nome
-          ?.toLowerCase()
-          .includes(
-            pesquisa.toLowerCase()
+        const nomeMatch =
+          jogador.nome
+            ?.toLowerCase()
+            .includes(
+              pesquisa.toLowerCase()
+            );
+
+        /* Estrelas */
+
+        const estrelasMatch =
+          estrelas === "todas" ||
+          jogador.estrelas === Number(estrelas);
+
+        /* Tipo */
+
+        const tipoJogador =
+          jogador.tipo
+            ?.trim()
+            .toUpperCase();
+
+        const tipoSelecionado =
+          tipo
+            ?.trim()
+            .toUpperCase();
+
+        const tipoMatch =
+          tipoSelecionado === "TODOS" ||
+          tipoJogador === tipoSelecionado;
+
+        return (
+          nomeMatch &&
+          estrelasMatch &&
+          tipoMatch
+        );
+      }
+    );
+
+    /* Ordenação */
+
+    return [...filtrados].sort(
+      (a, b) => {
+
+        if (ordem === "recentes") {
+          return (
+            b.ordemCadastro -
+            a.ordemCadastro
           );
+        }
 
-      // Filtro por estrelas
-      const estrelasMatch =
-        estrelas === "todas" ||
-        jogador.estrelas === Number(estrelas);
+        if (ordem === "antigos") {
+          return (
+            a.ordemCadastro -
+            b.ordemCadastro
+          );
+        }
 
-      // Filtro por tipo
-      const tipoJogador =
-        jogador.tipo
-          ?.trim()
-          .toUpperCase();
+        if (ordem === "az") {
+          return a.nome.localeCompare(
+            b.nome,
+            "pt-BR"
+          );
+        }
 
-      const tipoSelecionado =
-        tipo
-          ?.trim()
-          .toUpperCase();
+        if (ordem === "za") {
+          return b.nome.localeCompare(
+            a.nome,
+            "pt-BR"
+          );
+        }
 
-      const tipoMatch =
-        tipoSelecionado === "TODOS" ||
-        tipoJogador === tipoSelecionado;
-
-      return (
-        nomeMatch &&
-        estrelasMatch &&
-        tipoMatch
-      );
-    });
-
-    // Depois ordena
-    return [...filtrados].sort((a, b) => {
-
-      // Últimos cadastrados
-      if (ordem === "recentes") {
-        return b.id - a.id;
+        return 0;
       }
-
-      // Primeiros cadastrados
-      if (ordem === "antigos") {
-        return a.id - b.id;
-      }
-
-      // Nome A → Z
-      if (ordem === "az") {
-        return a.nome.localeCompare(
-          b.nome,
-          "pt-BR"
-        );
-      }
-
-      // Nome Z → A
-      if (ordem === "za") {
-        return b.nome.localeCompare(
-          a.nome,
-          "pt-BR"
-        );
-      }
-
-      return 0;
-    });
+    );
 
   }, [
     jogadores,
@@ -285,6 +357,28 @@ function App() {
         />
 
         <Timer />
+
+      </div>
+    );
+  }
+
+  /* =========================
+     CARDS
+  ========================= */
+
+  if (pagina === "cards") {
+    return (
+      <div className="app">
+
+        <Header
+          total={jogadores.length}
+          pagina={pagina}
+          setPagina={setPagina}
+        />
+
+        <CardsPage
+          jogadores={jogadores}
+        />
 
       </div>
     );

@@ -1,22 +1,33 @@
 import React from "react";
+
 import "./Header.css";
-
-
 
 function Header({ total, pagina, setPagina }) {
   return (
     <header className="header">
 
+      {/* =========================
+          LOGO
+      ========================= */}
+
       <div className="logo">
+
         <span>⚽</span>
 
         <div>
           <strong>PELADA</strong>
           <span>DOS MORTOS</span>
         </div>
+
       </div>
 
+      {/* =========================
+          NAVEGAÇÃO
+      ========================= */}
+
       <nav>
+
+        {/* DASHBOARD */}
 
         <button
           className={
@@ -31,7 +42,7 @@ function Header({ total, pagina, setPagina }) {
           Dashboard
         </button>
 
-        
+        {/* JOGADORES */}
 
         <button
           className={
@@ -46,6 +57,8 @@ function Header({ total, pagina, setPagina }) {
           Jogadores
         </button>
 
+        {/* RANKING */}
+
         <button
           className={
             pagina === "ranking"
@@ -58,6 +71,23 @@ function Header({ total, pagina, setPagina }) {
         >
           Ranking
         </button>
+
+        {/* CARDS */}
+
+        <button
+          className={
+            pagina === "cards"
+              ? "nav-active"
+              : ""
+          }
+          onClick={() =>
+            setPagina("cards")
+          }
+        >
+          🃏 Cards
+        </button>
+
+        {/* TEMPO */}
 
         <button
           className={
@@ -73,6 +103,10 @@ function Header({ total, pagina, setPagina }) {
         </button>
 
       </nav>
+
+      {/* =========================
+          INFORMAÇÕES
+      ========================= */}
 
       <div className="header-info">
         {total} jogadores

@@ -346,7 +346,7 @@
 }
 
 .valor-gols {
-  color: #ff9f43;
+  color: #031b00;
   font-size: 14px;
 }
 
@@ -486,4 +486,19 @@
   .nome-ranking {
     font-size: 13px;
   }
+}
+
+.valor-ovr {
+  min-width: 70px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 900;
+  color: #750303;
+}
+
+.valor-ovr small {
+  font-size: 11px;
+  font-weight: 700;
+  color: #999;
+  margin-left: 2px;
 }

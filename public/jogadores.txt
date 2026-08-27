@@ -2,36 +2,36 @@
 📋 LISTA DE JOGADORES
 ━━━━━━━━━━━━━━━━━━━━
 
-👤 Ciro | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
-👤 TensaCrazy | ⭐ 1 | GOLEIRO | ⚽ 0 | 🅰️ 0
-👤 Drey | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
-👤 Bala | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
-👤 Jhon | ⭐ 3 | GOLEIRO | ⚽ 0 | 🅰️ 0
-👤 Carlin | ⭐ 1 | GOLEIRO | ⚽ 0 | 🅰️ 0
-👤 Roger | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
-👤 Pedro Rói | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
-👤 Icaro | ⭐ 2 | LINHA | ⚽ 4 | 🅰️ 4
-👤 Mikael | ⭐ 2 | LINHA | ⚽ 4 | 🅰️ 4
-👤 Saulo | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
-👤 Erick | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
-👤 Gustavo | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
-👤 Bruno | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
-👤 Quilrio | ⭐ 1 | LINHA | ⚽ 1 | 🅰️ 0
-👤 Euzébio Jr | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
-👤 Luiz | ⭐ 1 | LINHA | ⚽ 1 | 🅰️ 0
-👤 Thal | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
-👤 Ícaro | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
-👤 Zé Neto | ⭐ 1 | LINHA | ⚽ 1 | 🅰️ 0
-👤 Pedro Arco | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
-👤 Cristiano | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
-👤 Matheus Valente | ⭐ 1 | LINHA | ⚽ 2 | 🅰️ 4
-👤 Fabio | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
-👤 Ricardinho | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
-👤 Kauê | ⭐ 1 | LINHA | ⚽ 3 | 🅰️ 3
-👤 Renan Jordi | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
-👤 Android | ⭐ 1 | LINHA | ⚽ 1 | 🅰️ 0
-👤 Lucas | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
-👤 Zé coelho | ⭐ 1 | LINHA | ⚽ 1 | 🅰️ 0
+👤 Ciro | 🆔 001 | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
+👤 TensaCrazy | 🆔 002 | ⭐ 1 | GOLEIRO | ⚽ 0 | 🅰️ 0
+👤 Drey | 🆔 003 | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
+👤 Bala | 🆔 004 | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
+👤 Jhon | 🆔 005 | ⭐ 3 | GOLEIRO | ⚽ 0 | 🅰️ 0
+👤 Carlin | 🆔 006 | ⭐ 1 | GOLEIRO | ⚽ 0 | 🅰️ 0
+👤 Roger | 🆔 007 | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
+👤 Pedro Rói | 🆔 008 | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
+👤 Icaro | 🆔 009 | ⭐ 2 | LINHA | ⚽ 4 | 🅰️ 4
+👤 Mikael | 🆔 010 | ⭐ 2 | LINHA | ⚽ 4 | 🅰️ 4
+👤 Saulo | 🆔 011 | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
+👤 Erick | 🆔 012 | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
+👤 Gustavo | 🆔 013 | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
+👤 Bruno | 🆔 014 | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
+👤 Quilrio | 🆔 015 | ⭐ 1 | LINHA | ⚽ 1 | 🅰️ 0
+👤 Euzébio Jr | 🆔 016 | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
+👤 Luiz | 🆔 017 | ⭐ 1 | LINHA | ⚽ 1 | 🅰️ 0
+👤 Thal | 🆔 018 | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
+👤 Ícaro | 🆔 019 | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
+👤 Zé Neto | 🆔 020 | ⭐ 1 | LINHA | ⚽ 1 | 🅰️ 0
+👤 Pedro Arco | 🆔 021 | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
+👤 Cristiano | 🆔 022 | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
+👤 Matheus Valente | 🆔 023 | ⭐ 1 | LINHA | ⚽ 2 | 🅰️ 4
+👤 Fabio | 🆔 024 | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
+👤 Ricardinho | 🆔 025 | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
+👤 Kauê | 🆔 026 | ⭐ 1 | LINHA | ⚽ 3 | 🅰️ 3
+👤 Renan Jordi | 🆔 027 | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
+👤 Android | 🆔 028 | ⭐ 1 | LINHA | ⚽ 1 | 🅰️ 0
+👤 Lucas | 🆔 029 | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
+👤 Zé coelho | 🆔 030 | ⭐ 1 | LINHA | ⚽ 1 | 🅰️ 0
 
 ━━━━━━━━━━━━━━━━━━━━
 🔐 PELADA_APP_V1
