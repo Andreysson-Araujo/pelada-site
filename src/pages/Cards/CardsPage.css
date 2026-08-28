@@ -755,3 +755,346 @@
   }
 }
 
+/* =========================================================
+   FILTROS DOS CARDS
+========================================================= */
+
+.cards-filtros {
+  width: 100%;
+  display: grid;
+  grid-template-columns:
+    minmax(220px, 2fr)
+    repeat(4, minmax(140px, 1fr))
+    auto;
+
+  gap: 12px;
+
+  margin-bottom: 30px;
+  padding: 18px;
+
+  background: rgba(255, 255, 255, 0.04);
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  border-radius: 16px;
+
+  box-shadow:
+    0 8px 25px rgba(0, 0, 0, 0.18);
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   GRUPO DO FILTRO
+========================================================= */
+
+.filtro-grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+
+/* =========================================================
+   LABEL
+========================================================= */
+
+.filtro-grupo label {
+  font-size: 11px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.8px;
+
+  text-transform: uppercase;
+
+  opacity: 0.65;
+}
+
+
+/* =========================================================
+   INPUT E SELECT
+========================================================= */
+
+.filtro-grupo input,
+.filtro-grupo select {
+  width: 100%;
+
+  height: 42px;
+
+  padding: 0 12px;
+
+  border-radius: 9px;
+
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  background: rgba(0, 0, 0, 0.3);
+
+  color: inherit;
+
+  font-size: 13px;
+
+  outline: none;
+
+  box-sizing: border-box;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+/* =========================================================
+   INPUT DE PESQUISA
+========================================================= */
+
+.filtro-pesquisa {
+  min-width: 0;
+}
+
+.filtro-pesquisa input {
+  padding-left: 14px;
+}
+
+
+/* =========================================================
+   PLACEHOLDER
+========================================================= */
+
+.filtro-grupo input::placeholder {
+  color: inherit;
+
+  opacity: 0.4;
+}
+
+
+/* =========================================================
+   FOCUS
+========================================================= */
+
+.filtro-grupo input:focus,
+.filtro-grupo select:focus {
+
+  border-color: rgba(255, 216, 77, 0.65);
+
+  background: rgba(0, 0, 0, 0.45);
+
+  box-shadow:
+    0 0 0 2px rgba(255, 216, 77, 0.08);
+}
+
+
+/* =========================================================
+   SELECT
+========================================================= */
+
+.filtro-grupo select {
+  cursor: pointer;
+}
+
+
+/* =========================================================
+   SELECT DESABILITADO
+========================================================= */
+
+.filtro-grupo select:disabled {
+
+  opacity: 0.35;
+
+  cursor: not-allowed;
+
+}
+
+
+/* =========================================================
+   OPÇÕES DO SELECT
+========================================================= */
+
+.filtro-grupo select option {
+  background: #181818;
+
+  color: #fff;
+}
+
+
+/* =========================================================
+   BOTÃO LIMPAR
+========================================================= */
+
+.botao-limpar-filtros {
+
+  align-self: flex-end;
+
+  height: 42px;
+
+  padding: 0 16px;
+
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  border-radius: 9px;
+
+  background: rgba(255, 255, 255, 0.06);
+
+  color: inherit;
+
+  font-size: 12px;
+
+  font-weight: 800;
+
+  cursor: pointer;
+
+  white-space: nowrap;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    border-color 0.2s ease;
+}
+
+
+.botao-limpar-filtros:hover {
+
+  background: rgba(255, 255, 255, 0.1);
+
+  border-color: rgba(255, 255, 255, 0.18);
+
+  transform: translateY(-1px);
+
+}
+
+
+.botao-limpar-filtros:active {
+
+  transform: translateY(0);
+
+}
+
+
+/* =========================================================
+   RESULTADO DA PESQUISA
+========================================================= */
+
+.cards-header p {
+
+  margin-top: 8px;
+
+  opacity: 0.6;
+
+  font-size: 14px;
+
+}
+
+
+/* =========================================================
+   RESPONSIVO
+   TABLETS
+========================================================= */
+
+@media (max-width: 1100px) {
+
+  .cards-filtros {
+
+    grid-template-columns:
+      repeat(3, minmax(150px, 1fr));
+
+  }
+
+  .filtro-pesquisa {
+
+    grid-column: span 2;
+
+  }
+
+  .botao-limpar-filtros {
+
+    align-self: stretch;
+
+  }
+
+}
+
+
+/* =========================================================
+   CELULAR
+========================================================= */
+
+@media (max-width: 700px) {
+
+  .cards-filtros {
+
+    grid-template-columns: 1fr;
+
+    gap: 12px;
+
+    padding: 15px;
+
+    margin-bottom: 20px;
+
+    border-radius: 14px;
+
+  }
+
+
+  .filtro-pesquisa {
+
+    grid-column: auto;
+
+  }
+
+
+  .filtro-grupo input,
+  .filtro-grupo select {
+
+    height: 44px;
+
+    font-size: 14px;
+
+  }
+
+
+  .filtro-grupo label {
+
+    font-size: 10px;
+
+  }
+
+
+  .botao-limpar-filtros {
+
+    width: 100%;
+
+    height: 44px;
+
+  }
+
+}
+
+
+/* =========================================================
+   CELULARES PEQUENOS
+========================================================= */
+
+@media (max-width: 450px) {
+
+  .cards-filtros {
+
+    padding: 12px;
+
+    gap: 10px;
+
+  }
+
+
+  .filtro-grupo input,
+  .filtro-grupo select {
+
+    height: 42px;
+
+    font-size: 13px;
+
+  }
+
+}
+
