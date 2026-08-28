@@ -1,4 +1,5 @@
 const path = require("path");
+
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 
@@ -45,10 +46,16 @@ module.exports = {
           from: "./public/jogadores.txt",
           to: "jogadores.txt",
         },
+
         {
           from: "./public/cards.txt",
           to: "cards.txt",
-        }
+        },
+
+        {
+          from: "./public/fotos",
+          to: "fotos",
+        },
       ],
     }),
   ],

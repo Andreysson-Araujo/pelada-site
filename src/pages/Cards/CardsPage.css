@@ -1,7 +1,18 @@
+
+/* =========================================================
+   PÁGINA DE CARDS
+========================================================= */
+
 .cards-page {
   width: 100%;
   padding: 30px;
+  box-sizing: border-box;
 }
+
+
+/* =========================================================
+   CABEÇALHO
+========================================================= */
 
 .cards-header {
   display: flex;
@@ -36,25 +47,31 @@
   font-size: 14px;
 }
 
-/* =========================
+
+/* =========================================================
    GRID
-========================= */
+========================================================= */
 
 .cards-grid {
   display: grid;
-  grid-template-columns: repeat(
-    auto-fill,
-    minmax(220px, 1fr)
-  );
+
+  grid-template-columns:
+    repeat(
+      auto-fill,
+      minmax(220px, 1fr)
+    );
+
   gap: 20px;
 }
 
-/* =========================
+
+/* =========================================================
    CARD
-========================= */
+========================================================= */
 
 .card-jogador {
-  min-height: 300px;
+  min-height: 430px;
+
   padding: 20px;
 
   border-radius: 16px;
@@ -82,7 +99,12 @@
     box-shadow 0.2s ease;
 
   display: flex;
+
   flex-direction: column;
+
+  overflow: hidden;
+
+  box-sizing: border-box;
 }
 
 .card-jogador:hover {
@@ -93,13 +115,16 @@
     rgba(0, 0, 0, 0.45);
 }
 
-/* =========================
-   TOPO
-========================= */
+
+/* =========================================================
+   TOPO DO CARD
+========================================================= */
 
 .card-topo {
   display: flex;
+
   justify-content: space-between;
+
   align-items: center;
 
   font-size: 12px;
@@ -111,125 +136,18 @@
   font-size: 14px;
 }
 
-/* =========================
-   NOME
-========================= */
+.card-id {
+  font-size: 12px;
 
-.card-nome {
-  margin-top: 45px;
-
-  font-size: 23px;
-  font-weight: 800;
-}
-
-.card-tipo {
-  margin-top: 5px;
-
-  font-size: 11px;
   font-weight: 700;
 
-  letter-spacing: 1px;
-
-  opacity: 0.6;
+  opacity: 0.7;
 }
 
-/* =========================
-   ATRIBUTOS
-========================= */
 
-.card-atributos {
-  margin-top: auto;
-
-  display: grid;
-  grid-template-columns:
-    repeat(2, 1fr);
-
-  gap: 12px;
-
-  padding-top: 25px;
-}
-
-.card-atributos div {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.card-atributos span {
-  font-size: 11px;
-  opacity: 0.6;
-}
-
-.card-atributos strong {
-  font-size: 18px;
-}
-
-/* =========================
-   ESTADOS
-========================= */
-
-.cards-estado {
-  min-height: 400px;
-
-  display: flex;
-  flex-direction: column;
-
-  align-items: center;
-  justify-content: center;
-
-  text-align: center;
-}
-
-.cards-estado span {
-  font-size: 45px;
-  margin-bottom: 15px;
-}
-
-.cards-estado h2 {
-  margin: 0;
-}
-
-.cards-estado p {
-  opacity: 0.6;
-}
-
-/* =========================
-   RESPONSIVO
-========================= */
-
-@media (max-width: 700px) {
-
-  .cards-page {
-    padding: 20px;
-  }
-
-  .cards-header {
-    flex-direction: column;
-    gap: 15px;
-  }
-
-  .cards-header h1 {
-    font-size: 25px;
-  }
-
-  .cards-grid {
-    grid-template-columns:
-      repeat(2, 1fr);
-  }
-
-}
-
-@media (max-width: 450px) {
-
-  .cards-grid {
-    grid-template-columns: 1fr;
-  }
-
-}
-
-/* =========================
+/* =========================================================
    OVR
-========================= */
+========================================================= */
 
 .card-ovr {
   width: 72px;
@@ -238,24 +156,32 @@
   border-radius: 50%;
 
   display: flex;
+
   flex-direction: column;
 
   align-items: center;
+
   justify-content: center;
 
-  background: linear-gradient(
-    145deg,
-    #ffd84d,
-    #c99600
-  );
+  background:
+    linear-gradient(
+      145deg,
+      #ffd84d,
+      #c99600
+    );
 
   border: 3px solid #fff;
 
   box-shadow:
-    0 0 0 3px rgba(255, 216, 77, 0.25),
-    0 6px 15px rgba(0, 0, 0, 0.4);
+    0 0 0 3px
+    rgba(255, 216, 77, 0.25),
+
+    0 6px 15px
+    rgba(0, 0, 0, 0.4);
 
   flex-shrink: 0;
+
+  z-index: 2;
 }
 
 .card-ovr span {
@@ -281,3 +207,551 @@
 
   margin-top: 3px;
 }
+
+
+/* =========================================================
+   FOTO DO JOGADOR
+========================================================= */
+
+.card-foto-container {
+  width: 100%;
+
+  /*
+    PROPORÇÃO 3x4
+  */
+  aspect-ratio: 3 / 4;
+
+  margin-top: 15px;
+
+  overflow: hidden;
+
+  border-radius: 10px;
+
+  background: #222;
+
+  position: relative;
+}
+
+.card-foto {
+  width: 100%;
+
+  height: 100%;
+
+  display: block;
+
+  /*
+    Preenche a área sem deformar
+    a imagem.
+  */
+  object-fit: cover;
+
+  /*
+    Mantém o rosto mais próximo
+    da parte superior.
+  */
+  object-position: center top;
+
+  transition:
+    transform 0.25s ease;
+}
+
+
+/* =========================================================
+   EFEITO DA FOTO
+========================================================= */
+
+.card-jogador:hover .card-foto {
+  transform: scale(1.03);
+}
+
+
+/* =========================================================
+   NOME
+========================================================= */
+
+.card-nome {
+  margin-top: 10px;
+
+  font-size: 23px;
+
+  font-weight: 800;
+
+  text-align: center;
+
+  white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+}
+
+
+/* =========================================================
+   POSIÇÃO / TIPO
+========================================================= */
+
+.card-tipo {
+  margin-top: 5px;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  letter-spacing: 1px;
+
+  opacity: 0.6;
+
+  text-align: center;
+}
+
+
+/* =========================================================
+   ESTRELAS
+========================================================= */
+
+.card-estrelas {
+  margin-top: 8px;
+
+  text-align: center;
+
+  font-size: 15px;
+
+  min-height: 20px;
+}
+
+
+/* =========================================================
+   ATRIBUTOS
+========================================================= */
+
+.card-atributos {
+  margin-top: auto;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, 1fr);
+
+  gap: 12px;
+
+  padding-top: 25px;
+}
+
+.card-atributos div {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+}
+
+.card-atributos span {
+  font-size: 11px;
+
+  opacity: 0.6;
+}
+
+.card-atributos strong {
+  font-size: 18px;
+}
+
+
+/* =========================================================
+   ESTADOS
+========================================================= */
+
+.cards-estado {
+  min-height: 400px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  text-align: center;
+}
+
+.cards-estado span {
+  font-size: 45px;
+
+  margin-bottom: 15px;
+}
+
+.cards-estado h2 {
+  margin: 0;
+}
+
+.cards-estado p {
+  opacity: 0.6;
+}
+
+
+/* =========================================================
+   TABLETS / CELULARES
+========================================================= */
+
+@media (max-width: 700px) {
+
+  .cards-page {
+    padding: 15px;
+  }
+
+
+  /* CABEÇALHO */
+
+  .cards-header {
+    flex-direction: column;
+
+    gap: 15px;
+  }
+
+  .cards-header h1 {
+    font-size: 25px;
+  }
+
+
+  /* GRID */
+
+  .cards-grid {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+
+    gap: 12px;
+  }
+
+
+  /* CARD */
+
+  .card-jogador {
+    min-height: auto;
+
+    padding: 12px;
+
+    border-radius: 14px;
+  }
+
+
+  /* FOTO 3x4 */
+
+  .card-foto-container {
+    width: 100%;
+
+    aspect-ratio: 3 / 4;
+
+    margin-top: 10px;
+
+    border-radius: 8px;
+  }
+
+  .card-foto {
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+    object-position: center top;
+  }
+
+
+  /* OVR */
+
+  .card-ovr {
+    width: 55px;
+
+    height: 55px;
+  }
+
+  .card-ovr strong {
+    font-size: 23px;
+  }
+
+  .card-ovr span {
+    font-size: 8px;
+  }
+
+
+  /* NOME */
+
+  .card-nome {
+    margin-top: 10px;
+
+    font-size: 17px;
+  }
+
+
+  /* TIPO */
+
+  .card-tipo {
+    font-size: 9px;
+  }
+
+
+  /* ESTRELAS */
+
+  .card-estrelas {
+    font-size: 12px;
+  }
+
+
+  /* ATRIBUTOS */
+
+  .card-atributos {
+    gap: 8px;
+
+    padding-top: 15px;
+  }
+
+  .card-atributos strong {
+    font-size: 15px;
+  }
+
+  .card-atributos span {
+    font-size: 9px;
+  }
+}
+
+
+/* =========================================================
+   CELULARES PEQUENOS
+========================================================= */
+
+@media (max-width: 450px) {
+
+  .cards-page {
+    padding: 12px;
+  }
+
+
+  /* GRID */
+
+  .cards-grid {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+
+    gap: 8px;
+  }
+
+
+  /* CARD */
+
+  .card-jogador {
+    width: 100%;
+
+    min-height: auto;
+
+    padding: 10px;
+
+    border-radius: 12px;
+  }
+
+
+  /* FOTO 3x4 */
+
+  .card-foto-container {
+    width: 100%;
+
+    aspect-ratio: 3 / 4;
+
+    margin-top: 8px;
+
+    border-radius: 7px;
+  }
+
+  .card-foto {
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+    object-position: center top;
+  }
+
+
+  /* OVR */
+
+  .card-ovr {
+    width: 50px;
+
+    height: 50px;
+
+    border-width: 2px;
+  }
+
+  .card-ovr strong {
+    font-size: 21px;
+  }
+
+  .card-ovr span {
+    font-size: 7px;
+  }
+
+
+  /* ID */
+
+  .card-id {
+    font-size: 9px;
+  }
+
+
+  /* NOME */
+
+  .card-nome {
+    font-size: 15px;
+
+    margin-top: 8px;
+  }
+
+
+  /* TIPO */
+
+  .card-tipo {
+    font-size: 8px;
+
+    margin-top: 3px;
+  }
+
+
+  /* ESTRELAS */
+
+  .card-estrelas {
+    font-size: 10px;
+
+    margin-top: 5px;
+  }
+
+
+  /* ATRIBUTOS */
+
+  .card-atributos {
+    gap: 6px;
+
+    padding-top: 12px;
+  }
+
+  .card-atributos strong {
+    font-size: 13px;
+  }
+
+  .card-atributos span {
+    font-size: 8px;
+  }
+}
+
+
+/* =========================================================
+   CELULARES MUITO PEQUENOS
+========================================================= */
+
+@media (max-width: 350px) {
+
+  .cards-page {
+    padding: 8px;
+  }
+
+
+  /* GRID */
+
+  .cards-grid {
+    gap: 6px;
+  }
+
+
+  /* CARD */
+
+  .card-jogador {
+    padding: 8px;
+
+    border-radius: 10px;
+  }
+
+
+  /* FOTO 3x4 */
+
+  .card-foto-container {
+    aspect-ratio: 3 / 4;
+  }
+
+  .card-foto {
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+    object-position: center top;
+  }
+
+
+  /* OVR */
+
+  .card-ovr {
+    width: 45px;
+
+    height: 45px;
+  }
+
+  .card-ovr strong {
+    font-size: 19px;
+  }
+
+  .card-ovr span {
+    font-size: 6px;
+  }
+
+
+  /* ID */
+
+  .card-id {
+    font-size: 8px;
+  }
+
+
+  /* NOME */
+
+  .card-nome {
+    font-size: 13px;
+  }
+
+
+  /* TIPO */
+
+  .card-tipo {
+    font-size: 7px;
+  }
+
+
+  /* ESTRELAS */
+
+  .card-estrelas {
+    font-size: 9px;
+  }
+
+
+  /* ATRIBUTOS */
+
+  .card-atributos {
+    gap: 4px;
+
+    padding-top: 10px;
+  }
+
+  .card-atributos strong {
+    font-size: 12px;
+  }
+
+  .card-atributos span {
+    font-size: 7px;
+  }
+}
+

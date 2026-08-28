@@ -1,19 +1,15 @@
 import React, { useEffect, useState } from "react";
-
 import "./CardsPage.css";
-
-import {
-  calcularOVRJogador
-} from "./cardUtils";
+import { calcularOVRJogador } from "./cardUtils";
 
 function CardsPage({ jogadores }) {
   const [cards, setCards] = useState([]);
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState("");
 
-  /* =========================
-     CARREGAR CARDS.TXT
-  ========================= */
+  // =====================================================
+  // CARREGAR CARDS.TXT
+  // =====================================================
 
   useEffect(() => {
     async function carregarCards() {
@@ -28,9 +24,9 @@ function CardsPage({ jogadores }) {
 
         const texto = await resposta.text();
 
-        /* =========================
-           VALIDAR ARQUIVO
-        ========================= */
+        // =================================================
+        // VALIDAR ARQUIVO
+        // =================================================
 
         if (!texto.includes("PELADA_CARDS_V1")) {
           throw new Error(
@@ -39,17 +35,15 @@ function CardsPage({ jogadores }) {
         }
 
         const linhas = texto.split("\n");
-
         const cardsLidos = [];
 
-        /* =========================
-           LER CARDS
-        ========================= */
+        // =================================================
+        // LER CARDS
+        // =================================================
 
         linhas.forEach((linha) => {
           const textoLinha = linha.trim();
 
-          // Ignora títulos e linhas vazias
           if (!textoLinha.startsWith("🆔")) {
             return;
           }
@@ -58,25 +52,17 @@ function CardsPage({ jogadores }) {
             .split("|")
             .map((parte) => parte.trim());
 
-          /*
-           * Formato esperado:
-           *
-           * 🆔 001 | ATA 20 | DEF 20 |
-           * VEL 20 | PAS 20 | DRI 20
-           */
-
           if (partes.length < 6) {
             console.warn(
               "Linha de card inválida:",
               textoLinha
             );
-
             return;
           }
 
-          /* =========================
-             ID
-          ========================= */
+          // =================================================
+          // ID
+          // =================================================
 
           const id = partes[0]
             .replace("🆔", "")
@@ -87,13 +73,12 @@ function CardsPage({ jogadores }) {
               "Card sem ID:",
               textoLinha
             );
-
             return;
           }
 
-          /* =========================
-             ATAQUE
-          ========================= */
+          // =================================================
+          // ATRIBUTOS
+          // =================================================
 
           const ataque =
             Number(
@@ -102,20 +87,12 @@ function CardsPage({ jogadores }) {
                 .trim()
             ) || 0;
 
-          /* =========================
-             DEFESA
-          ========================= */
-
           const defesa =
             Number(
               partes[2]
                 .replace("DEF", "")
                 .trim()
             ) || 0;
-
-          /* =========================
-             VELOCIDADE
-          ========================= */
 
           const velocidade =
             Number(
@@ -124,20 +101,12 @@ function CardsPage({ jogadores }) {
                 .trim()
             ) || 0;
 
-          /* =========================
-             PASSE
-          ========================= */
-
           const passe =
             Number(
               partes[4]
                 .replace("PAS", "")
                 .trim()
             ) || 0;
-
-          /* =========================
-             DRIBLE
-          ========================= */
 
           const drible =
             Number(
@@ -146,45 +115,31 @@ function CardsPage({ jogadores }) {
                 .trim()
             ) || 0;
 
-          /* =========================
-             SALVAR CARD
-          ========================= */
+          // =================================================
+          // ADICIONAR CARD
+          // =================================================
 
           cardsLidos.push({
-            id,
-            ataque,
-            defesa,
-            velocidade,
-            passe,
-            drible,
+            id: id,
+            ataque: ataque,
+            defesa: defesa,
+            velocidade: velocidade,
+            passe: passe,
+            drible: drible
           });
         });
 
-        console.log(
-          "CARDS LIDOS:",
-          cardsLidos
-        );
+        console.log("CARDS LIDOS:", cardsLidos);
 
-        /* =========================
-           VINCULAR COM JOGADORES
-        ========================= */
+        // =================================================
+        // VINCULAR JOGADORES COM CARDS
+        // =================================================
 
-        const jogadoresComCards =
-          jogadores.map((jogador) => {
-
-            const card =
-              cardsLidos.find(
-                (item) =>
-                  item.id === jogador.id
-              );
-
-            /*
-             * Se o jogador possui card,
-             * usa os atributos cadastrados.
-             *
-             * Caso contrário, cria atributos
-             * zerados para evitar erro.
-             */
+        const jogadoresComCards = jogadores.map(
+          (jogador) => {
+            const card = cardsLidos.find(
+              (item) => item.id === jogador.id
+            );
 
             return {
               ...jogador,
@@ -195,17 +150,18 @@ function CardsPage({ jogadores }) {
                     defesa: card.defesa,
                     velocidade: card.velocidade,
                     passe: card.passe,
-                    drible: card.drible,
+                    drible: card.drible
                   }
                 : {
                     ataque: 0,
                     defesa: 0,
                     velocidade: 0,
                     passe: 0,
-                    drible: 0,
-                  },
+                    drible: 0
+                  }
             };
-          });
+          }
+        );
 
         console.log(
           "JOGADORES + CARDS:",
@@ -215,10 +171,14 @@ function CardsPage({ jogadores }) {
         setCards(jogadoresComCards);
 
       } catch (error) {
-        console.error(error);
+        console.error(
+          "Erro ao carregar cards:",
+          error
+        );
 
         setErro(
-          error.message
+          error.message ||
+            "Não foi possível carregar os cards."
         );
 
       } finally {
@@ -227,41 +187,42 @@ function CardsPage({ jogadores }) {
     }
 
     carregarCards();
-
   }, [jogadores]);
 
-  /* =========================
-     CARREGANDO
-  ========================= */
+  // =====================================================
+  // FOTO DO JOGADOR
+  // =====================================================
+
+  function obterFotoJogador(jogador) {
+    return `/fotos/${jogador.id}.png`;
+  }
+
+  // =====================================================
+  // CARREGANDO
+  // =====================================================
 
   if (carregando) {
     return (
       <main className="cards-page">
-
         <div className="cards-estado">
-
           <span>🃏</span>
 
           <h2>
             Carregando cards...
           </h2>
-
         </div>
-
       </main>
     );
   }
 
-  /* =========================
-     ERRO
-  ========================= */
+  // =====================================================
+  // ERRO
+  // =====================================================
 
   if (erro) {
     return (
       <main className="cards-page">
-
         <div className="cards-estado">
-
           <span>❌</span>
 
           <h2>
@@ -271,28 +232,25 @@ function CardsPage({ jogadores }) {
           <p>
             {erro}
           </p>
-
         </div>
-
       </main>
     );
   }
 
-  /* =========================
-     PÁGINA DE CARDS
-  ========================= */
+  // =====================================================
+  // PÁGINA
+  // =====================================================
 
   return (
     <main className="cards-page">
 
-      {/* =========================
+      {/* =================================================
           CABEÇALHO
-      ========================= */}
+      ================================================= */}
 
       <div className="cards-header">
 
         <div>
-
           <span className="cards-subtitle">
             PELADA APP
           </span>
@@ -304,7 +262,6 @@ function CardsPage({ jogadores }) {
           <p>
             {cards.length} cards cadastrados
           </p>
-
         </div>
 
         <div className="cards-arquivo">
@@ -313,22 +270,14 @@ function CardsPage({ jogadores }) {
 
       </div>
 
-      {/* =========================
-          GRID
-      ========================= */}
+      {/* =================================================
+          GRID DOS CARDS
+      ================================================= */}
 
       <div className="cards-grid">
 
         {cards.map((jogador) => {
-
-          /* =========================
-             CALCULAR OVR
-          ========================= */
-
-          const ovr =
-            calcularOVRJogador(
-              jogador
-            );
+          const ovr = calcularOVRJogador(jogador);
 
           return (
             <div
@@ -336,19 +285,34 @@ function CardsPage({ jogadores }) {
               key={jogador.id}
             >
 
-              {/* =========================
-                  TOPO DO CARD
-              ========================= */}
+              {/* =================================================
+                  FOTO
+              ================================================= */}
+
+              <div className="card-foto-container">
+
+                <img
+                  className="card-foto"
+                  src={obterFotoJogador(jogador)}
+                  alt={`Foto de ${jogador.nome}`}
+                  onError={(evento) => {
+                    evento.currentTarget.onerror = null;
+                    evento.currentTarget.src =
+                      "/fotos/default.png";
+                  }}
+                />
+
+              </div>
+
+              {/* =================================================
+                  TOPO
+              ================================================= */}
 
               <div className="card-topo">
 
                 <span className="card-id">
                   ID {jogador.id}
                 </span>
-
-                {/* =========================
-                    OVR
-                ========================= */}
 
                 <div className="card-ovr">
 
@@ -364,40 +328,40 @@ function CardsPage({ jogadores }) {
 
               </div>
 
-              {/* =========================
+              {/* =================================================
                   NOME
-              ========================= */}
+              ================================================= */}
 
               <div className="card-nome">
                 {jogador.nome}
               </div>
 
-              {/* =========================
-                  POSIÇÃO
-              ========================= */}
+              {/* =================================================
+                  TIPO
+              ================================================= */}
 
               <div className="card-tipo">
-                {jogador.tipo}
+                {jogador.goleiro
+                  ? "GOLEIRO"
+                  : "JOGADOR DE LINHA"}
               </div>
 
-              {/* =========================
+              {/* =================================================
                   ESTRELAS
-              ========================= */}
+              ================================================= */}
 
               <div className="card-estrelas">
-
                 {"⭐".repeat(
                   Math.max(
                     0,
-                    jogador.estrelas
+                    jogador.estrelas || 0
                   )
                 )}
-
               </div>
 
-              {/* =========================
+              {/* =================================================
                   ATRIBUTOS
-              ========================= */}
+              ================================================= */}
 
               <div className="card-atributos">
 
@@ -405,7 +369,7 @@ function CardsPage({ jogadores }) {
                   <span>ATA</span>
 
                   <strong>
-                    {jogador.atributos.ataque}
+                    {jogador.atributos?.ataque || 0}
                   </strong>
                 </div>
 
@@ -413,7 +377,7 @@ function CardsPage({ jogadores }) {
                   <span>DEF</span>
 
                   <strong>
-                    {jogador.atributos.defesa}
+                    {jogador.atributos?.defesa || 0}
                   </strong>
                 </div>
 
@@ -421,7 +385,7 @@ function CardsPage({ jogadores }) {
                   <span>VEL</span>
 
                   <strong>
-                    {jogador.atributos.velocidade}
+                    {jogador.atributos?.velocidade || 0}
                   </strong>
                 </div>
 
@@ -429,7 +393,7 @@ function CardsPage({ jogadores }) {
                   <span>PAS</span>
 
                   <strong>
-                    {jogador.atributos.passe}
+                    {jogador.atributos?.passe || 0}
                   </strong>
                 </div>
 
@@ -437,7 +401,7 @@ function CardsPage({ jogadores }) {
                   <span>DRI</span>
 
                   <strong>
-                    {jogador.atributos.drible}
+                    {jogador.atributos?.drible || 0}
                   </strong>
                 </div>
 
@@ -454,3 +418,4 @@ function CardsPage({ jogadores }) {
 }
 
 export default CardsPage;
+
