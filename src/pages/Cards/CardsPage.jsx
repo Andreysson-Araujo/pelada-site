@@ -3,6 +3,7 @@ import "./CardsPage.css";
 import { calcularOVRJogador } from "./cardUtils";
 
 function CardsPage({ jogadores }) {
+  //console.log("JOGADORES RECEBIDOS:", jogadores);
   const [cards, setCards] = useState([]);
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState("");
@@ -341,9 +342,9 @@ function CardsPage({ jogadores }) {
               ================================================= */}
 
               <div className="card-tipo">
-                {jogador.goleiro
-                  ? "GOLEIRO"
-                  : "JOGADOR DE LINHA"}
+                {jogador.tipo === "GOLEIRO"
+                  ? "🧤 GOLEIRO"
+                  : "⚽ JOGADOR DE LINHA"}
               </div>
 
               {/* =================================================

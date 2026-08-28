@@ -32,6 +32,8 @@
 🆔 028 | ATA 25 | DEF 22 | VEL 18 | PAS 20 | DRI 20
 🆔 029 | ATA 20 | DEF 20 | VEL 20 | PAS 20 | DRI 20
 🆔 030 | ATA 25 | DEF 20 | VEL 20 | PAS 20 | DRI 20
+🆔 031 | ATA 25 | DEF 20 | VEL 20 | PAS 20 | DRI 20
+
 
 ━━━━━━━━━━━━━━━━━━━━
 🔐 PELADA_CARDS_V1
