@@ -20,14 +20,14 @@
 👤 Euzébio Jr | 🆔 016 | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
 👤 Luiz | 🆔 017 | ⭐ 1 | LINHA | ⚽ 1 | 🅰️ 0
 👤 Thal | 🆔 018 | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
-👤 Ícaro | 🆔 019 | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
+👤 Dinho | 🆔 019 | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
 👤 Zé Neto | 🆔 020 | ⭐ 1 | LINHA | ⚽ 1 | 🅰️ 0
 👤 Pedro Arco | 🆔 021 | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
 👤 Cristiano | 🆔 022 | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
 👤 Matheus Valente | 🆔 023 | ⭐ 1 | LINHA | ⚽ 2 | 🅰️ 4
 👤 Fabio | 🆔 024 | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
 👤 Ricardinho | 🆔 025 | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
-👤 Kauê | 🆔 026 | ⭐ 1 | LINHA | ⚽ 3 | 🅰️ 3
+👤 Kauê | 🆔 026 | ⭐ 2 | LINHA | ⚽ 3 | 🅰️ 3
 👤 Renan Jordi | 🆔 027 | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
 👤 Android | 🆔 028 | ⭐ 1 | LINHA | ⚽ 1 | 🅰️ 0
 👤 Lucas | 🆔 029 | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
