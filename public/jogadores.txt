@@ -2,37 +2,39 @@
 📋 LISTA DE JOGADORES
 ━━━━━━━━━━━━━━━━━━━━
 
-👤 Ciro | 🆔 001 | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
-👤 TensaCrazy | 🆔 002 | ⭐ 1 | GOLEIRO | ⚽ 0 | 🅰️ 0
+👤 Ciro | 🆔 001 | ⭐ 1 | LINHA | ⚽ 1 | 🅰️ 4
+👤 TensaCrazy | 🆔 002 | ⭐ 1 | GOLEIRO | ⚽ 0 | 🅰️ 1
 👤 Drey | 🆔 003 | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
 👤 Bala | 🆔 004 | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
-👤 Jhon | 🆔 005 | ⭐ 3 | GOLEIRO | ⚽ 0 | 🅰️ 0
-👤 Carlin | 🆔 006 | ⭐ 1 | GOLEIRO | ⚽ 0 | 🅰️ 0
-👤 Roger | 🆔 007 | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
+👤 Jhon | 🆔 005 | ⭐ 3 | GOLEIRO | ⚽ 0 | 🅰️ 1
+👤 Carlin | 🆔 006 | ⭐ 1 | GOLEIRO | ⚽ 2 | 🅰️ 0
+👤 Roger | 🆔 007 | ⭐ 1 | LINHA | ⚽ 4 | 🅰️ 3
 👤 Pedro Rói | 🆔 008 | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
-👤 Icaro | 🆔 009 | ⭐ 2 | LINHA | ⚽ 4 | 🅰️ 4
-👤 Mikael | 🆔 010 | ⭐ 2 | LINHA | ⚽ 4 | 🅰️ 4
+👤 Icaro | 🆔 009 | ⭐ 2 | LINHA | ⚽ 15 | 🅰️ 7
+👤 Mikael | 🆔 010 | ⭐ 2 | LINHA | ⚽ 15 | 🅰️ 7
 👤 Saulo | 🆔 011 | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
 👤 Erick | 🆔 012 | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
 👤 Gustavo | 🆔 013 | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
 👤 Bruno | 🆔 014 | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
 👤 Quilrio | 🆔 015 | ⭐ 1 | LINHA | ⚽ 1 | 🅰️ 0
 👤 Euzébio Jr | 🆔 016 | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
-👤 Luiz | 🆔 017 | ⭐ 1 | LINHA | ⚽ 1 | 🅰️ 0
-👤 Thal | 🆔 018 | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
+👤 Luiz | 🆔 017 | ⭐ 1 | LINHA | ⚽ 5 | 🅰️ 0
+👤 Thal | 🆔 018 | ⭐ 1 | LINHA | ⚽ 3 | 🅰️ 6
 👤 Dinho | 🆔 019 | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
-👤 Zé Neto | 🆔 020 | ⭐ 1 | LINHA | ⚽ 1 | 🅰️ 0
+👤 Zé Neto | 🆔 020 | ⭐ 1 | LINHA | ⚽ 2 | 🅰️ 0
 👤 Pedro Arco | 🆔 021 | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
 👤 Cristiano | 🆔 022 | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
-👤 Matheus Valente | 🆔 023 | ⭐ 1 | LINHA | ⚽ 2 | 🅰️ 4
+👤 Matheus Valente | 🆔 023 | ⭐ 2 | LINHA | ⚽ 3 | 🅰️ 7
 👤 Fabio | 🆔 024 | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
 👤 Ricardinho | 🆔 025 | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
-👤 Kauê | 🆔 026 | ⭐ 2 | LINHA | ⚽ 3 | 🅰️ 3
+👤 Kauê | 🆔 026 | ⭐ 2 | LINHA | ⚽ 6 | 🅰️ 5
 👤 Renan Jordi | 🆔 027 | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
-👤 Android | 🆔 028 | ⭐ 1 | LINHA | ⚽ 1 | 🅰️ 0
+👤 Android | 🆔 028 | ⭐ 1 | LINHA | ⚽ 2 | 🅰️ 0
 👤 Lucas | 🆔 029 | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
 👤 Zé coelho | 🆔 030 | ⭐ 1 | LINHA | ⚽ 1 | 🅰️ 0
 👤 Tales | 🆔 031 | ⭐ 1 | GOLEIRO | ⚽ 0 | 🅰️ 0
+👤 Isabel Dara | 🆔 032 | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 3
+👤 Eddie | 🆔 033 | ⭐ 1 | LINHA | ⚽ 2 | 🅰️ 5
 
 ━━━━━━━━━━━━━━━━━━━━
 🔐 PELADA_APP_V1

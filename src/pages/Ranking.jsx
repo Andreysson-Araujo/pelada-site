@@ -576,6 +576,9 @@ function Ranking({ jogadores: jogadoresProps }) {
           <p>
             Desempenho geral dos jogadores
           </p>
+          <p>
+            For chorar contate o suporte 😭: anaodajebapreta@orkut.com
+          </p>
 
         </div>
 
