@@ -21,7 +21,7 @@
 👤 Luiz | 🆔 017 | ⭐ 1 | LINHA | ⚽ 5 | 🅰️ 0
 👤 Thal | 🆔 018 | ⭐ 1 | LINHA | ⚽ 3 | 🅰️ 6
 👤 Dinho | 🆔 019 | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
-👤 Zé Neto | 🆔 020 | ⭐ 1 | LINHA | ⚽ 2 | 🅰️ 0
+👤 Zé Neto | 🆔 020 | ⭐ 1 | LINHA | ⚽ 2 | 🅰️ 1
 👤 Pedro Arco | 🆔 021 | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
 👤 Cristiano | 🆔 022 | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
 👤 Matheus Valente | 🆔 023 | ⭐ 2 | LINHA | ⚽ 3 | 🅰️ 7
