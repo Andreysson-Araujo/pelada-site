@@ -205,19 +205,19 @@ function CardsPage({ jogadores }) {
 
               atributos: card
                 ? {
-                    ataque: card.ataque,
-                    defesa: card.defesa,
-                    velocidade: card.velocidade,
-                    passe: card.passe,
-                    drible: card.drible
-                  }
+                  ataque: card.ataque,
+                  defesa: card.defesa,
+                  velocidade: card.velocidade,
+                  passe: card.passe,
+                  drible: card.drible
+                }
                 : {
-                    ataque: 0,
-                    defesa: 0,
-                    velocidade: 0,
-                    passe: 0,
-                    drible: 0
-                  }
+                  ataque: 0,
+                  defesa: 0,
+                  velocidade: 0,
+                  passe: 0,
+                  drible: 0
+                }
 
             };
 
@@ -364,7 +364,7 @@ function CardsPage({ jogadores }) {
           const valor =
             Number(
               jogador.atributos?.[
-                atributoFiltro
+              atributoFiltro
               ] || 0
             );
 
@@ -975,65 +975,81 @@ function CardsPage({ jogadores }) {
 
                 <div className="card-atributos">
 
-                  <div className="atributo">
+                  {jogador.tipo === "GOLEIRO" ? (
+                    <>
+                      <div className="atributo">
+                        <span>REF</span>
+                        <strong>
+                          {jogador.atributos?.ataque || 0}
+                        </strong>
+                      </div>
 
-                    <span>
-                      ATA
-                    </span>
+                      <div className="atributo">
+                        <span>DEF</span>
+                        <strong>
+                          {jogador.atributos?.defesa || 0}
+                        </strong>
+                      </div>
 
-                    <strong>
-                      {jogador.atributos?.ataque || 0}
-                    </strong>
+                      <div className="atributo">
+                        <span>SAI</span>
+                        <strong>
+                          {jogador.atributos?.velocidade || 0}
+                        </strong>
+                      </div>
 
-                  </div>
+                      <div className="atributo">
+                        <span>PAS</span>
+                        <strong>
+                          {jogador.atributos?.passe || 0}
+                        </strong>
+                      </div>
 
-                  <div className="atributo">
+                      <div className="atributo">
+                        <span>POS</span>
+                        <strong>
+                          {jogador.atributos?.drible || 0}
+                        </strong>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="atributo">
+                        <span>ATA</span>
+                        <strong>
+                          {jogador.atributos?.ataque || 0}
+                        </strong>
+                      </div>
 
-                    <span>
-                      DEF
-                    </span>
+                      <div className="atributo">
+                        <span>DEF</span>
+                        <strong>
+                          {jogador.atributos?.defesa || 0}
+                        </strong>
+                      </div>
 
-                    <strong>
-                      {jogador.atributos?.defesa || 0}
-                    </strong>
+                      <div className="atributo">
+                        <span>VEL</span>
+                        <strong>
+                          {jogador.atributos?.velocidade || 0}
+                        </strong>
+                      </div>
 
-                  </div>
+                      <div className="atributo">
+                        <span>PAS</span>
+                        <strong>
+                          {jogador.atributos?.passe || 0}
+                        </strong>
+                      </div>
 
-                  <div className="atributo">
-
-                    <span>
-                      VEL
-                    </span>
-
-                    <strong>
-                      {jogador.atributos?.velocidade || 0}
-                    </strong>
-
-                  </div>
-
-                  <div className="atributo">
-
-                    <span>
-                      PAS
-                    </span>
-
-                    <strong>
-                      {jogador.atributos?.passe || 0}
-                    </strong>
-
-                  </div>
-
-                  <div className="atributo">
-
-                    <span>
-                      DRI
-                    </span>
-
-                    <strong>
-                      {jogador.atributos?.drible || 0}
-                    </strong>
-
-                  </div>
+                      <div className="atributo">
+                        <span>DRI</span>
+                        <strong>
+                          {jogador.atributos?.drible || 0}
+                        </strong>
+                      </div>
+                    </>
+                  )}
 
                 </div>
 

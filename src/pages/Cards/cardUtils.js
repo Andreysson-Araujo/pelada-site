@@ -10,10 +10,22 @@ export function limitar(valor, minimo = 0, maximo = 55) {
 }
 
 // =========================
+// BÔNUS DAS ESTRELAS
+// =========================
+
+function calcularBonusEstrelas(jogador) {
+  return Math.max(
+    0,
+    (jogador.estrelas || 1) - 1
+  );
+}
+
+// =========================
 // OVR JOGADOR DE LINHA
 // =========================
 
 export function calcularOVR(jogador) {
+
   const {
     ataque,
     defesa,
@@ -23,30 +35,24 @@ export function calcularOVR(jogador) {
   } = jogador.atributos;
 
   /*
-   * Média dos 5 atributos
+   * Jogador de linha:
+   *
+   * ATA = 25%
+   * DEF = 20%
+   * VEL = 20%
+   * PAS = 20%
+   * DRI = 15%
    */
 
   const media =
-    (
-      ataque +
-      defesa +
-      velocidade +
-      passe +
-      drible
-    ) / 5;
-
-  /*
-   * Estrelas dão um pequeno bônus.
-   *
-   * ⭐ 1 = +0
-   * ⭐ 2 = +1
-   * ⭐ 3 = +2
-   * ⭐ 4 = +3
-   * ⭐ 5 = +4
-   */
+    ataque * 0.25 +
+    defesa * 0.20 +
+    velocidade * 0.20 +
+    passe * 0.20 +
+    drible * 0.15;
 
   const bonusEstrelas =
-    Math.max(0, jogador.estrelas - 1);
+    calcularBonusEstrelas(jogador);
 
   return limitar(
     media + bonusEstrelas
@@ -58,33 +64,43 @@ export function calcularOVR(jogador) {
 // =========================
 
 export function calcularOVRGoleiro(jogador) {
+
   const {
+    ataque,
     defesa,
     velocidade,
     passe,
+    drible,
   } = jogador.atributos;
 
   /*
-   * Para goleiro:
-
-   * Defesa tem mais peso.
-   * Velocidade tem peso médio.
-   * Passe ajuda na saída de bola.
+   * Para goleiro, os atributos do cards.txt
+   * são interpretados assim:
+   *
+   * ATA → REFLEXO
+   * DEF → DEFESA
+   * VEL → SAÍDA
+   * PAS → PASSE
+   * DRI → POSICIONAMENTO
+   *
+   * Pesos:
+   *
+   * REF = 30%
+   * DEF = 35%
+   * SAI = 10%
+   * PAS = 20%
+   * POS = 5%
    */
 
   const media =
-    (
-      defesa * 0.50 +
-      velocidade * 0.25 +
-      passe * 0.25
-    );
-
-  /*
-   * Bônus pelas estrelas
-   */
+    ataque * 0.30 +
+    defesa * 0.35 +
+    velocidade * 0.10 +
+    passe * 0.20 +
+    drible * 0.05;
 
   const bonusEstrelas =
-    Math.max(0, jogador.estrelas - 1);
+    calcularBonusEstrelas(jogador);
 
   return limitar(
     media + bonusEstrelas
@@ -96,6 +112,7 @@ export function calcularOVRGoleiro(jogador) {
 // =========================
 
 export function calcularOVRJogador(jogador) {
+
   const tipo =
     jogador.tipo
       ?.trim()
