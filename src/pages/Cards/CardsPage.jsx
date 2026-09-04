@@ -28,6 +28,8 @@ function CardsPage({ jogadores }) {
 
   const [ordenacao, setOrdenacao] = useState("cadastro");
 
+  const [tipoFiltro, setTipoFiltro] = useState("todos");
+
   // =====================================================
   // CARREGAR CARDS.TXT
   // =====================================================
@@ -284,6 +286,7 @@ function CardsPage({ jogadores }) {
     setAtributoMinimo("todos");
 
     setOrdenacao("cadastro");
+    setTipoFiltro("todos");
 
   }
 
@@ -371,6 +374,15 @@ function CardsPage({ jogadores }) {
           return valor >= minimo;
 
         }
+      );
+
+    }
+
+    if (tipoFiltro !== "todos") {
+
+      resultado = resultado.filter(
+        (jogador) =>
+          jogador.tipo === tipoFiltro
       );
 
     }
@@ -492,6 +504,7 @@ function CardsPage({ jogadores }) {
   }, [
     cards,
     pesquisa,
+    tipoFiltro,
     ovrMinimo,
     atributoFiltro,
     atributoMinimo,
@@ -614,6 +627,30 @@ function CardsPage({ jogadores }) {
             }
           />
 
+        </div>
+        <div className="filtro-grupo">
+          <label>
+            🧤 Posição
+          </label>
+
+          <select
+            value={tipoFiltro}
+            onChange={(evento) =>
+              setTipoFiltro(evento.target.value)
+            }
+          >
+            <option value="todos">
+              Todos
+            </option>
+
+            <option value="GOLEIRO">
+              🧤 Goleiros
+            </option>
+
+            <option value="LINHA">
+              ⚽ Jogadores de linha
+            </option>
+          </select>
         </div>
 
         {/* OVR */}
