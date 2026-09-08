@@ -35,6 +35,7 @@
 🆔 031 | ATA 25 | DEF 20 | VEL 20 | PAS 20 | DRI 20
 🆔 032 | ATA 20 | DEF 20 | VEL 20 | PAS 25 | DRI 20
 🆔 033 | ATA 20 | DEF 22 | VEL 20 | PAS 25 | DRI 20
+🆔 034 | ATA 20 | DEF 20 | VEL 20 | PAS 20 | DRI 20
 
 
 ━━━━━━━━━━━━━━━━━━━━
