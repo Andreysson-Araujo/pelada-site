@@ -1,14 +1,27 @@
 const API_URL =
-  "https://script.google.com/macros/s/AKfycbyQJWzQeGAh2QwjF1Whvbmv3hRMMnDHzXdPAD-PaFKuj009KEZdQ2z84o674VCl5RMd5A/exec";
+  "https://script.google.com/macros/s/AKfycbx5h_QQPmHkK39kp0XMZhRcg9hdQemT-eAuNKFXJm7nAWaoi3ewsqySm10_f8hPdL2zGQ/exec";
 
 export async function listarJogadores() {
-  const resposta = await fetch(API_URL);
+  const url =
+    `${API_URL}?acao=listar&t=${Date.now()}`;
+
+  const resposta = await fetch(url, {
+    method: "GET",
+    cache: "no-store",
+  });
 
   if (!resposta.ok) {
-    throw new Error("Não foi possível carregar os jogadores.");
+    throw new Error(
+      "Não foi possível carregar os jogadores."
+    );
   }
 
   const jogadores = await resposta.json();
+
+  console.log(
+    "JOGADORES RECEBIDOS DA API:",
+    jogadores
+  );
 
   return jogadores.map((jogador, index) => ({
     ...jogador,
@@ -22,26 +35,39 @@ export async function listarJogadores() {
 
 
 export async function adicionarGol(id) {
-  return alterarEstatistica(id, "adicionar_gol");
+  return alterarEstatistica(
+    id,
+    "adicionar_gol"
+  );
 }
 
 
 export async function removerGol(id) {
-  return alterarEstatistica(id, "remover_gol");
+  return alterarEstatistica(
+    id,
+    "remover_gol"
+  );
 }
 
 
 export async function adicionarAssistencia(id) {
-  return alterarEstatistica(id, "adicionar_assistencia");
+  return alterarEstatistica(
+    id,
+    "adicionar_assistencia"
+  );
 }
 
 
 export async function removerAssistencia(id) {
-  return alterarEstatistica(id, "remover_assistencia");
+  return alterarEstatistica(
+    id,
+    "remover_assistencia"
+  );
 }
 
 
 async function alterarEstatistica(id, acao) {
+
   const resposta = await fetch(API_URL, {
     method: "POST",
 
@@ -53,8 +79,19 @@ async function alterarEstatistica(id, acao) {
   });
 
   if (!resposta.ok) {
-    throw new Error("Não foi possível alterar a estatística.");
+    throw new Error(
+      "Não foi possível alterar a estatística."
+    );
   }
 
-  return await resposta.json();
+  const resultado = await resposta.json();
+
+  if (!resultado.sucesso) {
+    throw new Error(
+      resultado.erro ||
+      "Não foi possível alterar a estatística."
+    );
+  }
+
+  return resultado;
 }
