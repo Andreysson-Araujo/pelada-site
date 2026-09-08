@@ -10,11 +10,14 @@ module.exports = {
     path: path.resolve(__dirname, "dist"),
     filename: "bundle.js",
     clean: true,
+
+    // Importante para o Vercel
     publicPath: "/",
   },
 
   module: {
     rules: [
+
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
@@ -28,6 +31,7 @@ module.exports = {
           "css-loader",
         ],
       },
+
     ],
   },
 
@@ -36,12 +40,14 @@ module.exports = {
   },
 
   plugins: [
+
     new HtmlWebpackPlugin({
       template: "./public/index.html",
     }),
 
     new CopyWebpackPlugin({
       patterns: [
+
         {
           from: "./public/jogadores.txt",
           to: "jogadores.txt",
@@ -56,8 +62,10 @@ module.exports = {
           from: "./public/fotos",
           to: "fotos",
         },
+
       ],
     }),
+
   ],
 
   devServer: {

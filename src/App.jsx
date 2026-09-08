@@ -8,9 +8,13 @@ import Ranking from "./pages/Ranking";
 import Timer from "./components/Timer/Timer";
 import CardsPage from "./pages/Cards/CardsPage";
 
+import { listarJogadores } from "./services/jogadoresApi";
+
 import "./style.css";
 
+
 function App() {
+
   const [jogadores, setJogadores] = useState([]);
 
   const [pesquisa, setPesquisa] = useState("");
@@ -27,176 +31,110 @@ function App() {
 
   const [pagina, setPagina] = useState("dashboard");
 
+
   /* =========================
      CARREGAR JOGADORES
   ========================= */
 
   useEffect(() => {
+
     async function carregarJogadores() {
+
       try {
-        const resposta = await fetch("/jogadores.txt");
 
-        if (!resposta.ok) {
-          throw new Error(
-            "Não foi possível carregar jogadores.txt"
-          );
-        }
+        setCarregando(true);
 
-        const texto = await resposta.text();
+        setErro("");
 
-        if (!texto.includes("PELADA_APP_V1")) {
-          throw new Error(
-            "Arquivo de jogadores inválido."
-          );
-        }
-
-        const linhas = texto.split("\n");
-
-        const jogadoresLidos = [];
-
-        linhas.forEach((linha, index) => {
-          const textoLinha = linha.trim();
-
-          if (!textoLinha.startsWith("👤")) {
-            return;
-          }
-
-          const partes = textoLinha
-            .split("|")
-            .map((parte) => parte.trim());
-
-          /*
-            Formato:
-
-            👤 Ciro | 🆔 001 | ⭐ 1 | LINHA | ⚽ 0 | 🅰️ 0
-          */
-
-          if (partes.length < 6) {
-            console.warn(
-              "Linha de jogador inválida:",
-              textoLinha
-            );
-
-            return;
-          }
-
-          /* =========================
-             ID
-          ========================= */
-
-          const id = partes[1]
-            .replace("🆔", "")
-            .trim();
-
-          if (!id) {
-            console.warn(
-              "Jogador sem ID:",
-              textoLinha
-            );
-
-            return;
-          }
-
-          /* =========================
-             NOME
-          ========================= */
-
-          const nome = partes[0]
-            .replace("👤", "")
-            .trim();
-
-          /* =========================
-             ESTRELAS
-          ========================= */
-
-          const estrelas =
-            Number(
-              partes[2]
-                .replace("⭐", "")
-                .trim()
-            ) || 0;
-
-          /* =========================
-             TIPO
-          ========================= */
-
-          const tipo = partes[3]
-            .trim()
-            .toUpperCase();
-
-          /* =========================
-             GOLS
-          ========================= */
-
-          const gols =
-            Number(
-              partes[4]
-                .replace("⚽", "")
-                .trim()
-            ) || 0;
-
-          /* =========================
-             ASSISTÊNCIAS
-          ========================= */
-
-          const assistencias =
-            Number(
-              partes[5]
-                .replace("🅰️", "")
-                .trim()
-            ) || 0;
-
-          /* =========================
-             JOGADOR
-          ========================= */
-
-          jogadoresLidos.push({
-            id,
-
-            // Usado somente para ordenação
-            ordemCadastro: index,
-
-            nome,
-
-            estrelas,
-
-            tipo,
-
-            gols,
-
-            assistencias,
-          });
-        });
+        const jogadoresLidos =
+          await listarJogadores();
 
         console.log(
-          "JOGADORES CARREGADOS:",
+          "JOGADORES CARREGADOS DA PLANILHA:",
           jogadoresLidos
         );
 
         setJogadores(jogadoresLidos);
 
       } catch (error) {
-        console.error(error);
 
-        setErro(error.message);
+        console.error(
+          "ERRO AO CARREGAR JOGADORES:",
+          error
+        );
+
+        setErro(
+          error.message ||
+          "Não foi possível carregar os jogadores."
+        );
 
       } finally {
+
         setCarregando(false);
+
       }
+
     }
 
     carregarJogadores();
+
   }, []);
+
+
+  /* =========================
+     ATUALIZAR JOGADOR
+  ========================= */
+
+  function atualizarJogador(resultado) {
+
+    setJogadores(
+      (jogadoresAtuais) => {
+
+        return jogadoresAtuais.map(
+          (jogador) => {
+
+            if (
+              String(jogador.id) !==
+              String(resultado.id)
+            ) {
+
+              return jogador;
+
+            }
+
+            return {
+
+              ...jogador,
+
+              gols:
+                Number(resultado.gols) || 0,
+
+              assistencias:
+                Number(resultado.assistencias) || 0,
+
+            };
+
+          }
+        );
+
+      }
+    );
+
+  }
+
 
   /* =========================
      FILTROS + ORDENAÇÃO
   ========================= */
 
   const jogadoresFiltrados = useMemo(() => {
+
     const filtrados = jogadores.filter(
       (jogador) => {
 
-        /* Pesquisa */
+        /* =========================
+           PESQUISA
+        ========================= */
 
         const nomeMatch =
           jogador.nome
@@ -205,13 +143,19 @@ function App() {
               pesquisa.toLowerCase()
             );
 
-        /* Estrelas */
+
+        /* =========================
+           ESTRELAS
+        ========================= */
 
         const estrelasMatch =
           estrelas === "todas" ||
           jogador.estrelas === Number(estrelas);
 
-        /* Tipo */
+
+        /* =========================
+           TIPO
+        ========================= */
 
         const tipoJogador =
           jogador.tipo
@@ -227,48 +171,74 @@ function App() {
           tipoSelecionado === "TODOS" ||
           tipoJogador === tipoSelecionado;
 
+
         return (
           nomeMatch &&
           estrelasMatch &&
           tipoMatch
         );
+
       }
     );
 
-    /* Ordenação */
+
+    /* =========================
+       ORDENAÇÃO
+    ========================= */
 
     return [...filtrados].sort(
       (a, b) => {
 
+        /* MAIS RECENTES */
+
         if (ordem === "recentes") {
+
           return (
             b.ordemCadastro -
             a.ordemCadastro
           );
+
         }
 
+
+        /* MAIS ANTIGOS */
+
         if (ordem === "antigos") {
+
           return (
             a.ordemCadastro -
             b.ordemCadastro
           );
+
         }
 
+
+        /* A-Z */
+
         if (ordem === "az") {
+
           return a.nome.localeCompare(
             b.nome,
             "pt-BR"
           );
+
         }
 
+
+        /* Z-A */
+
         if (ordem === "za") {
+
           return b.nome.localeCompare(
             a.nome,
             "pt-BR"
           );
+
         }
 
+
         return 0;
+
       }
     );
 
@@ -280,33 +250,45 @@ function App() {
     ordem,
   ]);
 
+
   /* =========================
      CARREGANDO
   ========================= */
 
   if (carregando) {
+
     return (
+
       <div className="estado">
 
-        <span>⚽</span>
+        <span>
+          ⚽
+        </span>
 
         <h2>
           Carregando jogadores...
         </h2>
 
       </div>
+
     );
+
   }
+
 
   /* =========================
      ERRO
   ========================= */
 
   if (erro) {
+
     return (
+
       <div className="estado">
 
-        <span>❌</span>
+        <span>
+          ❌
+        </span>
 
         <h2>
           Erro ao carregar jogadores
@@ -317,15 +299,20 @@ function App() {
         </p>
 
       </div>
+
     );
+
   }
+
 
   /* =========================
      RANKING
   ========================= */
 
   if (pagina === "ranking") {
+
     return (
+
       <div className="app">
 
         <Header
@@ -339,15 +326,20 @@ function App() {
         />
 
       </div>
+
     );
+
   }
+
 
   /* =========================
      TIMER
   ========================= */
 
   if (pagina === "timer") {
+
     return (
+
       <div className="app">
 
         <Header
@@ -359,15 +351,20 @@ function App() {
         <Timer />
 
       </div>
+
     );
+
   }
+
 
   /* =========================
      CARDS
   ========================= */
 
   if (pagina === "cards") {
+
     return (
+
       <div className="app">
 
         <Header
@@ -381,14 +378,18 @@ function App() {
         />
 
       </div>
+
     );
+
   }
+
 
   /* =========================
      DASHBOARD
   ========================= */
 
   return (
+
     <div className="app">
 
       <Header
@@ -397,9 +398,13 @@ function App() {
         setPagina={setPagina}
       />
 
+
       <main className="dashboard">
 
-        {/* TÍTULO */}
+
+        {/* =========================
+            TÍTULO
+        ========================= */}
 
         <div className="dashboard-title">
 
@@ -415,19 +420,28 @@ function App() {
 
           </div>
 
+
           <div className="arquivo-info">
-            📄 jogadores.txt
+
+            ☁️ Google Sheets
+
           </div>
 
         </div>
 
-        {/* RESUMO */}
+
+        {/* =========================
+            RESUMO
+        ========================= */}
 
         <Resumo
           jogadores={jogadores}
         />
 
-        {/* FILTROS */}
+
+        {/* =========================
+            FILTROS
+        ========================= */}
 
         <Filtros
           pesquisa={pesquisa}
@@ -443,7 +457,10 @@ function App() {
           setOrdem={setOrdem}
         />
 
-        {/* RESULTADO */}
+
+        {/* =========================
+            RESULTADO
+        ========================= */}
 
         <div className="resultado-info">
 
@@ -463,16 +480,26 @@ function App() {
 
         </div>
 
-        {/* LISTA */}
+
+        {/* =========================
+            LISTA
+        ========================= */}
 
         <ListaJogadores
           jogadores={jogadoresFiltrados}
+          onAtualizarJogador={
+            atualizarJogador
+          }
         />
+
 
       </main>
 
     </div>
+
   );
+
 }
+
 
 export default App;
