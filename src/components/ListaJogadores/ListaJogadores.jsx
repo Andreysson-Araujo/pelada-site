@@ -9,56 +9,39 @@ import {
   removerAssistencia,
 } from "../../services/jogadoresApi";
 
+function ListaJogadores({ jogadores, onAtualizarJogador }) {
 
-function ListaJogadores({ jogadores }) {
-
-  /*
-    Guarda quais jogadores estão sendo atualizados.
-
-    Exemplo:
-    {
-      "001-gol": true,
-      "003-assistencia": true
-    }
-  */
   const [atualizando, setAtualizando] = useState({});
 
+  // =========================
+  // ALTERAR ESTATÍSTICA
+  // =========================
 
-  /*
-    Atualiza a estatística do jogador
-  */
   async function alterarEstatistica(
     jogador,
     tipo,
     operacao
   ) {
 
-    const chave =
-      `${jogador.id}-${tipo}`;
+    const chave = `${jogador.id}-${tipo}`;
 
-    /*
-      Impede vários cliques enquanto
-      a alteração ainda está acontecendo.
-    */
+    // Impede vários cliques enquanto salva
     if (atualizando[chave]) {
       return;
     }
-
 
     setAtualizando((estadoAnterior) => ({
       ...estadoAnterior,
       [chave]: true,
     }));
 
-
     try {
 
       let resultado;
 
-
-      /* =========================
-         GOLS
-      ========================= */
+      // =========================
+      // GOLS
+      // =========================
 
       if (tipo === "gol") {
 
@@ -75,13 +58,11 @@ function ListaJogadores({ jogadores }) {
           );
 
         }
-
       }
 
-
-      /* =========================
-         ASSISTÊNCIAS
-      ========================= */
+      // =========================
+      // ASSISTÊNCIAS
+      // =========================
 
       if (tipo === "assistencia") {
 
@@ -100,14 +81,12 @@ function ListaJogadores({ jogadores }) {
             );
 
         }
-
       }
 
+      // =========================
+      // VERIFICAR RESULTADO
+      // =========================
 
-      /*
-        Verifica se o Apps Script
-        retornou sucesso.
-      */
       if (!resultado?.sucesso) {
 
         throw new Error(
@@ -117,21 +96,15 @@ function ListaJogadores({ jogadores }) {
 
       }
 
-      window.location.reload();
+      // =========================
+      // ATUALIZAR REACT
+      // =========================
 
+      if (typeof onAtualizarJogador === "function") {
 
-      /*
-        Atualiza o jogador localmente.
-
-        Isso faz o número mudar imediatamente
-        sem precisar recarregar a página.
-      */
-      if (typeof jogador.onAtualizar === "function") {
-
-        jogador.onAtualizar(resultado);
+        onAtualizarJogador(resultado);
 
       }
-
 
     } catch (error) {
 
@@ -153,18 +126,15 @@ function ListaJogadores({ jogadores }) {
       }));
 
     }
-
   }
 
-
-  /* =========================
-     LISTA VAZIA
-  ========================= */
+  // =========================
+  // LISTA VAZIA
+  // =========================
 
   if (jogadores.length === 0) {
 
     return (
-
       <div className="vazio">
 
         <span>😵</span>
@@ -178,16 +148,17 @@ function ListaJogadores({ jogadores }) {
         </p>
 
       </div>
-
     );
 
   }
 
+  // =========================
+  // LISTA
+  // =========================
 
   return (
 
     <section className="lista-jogadores">
-
 
       {/* =========================
           CABEÇALHO DESKTOP
@@ -217,7 +188,6 @@ function ListaJogadores({ jogadores }) {
 
       </div>
 
-
       {/* =========================
           JOGADORES
       ========================= */}
@@ -229,31 +199,26 @@ function ListaJogadores({ jogadores }) {
             ?.charAt(0)
             ?.toUpperCase() || "?";
 
-
         const isGoleiro =
           jogador.tipo
+            ?.trim()
             ?.toUpperCase() === "GOLEIRO";
 
-
         const gols =
-          jogador.gols || 0;
-
+          Number(jogador.gols) || 0;
 
         const assistencias =
-          jogador.assistencias || 0;
-
+          Number(jogador.assistencias) || 0;
 
         const carregandoGol =
           atualizando[
             `${jogador.id}-gol`
           ];
 
-
         const carregandoAssistencia =
           atualizando[
             `${jogador.id}-assistencia`
           ];
-
 
         return (
 
@@ -262,7 +227,6 @@ function ListaJogadores({ jogadores }) {
             key={jogador.id}
           >
 
-
             {/* =========================
                 JOGADOR
             ========================= */}
@@ -270,11 +234,8 @@ function ListaJogadores({ jogadores }) {
             <div className="jogador-nome">
 
               <div className="avatar">
-
                 {inicial}
-
               </div>
-
 
               <div className="jogador-identidade">
 
@@ -282,8 +243,7 @@ function ListaJogadores({ jogadores }) {
                   {jogador.nome}
                 </strong>
 
-
-                {/* MOSTRADO NO CELULAR */}
+                {/* CELULAR */}
 
                 <span className="posicao-mobile">
 
@@ -297,7 +257,6 @@ function ListaJogadores({ jogadores }) {
 
             </div>
 
-
             {/* =========================
                 ESTRELAS
             ========================= */}
@@ -305,11 +264,10 @@ function ListaJogadores({ jogadores }) {
             <div className="estrelas">
 
               {"⭐".repeat(
-                jogador.estrelas || 0
+                Number(jogador.estrelas) || 0
               )}
 
             </div>
-
 
             {/* =========================
                 POSIÇÃO DESKTOP
@@ -337,7 +295,6 @@ function ListaJogadores({ jogadores }) {
 
             </div>
 
-
             {/* =========================
                 GOLS
             ========================= */}
@@ -347,7 +304,6 @@ function ListaJogadores({ jogadores }) {
               <span className="estatistica-icone">
                 ⚽
               </span>
-
 
               <div className="estatistica-conteudo">
 
@@ -361,10 +317,11 @@ function ListaJogadores({ jogadores }) {
 
               </div>
 
-
               {/* CONTROLES */}
 
               <div className="estatistica-controles">
+
+                {/* REMOVER */}
 
                 <button
                   type="button"
@@ -387,6 +344,7 @@ function ListaJogadores({ jogadores }) {
 
                 </button>
 
+                {/* ADICIONAR */}
 
                 <button
                   type="button"
@@ -412,7 +370,6 @@ function ListaJogadores({ jogadores }) {
 
             </div>
 
-
             {/* =========================
                 ASSISTÊNCIAS
             ========================= */}
@@ -422,7 +379,6 @@ function ListaJogadores({ jogadores }) {
               <span className="estatistica-icone">
                 🅰️
               </span>
-
 
               <div className="estatistica-conteudo">
 
@@ -436,10 +392,11 @@ function ListaJogadores({ jogadores }) {
 
               </div>
 
-
               {/* CONTROLES */}
 
               <div className="estatistica-controles">
+
+                {/* REMOVER */}
 
                 <button
                   type="button"
@@ -462,11 +419,14 @@ function ListaJogadores({ jogadores }) {
 
                 </button>
 
+                {/* ADICIONAR */}
 
                 <button
                   type="button"
                   className="botao-estatistica adicionar"
-                  disabled={carregandoAssistencia}
+                  disabled={
+                    carregandoAssistencia
+                  }
                   onClick={() =>
                     alterarEstatistica(
                       jogador,
@@ -496,8 +456,6 @@ function ListaJogadores({ jogadores }) {
     </section>
 
   );
-
 }
-
 
 export default ListaJogadores;

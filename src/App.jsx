@@ -9,11 +9,15 @@ import Timer from "./components/Timer/Timer";
 import CardsPage from "./pages/Cards/CardsPage";
 
 import { listarJogadores } from "./services/jogadoresApi";
+import { gerarListaJogadores } from "./services/exportarJogadores";
 
 import "./style.css";
 
-
 function App() {
+
+  // =========================
+  // ESTADOS
+  // =========================
 
   const [jogadores, setJogadores] = useState([]);
 
@@ -32,9 +36,9 @@ function App() {
   const [pagina, setPagina] = useState("dashboard");
 
 
-  /* =========================
-     CARREGAR JOGADORES
-  ========================= */
+  // =========================
+  // CARREGAR JOGADORES
+  // =========================
 
   useEffect(() => {
 
@@ -81,60 +85,126 @@ function App() {
   }, []);
 
 
-  /* =========================
-     ATUALIZAR JOGADOR
-  ========================= */
+  // =========================
+  // ATUALIZAR JOGADOR
+  // =========================
 
   function atualizarJogador(resultado) {
 
-    setJogadores(
-      (jogadoresAtuais) => {
+    setJogadores((jogadoresAtuais) => {
 
-        return jogadoresAtuais.map(
-          (jogador) => {
+      return jogadoresAtuais.map((jogador) => {
 
-            if (
-              String(jogador.id) !==
-              String(resultado.id)
-            ) {
+        if (
+          String(jogador.id) !==
+          String(resultado.id)
+        ) {
 
-              return jogador;
+          return jogador;
 
-            }
+        }
 
-            return {
+        return {
 
-              ...jogador,
+          ...jogador,
 
-              gols:
-                Number(resultado.gols) || 0,
+          gols:
+            Number(resultado.gols) || 0,
 
-              assistencias:
-                Number(resultado.assistencias) || 0,
+          assistencias:
+            Number(resultado.assistencias) || 0,
 
-            };
+        };
 
-          }
-        );
+      });
 
-      }
-    );
+    });
 
   }
 
 
-  /* =========================
-     FILTROS + ORDENAÇÃO
-  ========================= */
+  // =========================
+  // EXPORTAR LISTA
+  // =========================
+
+  async function exportarLista() {
+
+    try {
+
+      const texto =
+        gerarListaJogadores(jogadores);
+
+
+      // =========================
+      // CELULAR
+      // =========================
+
+      if (
+        navigator.share &&
+        /Android|iPhone|iPad|iPod/i.test(
+          navigator.userAgent
+        )
+      ) {
+
+        await navigator.share({
+
+          title: "Pelada App",
+
+          text: texto,
+
+        });
+
+        return;
+
+      }
+
+
+      // =========================
+      // COPIAR PARA ÁREA DE
+      // TRANSFERÊNCIA
+      // =========================
+
+      await navigator.clipboard.writeText(
+        texto
+      );
+
+      alert(
+        "Lista copiada! Agora é só colar no WhatsApp."
+      );
+
+    } catch (error) {
+
+      // Usuário cancelou o compartilhamento
+      if (
+        error?.name === "AbortError"
+      ) {
+
+        return;
+
+      }
+
+      console.error(
+        "ERRO AO EXPORTAR LISTA:",
+        error
+      );
+
+      alert(
+        "Não foi possível exportar a lista."
+      );
+
+    }
+
+  }
+
+
+  // =========================
+  // FILTROS
+  // =========================
 
   const jogadoresFiltrados = useMemo(() => {
 
-    const filtrados = jogadores.filter(
-      (jogador) => {
-
-        /* =========================
-           PESQUISA
-        ========================= */
+    const filtrados =
+      jogadores.filter((jogador) => {
 
         const nomeMatch =
           jogador.nome
@@ -144,28 +214,23 @@ function App() {
             );
 
 
-        /* =========================
-           ESTRELAS
-        ========================= */
-
         const estrelasMatch =
           estrelas === "todas" ||
-          jogador.estrelas === Number(estrelas);
+          Number(jogador.estrelas) ===
+            Number(estrelas);
 
-
-        /* =========================
-           TIPO
-        ========================= */
 
         const tipoJogador =
           jogador.tipo
             ?.trim()
             .toUpperCase();
 
+
         const tipoSelecionado =
           tipo
             ?.trim()
             .toUpperCase();
+
 
         const tipoMatch =
           tipoSelecionado === "TODOS" ||
@@ -178,18 +243,15 @@ function App() {
           tipoMatch
         );
 
-      }
-    );
+      });
 
 
-    /* =========================
-       ORDENAÇÃO
-    ========================= */
+    // =========================
+    // ORDENAR
+    // =========================
 
     return [...filtrados].sort(
       (a, b) => {
-
-        /* MAIS RECENTES */
 
         if (ordem === "recentes") {
 
@@ -201,8 +263,6 @@ function App() {
         }
 
 
-        /* MAIS ANTIGOS */
-
         if (ordem === "antigos") {
 
           return (
@@ -213,8 +273,6 @@ function App() {
         }
 
 
-        /* A-Z */
-
         if (ordem === "az") {
 
           return a.nome.localeCompare(
@@ -224,8 +282,6 @@ function App() {
 
         }
 
-
-        /* Z-A */
 
         if (ordem === "za") {
 
@@ -251,9 +307,9 @@ function App() {
   ]);
 
 
-  /* =========================
-     CARREGANDO
-  ========================= */
+  // =========================
+  // CARREGANDO
+  // =========================
 
   if (carregando) {
 
@@ -261,9 +317,7 @@ function App() {
 
       <div className="estado">
 
-        <span>
-          ⚽
-        </span>
+        <span>⚽</span>
 
         <h2>
           Carregando jogadores...
@@ -276,9 +330,9 @@ function App() {
   }
 
 
-  /* =========================
-     ERRO
-  ========================= */
+  // =========================
+  // ERRO
+  // =========================
 
   if (erro) {
 
@@ -286,9 +340,7 @@ function App() {
 
       <div className="estado">
 
-        <span>
-          ❌
-        </span>
+        <span>❌</span>
 
         <h2>
           Erro ao carregar jogadores
@@ -305,9 +357,9 @@ function App() {
   }
 
 
-  /* =========================
-     RANKING
-  ========================= */
+  // =========================
+  // RANKING
+  // =========================
 
   if (pagina === "ranking") {
 
@@ -332,9 +384,9 @@ function App() {
   }
 
 
-  /* =========================
-     TIMER
-  ========================= */
+  // =========================
+  // TIMER
+  // =========================
 
   if (pagina === "timer") {
 
@@ -357,9 +409,9 @@ function App() {
   }
 
 
-  /* =========================
-     CARDS
-  ========================= */
+  // =========================
+  // CARDS
+  // =========================
 
   if (pagina === "cards") {
 
@@ -384,9 +436,9 @@ function App() {
   }
 
 
-  /* =========================
-     DASHBOARD
-  ========================= */
+  // =========================
+  // DASHBOARD
+  // =========================
 
   return (
 
@@ -421,9 +473,28 @@ function App() {
           </div>
 
 
-          <div className="arquivo-info">
+          {/* =========================
+              AÇÕES
+          ========================= */}
 
-            ☁️ Google Sheets
+          <div className="dashboard-acoes">
+
+
+            <div className="arquivo-info">
+              ☁️ Google Sheets
+            </div>
+
+
+            <button
+              type="button"
+              className="botao-exportar"
+              onClick={exportarLista}
+            >
+
+              📋 Exportar lista
+
+            </button>
+
 
           </div>
 
@@ -500,6 +571,5 @@ function App() {
   );
 
 }
-
 
 export default App;
