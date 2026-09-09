@@ -10,6 +10,7 @@ import CardsPage from "./pages/Cards/CardsPage";
 
 import { listarJogadores } from "./services/jogadoresApi";
 import { gerarListaJogadores } from "./services/exportarJogadores";
+import PeladaPage from "./pages/Pelada/PeladaPage";
 
 import "./style.css";
 
@@ -434,6 +435,24 @@ function App() {
     );
 
   }
+
+  if (pagina === "pelada") {
+  return (
+    <div className="app">
+
+      <Header
+        total={jogadores.length}
+        pagina={pagina}
+        setPagina={setPagina}
+      />
+
+      <PeladaPage
+        jogadores={jogadores}
+      />
+
+    </div>
+  );
+}
 
 
   // =========================

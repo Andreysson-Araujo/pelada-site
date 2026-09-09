@@ -101,6 +101,20 @@ function Header({ total, pagina, setPagina }) {
         >
           Tempo
         </button>
+          {/*Separar times*/}
+         <button
+          className={
+            pagina === "pelada"
+              ? "nav-active"
+              : ""
+          }
+          onClick={() =>
+            setPagina("pelada")
+          }
+        >
+          Separar Times
+        </button>
+
 
       </nav>
 
