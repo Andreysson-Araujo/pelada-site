@@ -5,6 +5,6 @@ export const nomesTimes = [
   "P EnisG",
   "Bar de Munique",
   "Tadala FC",
-  "Vasco da Cana",
+  "Vasco da Diamba",
   "Boca Fumo",
 ];
