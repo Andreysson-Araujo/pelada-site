@@ -1,31 +1,40 @@
 const API_URL =
 "https://script.google.com/macros/s/AKfycbz0BgTpsufbQAE-j4NOKX_gkMGWMVaSfIslmO_4QSWo1gl8U4RV_KZKvb6tZzVXaugd/exec";
 
+
 export async function listarTimes() {
 
   const resposta = await fetch(
     `${API_URL}?acao=listar&t=${Date.now()}`
   );
 
+
   if (!resposta.ok) {
+
     throw new Error(
       "Erro ao carregar os times."
     );
+
   }
 
-  const times = await resposta.json();
+
+  const times =
+    await resposta.json();
+
 
   console.log(
     "TIMES RECEBIDOS DA API:",
     times
   );
 
+
   return times.map((time) => ({
 
     ...time,
 
-    id: String(time.id)
-      .padStart(3, "0"),
+    id:
+      String(time.id)
+        .padStart(3, "0"),
 
     pontos:
       Number(time.pontos) || 0,
@@ -41,9 +50,16 @@ export async function listarTimes() {
 }
 
 
+/*
+========================================
+REGISTRAR RESULTADO
+========================================
+*/
+
 export async function registrarResultado(
   id,
-  resultado
+  resultado,
+  pin
 ) {
 
   const url =
@@ -51,6 +67,7 @@ export async function registrarResultado(
     `?acao=registrarResultado` +
     `&id=${encodeURIComponent(id)}` +
     `&resultado=${encodeURIComponent(resultado)}` +
+    `&pin=${encodeURIComponent(pin)}` +
     `&t=${Date.now()}`;
 
 
@@ -84,3 +101,4 @@ export async function registrarResultado(
   return dados;
 
 }
+

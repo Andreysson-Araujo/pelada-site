@@ -584,3 +584,301 @@
 
 }
 
+
+/* ========================================
+   MODAL DO PIN
+======================================== */
+
+.modal-pin-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  background: rgba(0, 0, 0, 0.78);
+
+  backdrop-filter: blur(6px);
+
+  animation: aparecer-overlay 0.15s ease;
+}
+
+
+.modal-pin {
+  width: 100%;
+  max-width: 380px;
+
+  padding: 28px;
+
+  background: #171717;
+
+  border: 1px solid #303030;
+
+  border-radius: 18px;
+
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.55);
+
+  text-align: center;
+
+  animation: aparecer-modal 0.18s ease;
+}
+
+
+.modal-pin-icone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 54px;
+  height: 54px;
+
+  margin: 0 auto 16px;
+
+  border-radius: 15px;
+
+  background: #252525;
+
+  font-size: 24px;
+}
+
+
+.modal-pin h3 {
+  margin: 0;
+
+  color: #fff;
+
+  font-size: 20px;
+}
+
+
+.modal-pin > p {
+  margin: 8px 0 18px;
+
+  color: #888;
+
+  font-size: 13px;
+}
+
+
+.modal-pin > p strong {
+  color: #ddd;
+}
+
+
+.modal-pin-time {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 10px;
+
+  margin-bottom: 22px;
+
+  padding: 12px;
+
+  background: #111;
+
+  border: 1px solid #292929;
+
+  border-radius: 12px;
+}
+
+
+.modal-pin-time img {
+  width: 38px;
+  height: 38px;
+
+  object-fit: contain;
+}
+
+
+.modal-pin-time strong {
+  color: #eee;
+
+  font-size: 14px;
+}
+
+
+.modal-pin-label {
+  display: block;
+
+  color: #999;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  letter-spacing: 1px;
+
+  text-align: left;
+}
+
+
+.modal-pin-label input {
+  display: block;
+
+  width: 100%;
+
+  margin-top: 7px;
+
+  padding: 13px;
+
+  box-sizing: border-box;
+
+  background: #101010;
+
+  border: 1px solid #333;
+
+  border-radius: 10px;
+
+  outline: none;
+
+  color: #fff;
+
+  font-size: 22px;
+
+  font-weight: 700;
+
+  letter-spacing: 8px;
+
+  text-align: center;
+
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+
+.modal-pin-label input:focus {
+  border-color: #666;
+
+  box-shadow:
+    0 0 0 3px rgba(255, 255, 255, 0.05);
+}
+
+
+.modal-pin-erro {
+  margin-top: 10px;
+
+  padding: 9px 10px;
+
+  border-radius: 8px;
+
+  background: rgba(220, 60, 60, 0.1);
+
+  color: #ed8585;
+
+  font-size: 11px;
+
+  font-weight: 600;
+}
+
+
+.modal-pin-botoes {
+  display: flex;
+
+  gap: 10px;
+
+  margin-top: 20px;
+}
+
+
+.modal-pin-botoes button {
+  flex: 1;
+
+  padding: 11px 14px;
+
+  border-radius: 10px;
+
+  font-family: inherit;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.15s ease,
+    filter 0.15s ease,
+    opacity 0.15s ease;
+}
+
+
+.modal-pin-botoes button:hover {
+  transform: translateY(-1px);
+
+  filter: brightness(1.1);
+}
+
+
+.modal-pin-botoes button:disabled {
+  cursor: not-allowed;
+
+  opacity: 0.5;
+
+  transform: none;
+}
+
+
+.modal-pin-cancelar {
+  background: #252525;
+
+  border: 1px solid #333;
+
+  color: #bbb;
+}
+
+
+.modal-pin-confirmar {
+  background: #eee;
+
+  border: 1px solid #fff;
+
+  color: #111;
+}
+
+
+@keyframes aparecer-overlay {
+
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+
+}
+
+
+@keyframes aparecer-modal {
+
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+
+}
+
+
+@media (max-width: 500px) {
+
+  .modal-pin {
+    padding: 22px;
+  }
+
+}
+
+
+
