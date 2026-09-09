@@ -95,3 +95,38 @@ async function alterarEstatistica(id, acao) {
 
   return resultado;
 }
+
+export async function listarTimes() {
+
+  const url = `${API_URL}?acao=listar_times&t=${Date.now()}`;
+
+  const resposta = await fetch(url, {
+    method: "GET",
+    cache: "no-store",
+  });
+
+  if (!resposta.ok) {
+    throw new Error(
+      "Não foi possível carregar os times."
+    );
+  }
+
+  const times = await resposta.json();
+
+  console.log(
+    "TIMES RECEBIDOS DA API:",
+    times
+  );
+
+  return times.map((time) => ({
+    ...time,
+
+    id: String(time.id),
+
+    pontos: Number(time.pontos) || 0,
+
+    vitorias: Number(time.vitorias) || 0,
+
+    derrotas: Number(time.derrotas) || 0,
+  }));
+}

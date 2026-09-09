@@ -62,6 +62,10 @@ module.exports = {
           from: "./public/fotos",
           to: "fotos",
         },
+        {
+          from: "./public/escudos",
+          to: "escudos",
+        },
 
       ],
     }),

@@ -5,22 +5,37 @@ import React, {
 } from "react";
 
 import Header from "./components/Header/Header";
+
 import Filtros from "./components/Filtros/Filtros";
+
 import ListaJogadores from "./components/ListaJogadores/ListaJogadores";
+
 import Resumo from "./components/Resumo";
+
 import Ranking from "./pages/Ranking";
+
+import Dashboard from "./pages/Dashboard/Dashboard";
+
 import Timer from "./components/Timer/Timer";
+
 import TimerFlutuante from "./components/Timer/TimerFlutuante";
+
 import CardsPage from "./pages/Cards/CardsPage";
+
 import PeladaPage from "./pages/Pelada/PeladaPage";
 
 import { listarJogadores } from "./services/jogadoresApi";
+
 import { gerarListaJogadores } from "./services/exportarJogadores";
 
 import "./style.css";
 
 
 function App() {
+
+  // ==================================================
+  // JOGADORES
+  // ==================================================
 
   const [jogadores, setJogadores] = useState([]);
 
@@ -35,11 +50,21 @@ function App() {
   const [ordem, setOrdem] =
     useState("recentes");
 
+
+  // ==================================================
+  // CARREGAMENTO
+  // ==================================================
+
   const [carregando, setCarregando] =
     useState(true);
 
   const [erro, setErro] =
     useState("");
+
+
+  // ==================================================
+  // PÁGINA ATUAL
+  // ==================================================
 
   const [pagina, setPagina] =
     useState("dashboard");
@@ -75,27 +100,31 @@ function App() {
       return;
     }
 
-    const intervalo =
-      setInterval(() => {
+    const intervalo = setInterval(() => {
 
-        setTempo((tempoAtual) => {
+      setTempo((tempoAtual) => {
 
-          if (tempoAtual > 0) {
-            return tempoAtual - 1;
-          }
+        if (tempoAtual > 0) {
 
-          setRodando(false);
-          setModoAcrescimo(true);
+          return tempoAtual - 1;
 
-          return 0;
+        }
 
-        });
+        setRodando(false);
 
-      }, 1000);
+        setModoAcrescimo(true);
+
+        return 0;
+
+      });
+
+    }, 1000);
 
 
     return () => {
+
       clearInterval(intervalo);
+
     };
 
   }, [rodando]);
@@ -199,10 +228,12 @@ function App() {
         const jogadoresLidos =
           await listarJogadores();
 
+
         console.log(
           "JOGADORES CARREGADOS DA PLANILHA:",
           jogadoresLidos
         );
+
 
         setJogadores(
           jogadoresLidos
@@ -214,6 +245,7 @@ function App() {
           "ERRO AO CARREGAR JOGADORES:",
           error
         );
+
 
         setErro(
           error.message ||
@@ -227,6 +259,7 @@ function App() {
       }
 
     }
+
 
     carregarJogadores();
 
@@ -254,7 +287,9 @@ function App() {
 
             }
 
+
             return {
+
               ...jogador,
 
               gols:
@@ -264,6 +299,7 @@ function App() {
                 Number(
                   resultado.assistencias
                 ) || 0,
+
             };
 
           }
@@ -297,8 +333,11 @@ function App() {
       ) {
 
         await navigator.share({
+
           title: "Pelada App",
+
           text: texto,
+
         });
 
         return;
@@ -315,6 +354,7 @@ function App() {
         "Lista copiada! Agora é só colar no WhatsApp."
       );
 
+
     } catch (error) {
 
       if (
@@ -326,10 +366,12 @@ function App() {
 
       }
 
+
       console.error(
         "ERRO AO EXPORTAR LISTA:",
         error
       );
+
 
       alert(
         "Não foi possível exportar a lista."
@@ -341,7 +383,7 @@ function App() {
 
 
   // ==================================================
-  // FILTROS
+  // FILTROS DOS JOGADORES
   // ==================================================
 
   const jogadoresFiltrados =
@@ -450,30 +492,40 @@ function App() {
       );
 
     }, [
+
       jogadores,
+
       pesquisa,
+
       estrelas,
+
       tipo,
+
       ordem
+
     ]);
 
 
   // ==================================================
-  // CARREGANDO
+  // CARREGANDO JOGADORES
   // ==================================================
 
   if (carregando) {
 
     return (
+
       <div className="estado">
 
-        <span>⚽</span>
+        <span>
+          ⚽
+        </span>
 
         <h2>
           Carregando jogadores...
         </h2>
 
       </div>
+
     );
 
   }
@@ -486,9 +538,12 @@ function App() {
   if (erro) {
 
     return (
+
       <div className="estado">
 
-        <span>❌</span>
+        <span>
+          ❌
+        </span>
 
         <h2>
           Erro ao carregar jogadores
@@ -499,6 +554,7 @@ function App() {
         </p>
 
       </div>
+
     );
 
   }
@@ -511,6 +567,7 @@ function App() {
   if (pagina === "timer") {
 
     return (
+
       <div className="app">
 
         <Header
@@ -521,36 +578,26 @@ function App() {
 
 
         <Timer
-
           duracao={duracao}
-
           tempo={tempo}
-
           rodando={rodando}
-
           acrescimos={acrescimos}
-
           modoAcrescimo={
             modoAcrescimo
           }
-
           selecionarDuracao={
             selecionarDuracao
           }
-
           iniciar={iniciar}
-
           pausar={pausar}
-
           reiniciar={reiniciar}
-
           adicionarAcrescimo={
             adicionarAcrescimo
           }
-
         />
 
       </div>
+
     );
 
   }
@@ -563,6 +610,7 @@ function App() {
   if (pagina === "ranking") {
 
     return (
+
       <div className="app">
 
         <Header
@@ -571,30 +619,25 @@ function App() {
           setPagina={setPagina}
         />
 
+
         <Ranking
           jogadores={jogadores}
         />
 
 
         <TimerFlutuante
-
           tempo={tempo}
-
           rodando={rodando}
-
           modoAcrescimo={
             modoAcrescimo
           }
-
           setPagina={setPagina}
-
           pausar={pausar}
-
           iniciar={iniciar}
-
         />
 
       </div>
+
     );
 
   }
@@ -607,6 +650,7 @@ function App() {
   if (pagina === "cards") {
 
     return (
+
       <div className="app">
 
         <Header
@@ -614,6 +658,7 @@ function App() {
           pagina={pagina}
           setPagina={setPagina}
         />
+
 
         <CardsPage
           jogadores={jogadores}
@@ -621,36 +666,31 @@ function App() {
 
 
         <TimerFlutuante
-
           tempo={tempo}
-
           rodando={rodando}
-
           modoAcrescimo={
             modoAcrescimo
           }
-
           setPagina={setPagina}
-
           pausar={pausar}
-
           iniciar={iniciar}
-
         />
 
       </div>
+
     );
 
   }
 
 
   // ==================================================
-  // PELADA
+  // SEPARAR TIMES
   // ==================================================
 
   if (pagina === "pelada") {
 
     return (
+
       <div className="app">
 
         <Header
@@ -659,166 +699,197 @@ function App() {
           setPagina={setPagina}
         />
 
+
         <PeladaPage
           jogadores={jogadores}
         />
 
 
         <TimerFlutuante
-
           tempo={tempo}
-
           rodando={rodando}
-
           modoAcrescimo={
             modoAcrescimo
           }
-
           setPagina={setPagina}
-
           pausar={pausar}
-
           iniciar={iniciar}
-
         />
 
       </div>
+
     );
 
   }
 
 
   // ==================================================
-  // DASHBOARD / JOGADORES
+  // DASHBOARD
   // ==================================================
 
-  return (
-    <div className="app">
+  if (pagina === "dashboard") {
 
-      <Header
-        total={jogadores.length}
-        pagina={pagina}
-        setPagina={setPagina}
-      />
+    return (
 
+      <div className="app">
 
-      <main className="dashboard">
-
-        <div className="dashboard-title">
-
-          <div>
-
-            <span className="subtitle">
-              GERENCIAMENTO
-            </span>
-
-            <h1>
-              Jogadores
-            </h1>
-
-          </div>
+        <Header
+          total={jogadores.length}
+          pagina={pagina}
+          setPagina={setPagina}
+        />
 
 
-          <div className="dashboard-acoes">
+        <Dashboard />
 
-            <div className="arquivo-info">
-              ☁️ Google Sheets
+
+        <TimerFlutuante
+          tempo={tempo}
+          rodando={rodando}
+          modoAcrescimo={
+            modoAcrescimo
+          }
+          setPagina={setPagina}
+          pausar={pausar}
+          iniciar={iniciar}
+        />
+
+      </div>
+
+    );
+
+  }
+
+
+  // ==================================================
+  // JOGADORES
+  // ==================================================
+
+  if (pagina === "jogadores") {
+
+    return (
+
+      <div className="app">
+
+        <Header
+          total={jogadores.length}
+          pagina={pagina}
+          setPagina={setPagina}
+        />
+
+
+        <main className="dashboard">
+
+          <div className="dashboard-title">
+
+            <div>
+
+              <span className="subtitle">
+                GERENCIAMENTO
+              </span>
+
+              <h1>
+                Jogadores
+              </h1>
+
             </div>
 
 
-            <button
-              type="button"
-              className="botao-exportar"
-              onClick={exportarLista}
-            >
-              📋 Exportar lista
-            </button>
+            <div className="dashboard-acoes">
+
+              <div className="arquivo-info">
+                ☁️ Google Sheets
+              </div>
+
+
+              <button
+                type="button"
+                className="botao-exportar"
+                onClick={exportarLista}
+              >
+
+                📋 Exportar lista
+
+              </button>
+
+            </div>
 
           </div>
 
-        </div>
+
+          <Resumo
+            jogadores={jogadores}
+          />
 
 
-        <Resumo
-          jogadores={jogadores}
-        />
+          <Filtros
+            pesquisa={pesquisa}
+            setPesquisa={setPesquisa}
+            estrelas={estrelas}
+            setEstrelas={setEstrelas}
+            tipo={tipo}
+            setTipo={setTipo}
+            ordem={ordem}
+            setOrdem={setOrdem}
+          />
 
 
-        <Filtros
+          <div className="resultado-info">
 
-          pesquisa={pesquisa}
+            Mostrando{" "}
 
-          setPesquisa={setPesquisa}
+            <strong>
+              {jogadoresFiltrados.length}
+            </strong>
 
-          estrelas={estrelas}
+            {" "}de{" "}
 
-          setEstrelas={setEstrelas}
+            <strong>
+              {jogadores.length}
+            </strong>
 
-          tipo={tipo}
+            {" "}jogadores
 
-          setTipo={setTipo}
-
-          ordem={ordem}
-
-          setOrdem={setOrdem}
-
-        />
+          </div>
 
 
-        <div className="resultado-info">
+          <ListaJogadores
+            jogadores={
+              jogadoresFiltrados
+            }
+            onAtualizarJogador={
+              atualizarJogador
+            }
+          />
 
-          Mostrando{" "}
-
-          <strong>
-            {jogadoresFiltrados.length}
-          </strong>
-
-          {" "}de{" "}
-
-          <strong>
-            {jogadores.length}
-          </strong>
-
-          {" "}jogadores
-
-        </div>
+        </main>
 
 
-        <ListaJogadores
-
-          jogadores={
-            jogadoresFiltrados
+        <TimerFlutuante
+          tempo={tempo}
+          rodando={rodando}
+          modoAcrescimo={
+            modoAcrescimo
           }
-
-          onAtualizarJogador={
-            atualizarJogador
-          }
-
+          setPagina={setPagina}
+          pausar={pausar}
+          iniciar={iniciar}
         />
 
-      </main>
+      </div>
+
+    );
+
+  }
 
 
-      <TimerFlutuante
+  // ==================================================
+  // FALLBACK
+  // ==================================================
 
-        tempo={tempo}
+  setPagina("dashboard");
 
-        rodando={rodando}
-
-        modoAcrescimo={
-          modoAcrescimo
-        }
-
-        setPagina={setPagina}
-
-        pausar={pausar}
-
-        iniciar={iniciar}
-
-      />
-
-    </div>
-  );
+  return null;
 
 }
 

@@ -1,0 +1,586 @@
+
+/* =========================
+   CONTAINER
+========================= */
+
+.tabela-times-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+
+/* =========================
+   TABELA
+========================= */
+
+.tabela-times {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 8px;
+}
+
+
+/* =========================
+   CABEÇALHO
+========================= */
+
+.tabela-times thead th {
+  padding: 12px 16px;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  color: #888;
+
+  text-align: left;
+
+  letter-spacing: 1px;
+
+  border-bottom: 1px solid #292929;
+}
+
+.tabela-times thead th:nth-child(3),
+.tabela-times thead th:nth-child(4),
+.tabela-times thead th:nth-child(5) {
+  text-align: center;
+}
+
+
+/* =========================
+   LINHA
+========================= */
+
+.linha-time {
+  background: #171717;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.15s ease,
+    background 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.linha-time:hover {
+  background: #202020;
+
+  transform: translateY(-1px);
+}
+
+.linha-time-selecionada {
+  background: #222;
+
+  box-shadow:
+    0 0 0 1px #3b3b3b;
+}
+
+
+/* Cantos arredondados */
+
+.linha-time td:first-child {
+  border-radius: 10px 0 0 10px;
+}
+
+.linha-time td:last-child {
+  border-radius: 0 10px 10px 0;
+}
+
+
+.linha-time td {
+  padding: 15px 16px;
+
+  color: #ddd;
+
+  font-size: 14px;
+}
+
+
+/* =========================
+   POSIÇÃO
+========================= */
+
+.tabela-posicao {
+  width: 55px;
+
+  text-align: center;
+}
+
+.tabela-posicao span {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 30px;
+  height: 30px;
+
+  border-radius: 50%;
+
+  background: #252525;
+
+  color: #aaa;
+
+  font-weight: 700;
+}
+
+
+/* =========================
+   TIME
+========================= */
+
+.tabela-time {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  min-width: 220px;
+}
+
+
+.tabela-time img {
+  width: 42px;
+  height: 42px;
+
+  object-fit: contain;
+
+  flex-shrink: 0;
+}
+
+
+.tabela-time span:not(.icone-adicionar) {
+  font-weight: 700;
+
+  color: #eee;
+}
+
+
+/* =========================
+   ÍCONE ADICIONAR
+========================= */
+
+.icone-adicionar {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 24px;
+  height: 24px;
+
+  margin-left: auto;
+
+  border-radius: 50%;
+
+  background: #252525;
+
+  color: #888;
+
+  font-size: 18px;
+
+  transition:
+    background 0.15s ease,
+    color 0.15s ease,
+    transform 0.15s ease;
+}
+
+
+.linha-time:hover .icone-adicionar {
+  background: #303030;
+
+  color: #fff;
+
+  transform: scale(1.08);
+}
+
+
+.linha-time-selecionada .icone-adicionar {
+  background: #333;
+
+  color: #fff;
+}
+
+
+/* =========================
+   PONTOS
+========================= */
+
+.tabela-pontos {
+  text-align: center;
+
+  font-size: 17px !important;
+
+  font-weight: 800;
+
+  color: #fff !important;
+}
+
+
+/* =========================
+   VITÓRIAS / DERROTAS
+========================= */
+
+.tabela-times td:nth-child(4),
+.tabela-times td:nth-child(5) {
+  text-align: center;
+}
+
+
+.numero-vitorias,
+.numero-derrotas {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  min-width: 30px;
+  height: 30px;
+
+  padding: 0 8px;
+
+  border-radius: 8px;
+
+  font-weight: 700;
+}
+
+
+.numero-vitorias {
+  background: rgba(50, 200, 100, 0.12);
+
+  color: #65d98b;
+}
+
+
+.numero-derrotas {
+  background: rgba(220, 70, 70, 0.12);
+
+  color: #e87878;
+}
+
+
+/* =========================
+   ÁREA DE AÇÕES
+========================= */
+
+.linha-acoes {
+  animation: abrir-acoes 0.18s ease;
+}
+
+
+@keyframes abrir-acoes {
+
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+}
+
+
+.linha-acoes td {
+  padding: 0 8px 8px 8px;
+}
+
+
+.acoes-resultado {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding: 16px 18px;
+
+  background: #111;
+
+  border: 1px solid #292929;
+
+  border-radius: 12px;
+}
+
+
+/* =========================
+   TÍTULO DAS AÇÕES
+========================= */
+
+.acoes-titulo {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  min-width: 190px;
+}
+
+
+.acoes-icone {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 38px;
+  height: 38px;
+
+  border-radius: 10px;
+
+  background: #222;
+
+  font-size: 18px;
+}
+
+
+.acoes-titulo strong {
+  display: block;
+
+  color: #eee;
+
+  font-size: 13px;
+}
+
+
+.acoes-titulo small {
+  display: block;
+
+  margin-top: 3px;
+
+  color: #777;
+
+  font-size: 11px;
+}
+
+
+/* =========================
+   BOTÕES
+========================= */
+
+.acoes-botoes {
+  display: flex;
+
+  gap: 10px;
+}
+
+
+.botao-resultado {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  min-width: 145px;
+
+  padding: 10px 14px;
+
+  border: 1px solid transparent;
+
+  border-radius: 10px;
+
+  cursor: pointer;
+
+  font-family: inherit;
+
+  transition:
+    transform 0.15s ease,
+    filter 0.15s ease,
+    border-color 0.15s ease;
+}
+
+
+.botao-resultado:hover {
+  transform: translateY(-2px);
+
+  filter: brightness(1.12);
+}
+
+
+.botao-resultado:active {
+  transform: translateY(0);
+}
+
+
+.botao-resultado:disabled {
+  opacity: 0.55;
+
+  cursor: wait;
+
+  transform: none;
+}
+
+
+/* =========================
+   ÍCONE DO BOTÃO
+========================= */
+
+.botao-resultado-icone {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 34px;
+  height: 34px;
+
+  border-radius: 9px;
+
+  font-size: 18px;
+
+  font-weight: 900;
+}
+
+
+.botao-resultado-texto {
+  text-align: left;
+}
+
+
+.botao-resultado-texto strong {
+  display: block;
+
+  font-size: 13px;
+}
+
+
+.botao-resultado-texto small {
+  display: block;
+
+  margin-top: 2px;
+
+  font-size: 10px;
+
+  opacity: 0.7;
+}
+
+
+/* =========================
+   VITÓRIA
+========================= */
+
+.botao-vitoria {
+  background: rgba(45, 180, 90, 0.12);
+
+  border-color: rgba(70, 200, 110, 0.25);
+
+  color: #6ee395;
+}
+
+
+.botao-vitoria .botao-resultado-icone {
+  background: rgba(70, 200, 110, 0.18);
+
+  color: #70e797;
+}
+
+
+/* =========================
+   DERROTA
+========================= */
+
+.botao-derrota {
+  background: rgba(210, 60, 60, 0.10);
+
+  border-color: rgba(220, 80, 80, 0.22);
+
+  color: #ed8585;
+}
+
+
+.botao-derrota .botao-resultado-icone {
+  background: rgba(220, 80, 80, 0.16);
+
+  color: #ef8585;
+}
+
+
+/* =========================
+   SALVANDO
+========================= */
+
+.resultado-salvando {
+  display: flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  color: #888;
+
+  font-size: 11px;
+}
+
+
+/* =========================
+   RESPONSIVO
+========================= */
+
+@media (max-width: 700px) {
+
+  .acoes-resultado {
+    flex-direction: column;
+
+    align-items: stretch;
+
+  }
+
+
+  .acoes-titulo {
+    min-width: 0;
+  }
+
+
+  .acoes-botoes {
+    width: 100%;
+  }
+
+
+  .botao-resultado {
+    flex: 1;
+
+    min-width: 0;
+  }
+
+}
+
+
+@media (max-width: 500px) {
+
+  .tabela-times thead th,
+  .linha-time td {
+    padding-left: 9px;
+    padding-right: 9px;
+  }
+
+
+  .tabela-time {
+    min-width: 160px;
+
+    gap: 8px;
+  }
+
+
+  .tabela-time img {
+    width: 34px;
+    height: 34px;
+  }
+
+
+  .icone-adicionar {
+    display: none;
+  }
+
+
+  .botao-resultado {
+    padding: 9px;
+  }
+
+}
+

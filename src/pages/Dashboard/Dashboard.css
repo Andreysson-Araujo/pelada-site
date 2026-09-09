@@ -1,0 +1,204 @@
+.dashboard-times {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.dashboard-times-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.dashboard-times-titulo {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.dashboard-times-icon {
+  font-size: 42px;
+}
+
+.dashboard-times-titulo h1 {
+  margin: 0;
+}
+
+.dashboard-times-titulo p {
+  margin: 5px 0 0;
+  opacity: 0.7;
+}
+
+.dashboard-times-total {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dashboard-times-total strong {
+  font-size: 32px;
+}
+
+.top-times {
+  margin-bottom: 40px;
+}
+
+.section-titulo {
+  margin-bottom: 20px;
+}
+
+.section-titulo h2 {
+  margin-bottom: 5px;
+}
+
+.section-titulo p {
+  margin: 0;
+  opacity: 0.7;
+}
+
+.top-times-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.time-card {
+  padding: 25px;
+  text-align: center;
+  border-radius: 12px;
+  background: #fff;
+  border: 1px solid #ddd;
+}
+
+.time-card-posicao {
+  font-size: 30px;
+  margin-bottom: 10px;
+}
+
+.time-card-escudo {
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+}
+
+.time-card h3 {
+  margin: 15px 0;
+}
+
+.time-card-pontos {
+  display: flex;
+  flex-direction: column;
+}
+
+.time-card-pontos strong {
+  font-size: 32px;
+}
+
+.time-card-estatisticas {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-top: 20px;
+}
+
+.time-card-estatisticas span {
+  display: flex;
+  flex-direction: column;
+}
+
+.time-card-estatisticas small {
+  font-size: 11px;
+  opacity: 0.6;
+}
+
+.classificacao {
+  margin-top: 30px;
+}
+
+.classificacao-header {
+  margin-bottom: 20px;
+}
+
+.classificacao-header h2 {
+  margin-bottom: 5px;
+}
+
+.classificacao-header p {
+  margin: 0;
+  opacity: 0.7;
+}
+
+.tabela-times-container {
+  overflow-x: auto;
+}
+
+.tabela-times {
+  width: 100%;
+  border-collapse: collapse;
+  background: #202020;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.tabela-times th,
+.tabela-times td {
+  padding: 15px;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+}
+
+.tabela-times th:nth-child(2),
+.tabela-times td:nth-child(2) {
+  text-align: left;
+}
+
+.tabela-time {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.tabela-time img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.tabela-pontos {
+  font-weight: bold;
+}
+
+.times-vazio {
+  padding: 50px;
+  text-align: center;
+}
+
+.dashboard-times-loading,
+.dashboard-times-erro {
+  padding: 80px 20px;
+  text-align: center;
+}
+
+.loading-icon {
+  font-size: 50px;
+  margin-bottom: 15px;
+}
+
+.dashboard-times-erro button {
+  margin-top: 15px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+@media (max-width: 700px) {
+
+  .top-times-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-times-header {
+    align-items: flex-start;
+  }
+
+}
