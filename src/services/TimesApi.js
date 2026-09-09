@@ -1,5 +1,5 @@
 const API_URL =
-  "https://script.google.com/macros/s/AKfycbz0BgTpsufbQAE-j4NOKX_gkMGWMVaSfIslmO_4QSWo1gl8U4RV_KZKvb6tZzVXaugd/exec";
+"https://script.google.com/macros/s/AKfycbz0BgTpsufbQAE-j4NOKX_gkMGWMVaSfIslmO_4QSWo1gl8U4RV_KZKvb6tZzVXaugd/exec";
 
 export async function listarTimes() {
 
@@ -46,23 +46,16 @@ export async function registrarResultado(
   resultado
 ) {
 
-  const resposta = await fetch(
-    API_URL,
-    {
-      method: "POST",
+  const url =
+    `${API_URL}` +
+    `?acao=registrarResultado` +
+    `&id=${encodeURIComponent(id)}` +
+    `&resultado=${encodeURIComponent(resultado)}` +
+    `&t=${Date.now()}`;
 
-      body: JSON.stringify({
 
-        acao: "registrarResultado",
-
-        id: id,
-
-        resultado: resultado,
-
-      }),
-
-    }
-  );
+  const resposta =
+    await fetch(url);
 
 
   if (!resposta.ok) {
