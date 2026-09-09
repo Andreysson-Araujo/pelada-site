@@ -1,189 +1,105 @@
-
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 import SeletorTempo from "./SeletorTempo";
 import ControlesTimer from "./ControlesTimer";
 
 import "./Timer.css";
 
-function Timer() {
 
-  const [duracao, setDuracao] = useState(10);
+function Timer({
 
-  const [tempo, setTempo] = useState(10 * 60);
+  duracao,
 
-  const [rodando, setRodando] = useState(false);
+  tempo,
 
-  const [acrescimos, setAcrescimos] = useState(0);
+  rodando,
 
-  const [modoAcrescimo, setModoAcrescimo] = useState(false);
+  acrescimos,
 
+  modoAcrescimo,
 
-  /* =========================
-     CRONÔMETRO
-  ========================= */
+  selecionarDuracao,
 
-  useEffect(() => {
+  iniciar,
 
-    if (!rodando) {
-      return;
-    }
+  pausar,
 
-    const intervalo = setInterval(() => {
+  reiniciar,
 
-      setTempo((tempoAtual) => {
+  adicionarAcrescimo,
 
-        if (tempoAtual > 0) {
-          return tempoAtual - 1;
-        }
-
-        setRodando(false);
-
-        setModoAcrescimo(true);
-
-        return 0;
-      });
-
-    }, 1000);
+}) {
 
 
-    return () => {
-      clearInterval(intervalo);
-    };
+  // ==================================================
+  // FORMATAR TEMPO
+  // ==================================================
 
-  }, [rodando]);
+  const minutos =
+    Math.floor(tempo / 60);
 
+  const segundos =
+    tempo % 60;
 
-  /* =========================
-     SELECIONAR DURAÇÃO
-  ========================= */
-
-  function selecionarDuracao(minutos) {
-
-    setDuracao(minutos);
-
-    setTempo(minutos * 60);
-
-    setRodando(false);
-
-    setModoAcrescimo(false);
-
-    setAcrescimos(0);
-  }
-
-
-  /* =========================
-     INICIAR
-  ========================= */
-
-  function iniciar() {
-
-    setRodando(true);
-
-  }
-
-
-  /* =========================
-     PAUSAR
-  ========================= */
-
-  function pausar() {
-
-    setRodando(false);
-
-  }
-
-
-  /* =========================
-     REINICIAR
-  ========================= */
-
-  function reiniciar() {
-
-    setTempo(duracao * 60);
-
-    setRodando(false);
-
-    setModoAcrescimo(false);
-
-    setAcrescimos(0);
-
-  }
-
-
-  /* =========================
-     ADICIONAR ACRÉSCIMO
-  ========================= */
-
-  function adicionarAcrescimo(minutos) {
-
-    setAcrescimos(
-      (atual) => atual + minutos
-    );
-
-    setTempo(
-      (atual) => atual + minutos * 60
-    );
-
-    setModoAcrescimo(true);
-
-    setRodando(true);
-
-  }
-
-
-  /* =========================
-     FORMATAR TEMPO
-  ========================= */
-
-  const minutos = Math.floor(tempo / 60);
-
-  const segundos = tempo % 60;
-
-
-  /* =========================
-     TELA
-  ========================= */
 
   return (
 
     <div className="timer-container">
+
 
       <h1>
         Timer da Partida
       </h1>
 
 
-      {/* SELETOR DE TEMPO */}
+      {/* ==========================================
+          SELETOR DE TEMPO
+      ========================================== */}
 
       {!modoAcrescimo && (
 
         <SeletorTempo
+
           duracao={duracao}
-          selecionarDuracao={selecionarDuracao}
+
+          selecionarDuracao={
+            selecionarDuracao
+          }
+
         />
 
       )}
 
 
-      {/* RELÓGIO */}
+      {/* ==========================================
+          RELÓGIO
+      ========================================== */}
 
       <div
-        className={`timer-display ${
-          modoAcrescimo ? "acrescimo" : ""
-        }`}
+        className={`
+          timer-display
+          ${modoAcrescimo ? "acrescimo" : ""}
+        `}
       >
 
-        {String(minutos).padStart(2, "0")}
+        {String(minutos).padStart(
+          2,
+          "0"
+        )}
 
         :
 
-        {String(segundos).padStart(2, "0")}
+        {String(segundos).padStart(
+          2,
+          "0"
+        )}
 
       </div>
 
 
-      {/* ACRÉSCIMOS */}
+      {/* ==========================================
+          ACRÉSCIMOS
+      ========================================== */}
 
       {modoAcrescimo && (
 
@@ -206,19 +122,30 @@ function Timer() {
           <div className="botoes-acrescimo">
 
             <button
-              onClick={() => adicionarAcrescimo(1)}
+              type="button"
+              onClick={() =>
+                adicionarAcrescimo(1)
+              }
             >
               +1 MIN
             </button>
 
+
             <button
-              onClick={() => adicionarAcrescimo(2)}
+              type="button"
+              onClick={() =>
+                adicionarAcrescimo(2)
+              }
             >
               +2 MIN
             </button>
 
+
             <button
-              onClick={() => adicionarAcrescimo(3)}
+              type="button"
+              onClick={() =>
+                adicionarAcrescimo(3)
+              }
             >
               +3 MIN
             </button>
@@ -230,19 +157,27 @@ function Timer() {
       )}
 
 
-      {/* CONTROLES */}
+      {/* ==========================================
+          CONTROLES
+      ========================================== */}
 
       <ControlesTimer
+
         rodando={rodando}
+
         iniciar={iniciar}
+
         pausar={pausar}
+
         reiniciar={reiniciar}
+
       />
 
     </div>
 
   );
+
 }
 
-export default Timer;
 
+export default Timer;
