@@ -392,7 +392,7 @@ function PeladaPage({ jogadores }) {
 
           <div>
 
-            <h2>
+            <h2 className="titulo-cont">
               Jogadores presentes
             </h2>
 

@@ -17,6 +17,10 @@
   color: #777;
 }
 
+.titulo-cont{
+    color: #000;
+}
+
 
 /* CONTROLES */
 
@@ -104,7 +108,7 @@
 
 .pelada-jogador.selecionado {
   border-color: #222;
-  background: #79e479;
+  background: #087208;
 }
 
 .pelada-check {
