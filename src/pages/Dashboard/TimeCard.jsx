@@ -1,3 +1,4 @@
+
 import React from "react";
 import "./TimeCard.css";
 
@@ -37,6 +38,11 @@ function TimeCard({ time, posicao }) {
         </span>
 
         <span>
+          <strong>{time.empates}</strong>
+          <small>EMPATES</small>
+        </span>
+
+        <span>
           <strong>{time.derrotas}</strong>
           <small>DERROTAS</small>
         </span>
@@ -48,3 +54,4 @@ function TimeCard({ time, posicao }) {
 }
 
 export default TimeCard;
+

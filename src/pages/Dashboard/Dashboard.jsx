@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { listarTimes } from "../../services/TimesApi";
+import { listarTimes } from "../../services/api";
 
 import TimeCard from "./TimeCard";
 import TabelaTimes from "./TabelaTimes";
@@ -11,18 +11,12 @@ import "./Dashboard.css";
 function Dashboard() {
 
   const [times, setTimes] = useState([]);
-
-  const [carregando, setCarregando] =
-    useState(true);
-
-  const [erro, setErro] =
-    useState("");
+  const [carregando, setCarregando] = useState(true);
+  const [erro, setErro] = useState("");
 
 
   useEffect(() => {
-
     carregarTimes();
-
   }, []);
 
 
@@ -31,39 +25,30 @@ function Dashboard() {
     try {
 
       setCarregando(true);
-
       setErro("");
 
-
-      const dados =
-        await listarTimes();
+      const dados = await listarTimes();
 
 
-      // Ordena os times pelos pontos
-      // do maior para o menor
-      const timesOrdenados =
-        [...dados].sort(
-          (a, b) => {
+      const timesOrdenados = [...dados].sort((a, b) => {
 
-            // Primeiro: pontos
-            if (b.pontos !== a.pontos) {
-              return b.pontos - a.pontos;
-            }
+        // 1º Pontos
+        if (b.pontos !== a.pontos) {
+          return b.pontos - a.pontos;
+        }
 
-            // Desempate: vitórias
-            if (b.vitorias !== a.vitorias) {
-              return b.vitorias - a.vitorias;
-            }
+        // 2º Vitórias
+        if (b.vitorias !== a.vitorias) {
+          return b.vitorias - a.vitorias;
+        }
 
-            // Segundo desempate: menos derrotas
-            return a.derrotas - b.derrotas;
+        // 3º Menos derrotas
+        return a.derrotas - b.derrotas;
 
-          }
-        );
+      });
 
 
       setTimes(timesOrdenados);
-
 
     } catch (error) {
 
@@ -72,11 +57,9 @@ function Dashboard() {
         error
       );
 
-
       setErro(
         "Não foi possível carregar a classificação."
       );
-
 
     } finally {
 
@@ -86,10 +69,6 @@ function Dashboard() {
 
   }
 
-
-  // =========================
-  // CARREGANDO
-  // =========================
 
   if (carregando) {
 
@@ -115,10 +94,6 @@ function Dashboard() {
 
   }
 
-
-  // =========================
-  // ERRO
-  // =========================
 
   if (erro) {
 
@@ -152,21 +127,15 @@ function Dashboard() {
   }
 
 
-  // =========================
-  // TOP 3
-  // =========================
-
-  const top3 =
-    times.slice(0, 3);
+  const top3 = times.slice(0, 3);
 
 
   return (
 
     <main className="dashboard-times">
 
-      {/* =========================
-          CABEÇALHO
-      ========================= */}
+
+      {/* CABEÇALHO */}
 
       <header className="dashboard-times-header">
 
@@ -208,9 +177,8 @@ function Dashboard() {
       </header>
 
 
-      {/* =========================
-          TOP 3
-      ========================= */}
+
+      {/* TOP 3 */}
 
       {top3.length > 0 && (
 
@@ -248,9 +216,8 @@ function Dashboard() {
       )}
 
 
-      {/* =========================
-          TABELA DE CLASSIFICAÇÃO
-      ========================= */}
+
+      {/* TABELA */}
 
       <section className="classificacao">
 
@@ -296,6 +263,7 @@ function Dashboard() {
 
       </section>
 
+
     </main>
 
   );
@@ -304,4 +272,3 @@ function Dashboard() {
 
 
 export default Dashboard;
-

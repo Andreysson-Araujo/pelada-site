@@ -228,7 +228,8 @@
 
 
 .numero-vitorias,
-.numero-derrotas {
+.numero-derrotas,
+.numero-empates {
   display: inline-flex;
 
   align-items: center;
@@ -258,6 +259,11 @@
   color: #e87878;
 }
 
+.numero-empates {
+  background: rgba(255, 238, 0, 0.12);
+
+  color: #ffc400;
+}
 
 /* =========================
    ÁREA DE AÇÕES

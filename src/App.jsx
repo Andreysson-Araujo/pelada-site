@@ -24,7 +24,7 @@ import CardsPage from "./pages/Cards/CardsPage";
 
 import PeladaPage from "./pages/Pelada/PeladaPage";
 
-import { listarJogadores } from "./services/jogadoresApi";
+import { listarJogadores } from "./services/api";
 
 import { gerarListaJogadores } from "./services/exportarJogadores";
 
@@ -266,49 +266,42 @@ function App() {
   }, []);
 
 
-  // ==================================================
-  // ATUALIZAR JOGADOR
-  // ==================================================
+ // ==================================================
+// ATUALIZAR JOGADOR
+// ==================================================
 
-  function atualizarJogador(resultado) {
+function atualizarJogador(resultado) {
 
-    setJogadores(
-      (jogadoresAtuais) => {
+  setJogadores((jogadoresAtuais) => {
 
-        return jogadoresAtuais.map(
-          (jogador) => {
+    return jogadoresAtuais.map((jogador) => {
 
-            if (
-              String(jogador.id) !==
-              String(resultado.id)
-            ) {
-
-              return jogador;
-
-            }
-
-
-            return {
-
-              ...jogador,
-
-              gols:
-                Number(resultado.gols) || 0,
-
-              assistencias:
-                Number(
-                  resultado.assistencias
-                ) || 0,
-
-            };
-
-          }
-        );
-
+      if (
+        String(jogador.id) !==
+        String(resultado.id)
+      ) {
+        return jogador;
       }
-    );
 
-  }
+      return {
+        ...jogador,
+
+        // Atualiza somente se a API enviou gols
+        ...(resultado.gols !== undefined && {
+          gols: Number(resultado.gols),
+        }),
+
+        // Atualiza somente se a API enviou assistências
+        ...(resultado.assistencias !== undefined && {
+          assistencias: Number(resultado.assistencias),
+        }),
+      };
+
+    });
+
+  });
+
+}
 
 
   // ==================================================

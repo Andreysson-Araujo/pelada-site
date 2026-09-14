@@ -1,9 +1,8 @@
-
 import React, { useState } from "react";
 
 import {
   registrarResultado
-} from "../../services/TimesApi";
+} from "../../services/api";
 
 import "./TabelaTimes.css";
 
@@ -13,35 +12,28 @@ function TabelaTimes({ times, onAtualizar }) {
   const [timeSelecionado, setTimeSelecionado] =
     useState(null);
 
-
   const [resultadoSelecionado, setResultadoSelecionado] =
     useState(null);
-
 
   const [pin, setPin] =
     useState("");
 
-
   const [salvando, setSalvando] =
     useState(false);
-
 
   const [erroPin, setErroPin] =
     useState("");
 
 
-  /*
-  ========================================
-  SELECIONAR TIME
-  ========================================
-  */
+  // ========================================
+  // SELECIONAR TIME
+  // ========================================
 
   function selecionarTime(id) {
 
     if (salvando) {
       return;
     }
-
 
     setTimeSelecionado(
       timeSelecionado === id
@@ -52,16 +44,11 @@ function TabelaTimes({ times, onAtualizar }) {
   }
 
 
-  /*
-  ========================================
-  ABRIR MODAL DO PIN
-  ========================================
-  */
+  // ========================================
+  // ABRIR MODAL DO PIN
+  // ========================================
 
-  function abrirConfirmacao(
-    time,
-    resultado
-  ) {
+  function abrirConfirmacao(time, resultado) {
 
     setTimeSelecionado(null);
 
@@ -77,18 +64,15 @@ function TabelaTimes({ times, onAtualizar }) {
   }
 
 
-  /*
-  ========================================
-  FECHAR MODAL
-  ========================================
-  */
+  // ========================================
+  // FECHAR MODAL
+  // ========================================
 
   function fecharConfirmacao() {
 
     if (salvando) {
       return;
     }
-
 
     setResultadoSelecionado(null);
 
@@ -99,18 +83,15 @@ function TabelaTimes({ times, onAtualizar }) {
   }
 
 
-  /*
-  ========================================
-  REGISTRAR RESULTADO
-  ========================================
-  */
+  // ========================================
+  // REGISTRAR RESULTADO
+  // ========================================
 
   async function confirmarResultado() {
 
     if (!resultadoSelecionado) {
       return;
     }
-
 
     if (pin.length !== 4) {
 
@@ -119,7 +100,6 @@ function TabelaTimes({ times, onAtualizar }) {
       );
 
       return;
-
     }
 
 
@@ -131,13 +111,9 @@ function TabelaTimes({ times, onAtualizar }) {
 
 
       await registrarResultado(
-
         resultadoSelecionado.time.id,
-
         resultadoSelecionado.resultado,
-
         pin
-
       );
 
 
@@ -147,9 +123,7 @@ function TabelaTimes({ times, onAtualizar }) {
 
 
       if (onAtualizar) {
-
         await onAtualizar();
-
       }
 
 
@@ -166,6 +140,7 @@ function TabelaTimes({ times, onAtualizar }) {
         "Não foi possível registrar o resultado."
       );
 
+
     } finally {
 
       setSalvando(false);
@@ -175,11 +150,9 @@ function TabelaTimes({ times, onAtualizar }) {
   }
 
 
-  /*
-  ========================================
-  TECLADO DO PIN
-  ========================================
-  */
+  // ========================================
+  // ALTERAR PIN
+  // ========================================
 
   function alterarPin(event) {
 
@@ -188,7 +161,6 @@ function TabelaTimes({ times, onAtualizar }) {
         .replace(/\D/g, "")
         .slice(0, 4);
 
-
     setPin(valor);
 
     setErroPin("");
@@ -196,11 +168,28 @@ function TabelaTimes({ times, onAtualizar }) {
   }
 
 
-  /*
-  ========================================
-  RENDER
-  ========================================
-  */
+  // ========================================
+  // NOME DO RESULTADO
+  // ========================================
+
+  function nomeResultado(resultado) {
+
+    if (resultado === "vitoria") {
+      return "VITÓRIA";
+    }
+
+    if (resultado === "empate") {
+      return "EMPATE";
+    }
+
+    return "DERROTA";
+
+  }
+
+
+  // ========================================
+  // RENDER
+  // ========================================
 
   return (
 
@@ -222,6 +211,8 @@ function TabelaTimes({ times, onAtualizar }) {
 
               <th>V</th>
 
+              <th>E</th>
+
               <th>D</th>
 
             </tr>
@@ -239,22 +230,17 @@ function TabelaTimes({ times, onAtualizar }) {
 
               return (
 
-                <React.Fragment
-                  key={time.id}
-                >
+                <React.Fragment key={time.id}>
 
                   <tr
-
                     className={`linha-time ${
                       selecionado
                         ? "linha-time-selecionada"
                         : ""
                     }`}
-
                     onClick={() =>
                       selecionarTime(time.id)
                     }
-
                   >
 
                     <td className="tabela-posicao">
@@ -269,18 +255,13 @@ function TabelaTimes({ times, onAtualizar }) {
                     <td className="tabela-time">
 
                       <img
-
                         src={`/escudos/${time.escudo}`}
-
                         alt={`Escudo ${time.nome}`}
-
                       />
-
 
                       <span>
                         {time.nome}
                       </span>
-
 
                       <span className="icone-adicionar">
 
@@ -294,18 +275,23 @@ function TabelaTimes({ times, onAtualizar }) {
 
 
                     <td className="tabela-pontos">
-
                       {time.pontos}
-
                     </td>
 
 
                     <td>
 
                       <span className="numero-vitorias">
-
                         {time.vitorias}
+                      </span>
 
+                    </td>
+
+
+                    <td>
+
+                      <span className="numero-empates">
+                        {time.empates}
                       </span>
 
                     </td>
@@ -314,9 +300,7 @@ function TabelaTimes({ times, onAtualizar }) {
                     <td>
 
                       <span className="numero-derrotas">
-
                         {time.derrotas}
-
                       </span>
 
                     </td>
@@ -328,7 +312,7 @@ function TabelaTimes({ times, onAtualizar }) {
 
                     <tr className="linha-acoes">
 
-                      <td colSpan="5">
+                      <td colSpan="6">
 
                         <div className="acoes-resultado">
 
@@ -338,7 +322,6 @@ function TabelaTimes({ times, onAtualizar }) {
                             <span className="acoes-icone">
                               ⚽
                             </span>
-
 
                             <div>
 
@@ -358,14 +341,12 @@ function TabelaTimes({ times, onAtualizar }) {
                           <div className="acoes-botoes">
 
 
+                            {/* VITÓRIA */}
+
                             <button
-
                               type="button"
-
                               className="botao-resultado botao-vitoria"
-
                               disabled={salvando}
-
                               onClick={(event) => {
 
                                 event.stopPropagation();
@@ -376,13 +357,11 @@ function TabelaTimes({ times, onAtualizar }) {
                                 );
 
                               }}
-
                             >
 
                               <span className="botao-resultado-icone">
                                 ✓
                               </span>
-
 
                               <span className="botao-resultado-texto">
 
@@ -399,14 +378,49 @@ function TabelaTimes({ times, onAtualizar }) {
                             </button>
 
 
+                            {/* EMPATE */}
+
                             <button
-
                               type="button"
-
-                              className="botao-resultado botao-derrota"
-
+                              className="botao-resultado botao-empate"
                               disabled={salvando}
+                              onClick={(event) => {
 
+                                event.stopPropagation();
+
+                                abrirConfirmacao(
+                                  time,
+                                  "empate"
+                                );
+
+                              }}
+                            >
+
+                              <span className="botao-resultado-icone">
+                                =
+                              </span>
+
+                              <span className="botao-resultado-texto">
+
+                                <strong>
+                                  Empate
+                                </strong>
+
+                                <small>
+                                  +1 ponto
+                                </small>
+
+                              </span>
+
+                            </button>
+
+
+                            {/* DERROTA */}
+
+                            <button
+                              type="button"
+                              className="botao-resultado botao-derrota"
+                              disabled={salvando}
                               onClick={(event) => {
 
                                 event.stopPropagation();
@@ -417,13 +431,11 @@ function TabelaTimes({ times, onAtualizar }) {
                                 );
 
                               }}
-
                             >
 
                               <span className="botao-resultado-icone">
                                 ✕
                               </span>
-
 
                               <span className="botao-resultado-texto">
 
@@ -441,7 +453,6 @@ function TabelaTimes({ times, onAtualizar }) {
 
 
                           </div>
-
 
                         </div>
 
@@ -476,13 +487,10 @@ function TabelaTimes({ times, onAtualizar }) {
         >
 
           <div
-
             className="modal-pin"
-
             onClick={(event) =>
               event.stopPropagation()
             }
-
           >
 
             <div className="modal-pin-icone">
@@ -500,12 +508,9 @@ function TabelaTimes({ times, onAtualizar }) {
               Registrar{" "}
 
               <strong>
-
-                {resultadoSelecionado.resultado ===
-                "vitoria"
-                  ? "VITÓRIA"
-                  : "DERROTA"}
-
+                {nomeResultado(
+                  resultadoSelecionado.resultado
+                )}
               </strong>
 
               {" "}para
@@ -516,11 +521,8 @@ function TabelaTimes({ times, onAtualizar }) {
             <div className="modal-pin-time">
 
               <img
-
                 src={`/escudos/${resultadoSelecionado.time.escudo}`}
-
                 alt=""
-
               />
 
               <strong>
@@ -535,41 +537,24 @@ function TabelaTimes({ times, onAtualizar }) {
               PIN
 
               <input
-
                 type="password"
-
                 inputMode="numeric"
-
                 maxLength="4"
-
                 value={pin}
-
                 onChange={alterarPin}
-
                 onKeyDown={(event) => {
 
-                  if (
-                    event.key === "Enter"
-                  ) {
-
+                  if (event.key === "Enter") {
                     confirmarResultado();
-
                   }
 
-                  if (
-                    event.key === "Escape"
-                  ) {
-
+                  if (event.key === "Escape") {
                     fecharConfirmacao();
-
                   }
 
                 }}
-
                 autoFocus
-
                 placeholder="••••"
-
               />
 
             </label>
@@ -589,35 +574,23 @@ function TabelaTimes({ times, onAtualizar }) {
             <div className="modal-pin-botoes">
 
               <button
-
                 type="button"
-
                 className="modal-pin-cancelar"
-
                 onClick={fecharConfirmacao}
-
                 disabled={salvando}
-
               >
-
                 Cancelar
-
               </button>
 
 
               <button
-
                 type="button"
-
                 className="modal-pin-confirmar"
-
                 onClick={confirmarResultado}
-
                 disabled={
                   salvando ||
                   pin.length !== 4
                 }
-
               >
 
                 {salvando
@@ -627,7 +600,6 @@ function TabelaTimes({ times, onAtualizar }) {
               </button>
 
             </div>
-
 
           </div>
 

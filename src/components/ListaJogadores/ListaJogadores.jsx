@@ -7,7 +7,7 @@ import {
   removerGol,
   adicionarAssistencia,
   removerAssistencia,
-} from "../../services/jogadoresApi";
+} from "../../services/api";
 
 function ListaJogadores({ jogadores, onAtualizarJogador }) {
 
