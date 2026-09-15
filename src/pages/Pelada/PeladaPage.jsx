@@ -1,8 +1,10 @@
-import React, { useMemo, useState } from "react";
+
+import React, { useMemo, useRef, useState } from "react";
 
 import "./PeladaPage.css";
 
 import { sortearTimes } from "./sortearTimes";
+
 import { nomesTimes } from "./nomesTimes";
 
 function PeladaPage({ jogadores }) {
@@ -13,6 +15,9 @@ function PeladaPage({ jogadores }) {
     useState(4);
 
   const [times, setTimes] = useState([]);
+
+  // Referência para a área dos times sorteados
+  const resultadoRef = useRef(null);
 
 
   // ==================================================
@@ -149,6 +154,7 @@ function PeladaPage({ jogadores }) {
 
     // Verifica se existe pelo menos
     // um goleiro
+
     if (
       goleirosPresentes.length === 0
     ) {
@@ -159,7 +165,9 @@ function PeladaPage({ jogadores }) {
         );
 
       if (!continuar) {
+
         return;
+
       }
 
     }
@@ -174,6 +182,19 @@ function PeladaPage({ jogadores }) {
 
 
     setTimes(resultado);
+
+
+    // Aguarda o React renderizar
+    // os times antes de fazer o scroll
+
+    setTimeout(() => {
+
+      resultadoRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+
+    }, 100);
 
   }
 
@@ -317,7 +338,6 @@ function PeladaPage({ jogadores }) {
 
       <section className="pelada-controles">
 
-
         <div className="pelada-controle">
 
           <label>
@@ -387,7 +407,6 @@ function PeladaPage({ jogadores }) {
 
       <section className="pelada-selecao">
 
-
         <div className="pelada-selecao-header">
 
           <div>
@@ -408,7 +427,6 @@ function PeladaPage({ jogadores }) {
 
 
         <div className="pelada-jogadores">
-
 
           {jogadores.map(
             (jogador) => {
@@ -444,7 +462,6 @@ function PeladaPage({ jogadores }) {
                     )
                   }
                 >
-
 
                   <span className="pelada-check">
 
@@ -491,14 +508,12 @@ function PeladaPage({ jogadores }) {
 
                   </span>
 
-
                 </button>
 
               );
 
             }
           )}
-
 
         </div>
 
@@ -510,7 +525,6 @@ function PeladaPage({ jogadores }) {
       ========================================== */}
 
       <section className="pelada-resumo">
-
 
         <div>
 
@@ -550,7 +564,6 @@ function PeladaPage({ jogadores }) {
 
         </div>
 
-
       </section>
 
 
@@ -575,11 +588,12 @@ function PeladaPage({ jogadores }) {
 
       {times.length > 0 && (
 
-        <section className="times-resultado">
-
+        <section
+          className="times-resultado"
+          ref={resultadoRef}
+        >
 
           <div className="times-header">
-
 
             <div>
 
@@ -595,7 +609,6 @@ function PeladaPage({ jogadores }) {
 
 
             <div className="times-acoes">
-
 
               <button
                 type="button"
@@ -617,9 +630,7 @@ function PeladaPage({ jogadores }) {
                 🔄 Sortear novamente
               </button>
 
-
             </div>
-
 
           </div>
 
@@ -630,7 +641,6 @@ function PeladaPage({ jogadores }) {
 
           <div className="times-grid">
 
-
             {times.map(
               (time, index) => (
 
@@ -639,19 +649,15 @@ function PeladaPage({ jogadores }) {
                   key={index}
                 >
 
-
                   <div className="time-card-header">
-
 
                     <h3>
                       🏆 {time.nome}
                     </h3>
 
-
                     <span>
                       Força: {time.forca}
                     </span>
-
 
                   </div>
 
@@ -660,11 +666,9 @@ function PeladaPage({ jogadores }) {
 
                   <div className="time-goleiro">
 
-
                     <span>
                       🧤
                     </span>
-
 
                     <strong>
 
@@ -674,14 +678,12 @@ function PeladaPage({ jogadores }) {
 
                     </strong>
 
-
                   </div>
 
 
                   {/* JOGADORES */}
 
                   <div className="time-jogadores">
-
 
                     {time.jogadores.map(
                       (jogador) => (
@@ -712,23 +714,18 @@ function PeladaPage({ jogadores }) {
                       )
                     )}
 
-
                   </div>
-
 
                 </article>
 
               )
             )}
 
-
           </div>
-
 
         </section>
 
       )}
-
 
     </main>
 
@@ -737,3 +734,5 @@ function PeladaPage({ jogadores }) {
 }
 
 export default PeladaPage;
+
+
