@@ -8,4 +8,5 @@ export const nomesTimes = [
   "Vasco da Diamba",
   "Boca Fumo",
   "Só no Pelo AC FC",
+  "Milan Be"
 ];
