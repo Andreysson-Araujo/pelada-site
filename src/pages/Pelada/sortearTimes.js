@@ -3,11 +3,6 @@ export function sortearTimes(
   jogadoresPorTime,
   nomesTimes
 ) {
-
-  // ==================================================
-  // SEPARAR GOLEIROS E JOGADORES DE LINHA
-  // ==================================================
-
   const goleiros = jogadores.filter(
     (jogador) =>
       jogador.tipo
@@ -22,51 +17,58 @@ export function sortearTimes(
         .toUpperCase() !== "GOLEIRO"
   );
 
-
-  // ==================================================
-  // VERIFICAR SE EXISTEM JOGADORES
-  // ==================================================
-
   if (jogadoresLinha.length === 0) {
     return [];
   }
 
+  /*
+   * O limite de times vem diretamente
+   * da quantidade de times cadastrados.
+   */
+  const quantidadeTimesCadastrados =
+    nomesTimes.length;
 
-  // ==================================================
-  // CALCULAR QUANTIDADE DE TIMES
-  // ==================================================
-
-  const quantidadeTimes =
+  /*
+   * Quantidade de times necessária para
+   * os jogadores presentes.
+   */
+  const quantidadeTimesNecessarios =
     Math.ceil(
       jogadoresLinha.length /
-      jogadoresPorTime
+        jogadoresPorTime
     );
 
+  /*
+   * Nunca ultrapassa a quantidade de
+   * times cadastrados no banco.
+   */
+  const quantidadeTimes =
+    Math.min(
+      quantidadeTimesNecessarios,
+      quantidadeTimesCadastrados
+    );
 
-  // ==================================================
-  // SORTEAR NOMES DOS TIMES
-  // ==================================================
-
+  /*
+   * Embaralha os nomes dos times cadastrados.
+   */
   const nomesEmbaralhados = [
     ...nomesTimes
   ].sort(
     () => Math.random() - 0.5
   );
 
-
-  // ==================================================
-  // CRIAR TIMES
-  // ==================================================
-
+  /*
+   * Cria os times necessários.
+   */
   const times = Array.from(
     {
-      length: quantidadeTimes
+      length: quantidadeTimes,
     },
     (_, index) => ({
+      numero: index + 1,
 
       nome:
-        nomesEmbaralhados[index] ||
-        `Time ${index + 1}`,
+        nomesEmbaralhados[index],
 
       goleiro: null,
 
@@ -74,31 +76,25 @@ export function sortearTimes(
 
       forca: 0,
 
+      reserva: false,
     })
   );
 
-
-  // ==================================================
-  // EMBARALHAR JOGADORES
-  // ==================================================
-
+  /*
+   * Embaralha jogadores.
+   */
   const jogadoresEmbaralhados = [
-    ...jogadoresLinha
+    ...jogadoresLinha,
   ].sort(
     () => Math.random() - 0.5
   );
 
-
-  // ==================================================
-  // ORDENAR POR ESTRELAS
-  //
-  // Os melhores jogadores são distribuídos
-  // primeiro para tentar equilibrar os times.
-  // ==================================================
-
+  /*
+   * Coloca os jogadores mais fortes
+   * primeiro para equilibrar os times.
+   */
   jogadoresEmbaralhados.sort(
     (a, b) => {
-
       const estrelasA =
         Number(a.estrelas) || 0;
 
@@ -106,21 +102,15 @@ export function sortearTimes(
         Number(b.estrelas) || 0;
 
       return estrelasB - estrelasA;
-
     }
   );
 
-
-  // ==================================================
-  // DISTRIBUIR JOGADORES
-  //
-  // Sempre coloca o próximo jogador no time
-  // que possui a menor força naquele momento.
-  // ==================================================
-
+  /*
+   * Distribui jogadores somente nos
+   * times que realmente foram criados.
+   */
   jogadoresEmbaralhados.forEach(
     (jogador) => {
-
       const timesDisponiveis =
         times.filter(
           (time) =>
@@ -128,15 +118,11 @@ export function sortearTimes(
             jogadoresPorTime
         );
 
-
       if (
         timesDisponiveis.length === 0
       ) {
         return;
       }
-
-
-      // Encontrar o time com menor força
 
       const menorForca =
         Math.min(
@@ -145,88 +131,89 @@ export function sortearTimes(
           )
         );
 
-
       const timesMenorForca =
         timesDisponiveis.filter(
           (time) =>
-            time.forca ===
-            menorForca
+            time.forca === menorForca
         );
-
-
-      // Se houver empate entre times,
-      // escolhe aleatoriamente.
 
       const timeEscolhido =
         timesMenorForca[
           Math.floor(
             Math.random() *
-            timesMenorForca.length
+              timesMenorForca.length
           )
         ];
-
-
-      // Adicionar jogador
 
       timeEscolhido.jogadores.push(
         jogador
       );
 
-
-      // Atualizar força
-
       timeEscolhido.forca +=
         Number(jogador.estrelas) || 0;
-
     }
   );
 
-
-  // ==================================================
-  // DISTRIBUIR GOLEIROS
-  //
-  // O goleiro pode aparecer em mais de um time.
-  // ==================================================
-
+  /*
+   * Distribui os goleiros apenas nos
+   * times que existem.
+   */
   if (goleiros.length > 0) {
-
     times.forEach(
       (time, index) => {
-
         time.goleiro =
           goleiros[
-            index %
-            goleiros.length
+            index % goleiros.length
           ];
-
       }
     );
-
   }
 
-
-  // ==================================================
-  // EMBARALHAR OS JOGADORES DENTRO DE CADA TIME
-  //
-  // Isso evita que os jogadores apareçam sempre
-  // na mesma ordem.
-  // ==================================================
-
+  /*
+   * Embaralha os jogadores dentro
+   * de cada time.
+   */
   times.forEach(
     (time) => {
-
       time.jogadores.sort(
-        () => Math.random() - 0.5
+        () =>
+          Math.random() - 0.5
       );
-
     }
   );
 
+  /*
+   * Adiciona os times cadastrados restantes
+   * como vagas para atrasados.
+   *
+   * Exemplo:
+   * Banco possui 10 times
+   * Foram necessários 5
+   *
+   * Resultado:
+   * 1-5 = times com jogadores
+   * 6-10 = vagas
+   */
+  for (
+    let numero = times.length + 1;
+    numero <= quantidadeTimesCadastrados;
+    numero++
+  ) {
+    times.push({
+      numero,
 
-  // ==================================================
-  // RETORNAR RESULTADO
-  // ==================================================
+      nome:
+        nomesEmbaralhados[numero - 1],
+
+      goleiro: null,
+
+      jogadores: [],
+
+      forca: 0,
+
+      reserva: true,
+    });
+  }
 
   return times;
-
 }

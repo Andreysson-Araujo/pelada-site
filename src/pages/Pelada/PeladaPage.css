@@ -306,4 +306,233 @@
     gap: 10px;
   }
 
+
+}
+
+/* ==================================================
+   PRIMEIRA PARTIDA
+================================================== */
+
+.proxima-partida {
+  margin-top: 25px;
+  margin-bottom: 25px;
+  padding: 25px;
+  border-radius: 12px;
+  background: #111;
+  color: #fff;
+  text-align: center;
+}
+
+.proxima-partida .subtitle {
+  display: block;
+  color: #aaa;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.proxima-partida h3 {
+  margin: 8px 0 20px;
+}
+
+.confronto {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+}
+
+.confronto-time {
+  min-width: 160px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 8px;
+}
+
+.confronto-time strong {
+  font-size: 18px;
+}
+
+.numero-time {
+  width: 36px;
+  height: 36px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #fff;
+  color: #111;
+
+  font-weight: 800;
+}
+
+.versus {
+  font-size: 28px;
+  font-weight: 900;
+}
+
+.proxima-partida p {
+  margin: 20px 0 0;
+
+  color: #aaa;
+  font-size: 13px;
+}
+
+
+/* ==================================================
+   FILA DOS TIMES
+================================================== */
+
+.fila-times {
+  margin-bottom: 30px;
+
+  padding: 20px;
+
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+
+  background: #fff;
+}
+
+.fila-header {
+  margin-bottom: 15px;
+}
+
+.fila-header .subtitle {
+  display: block;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  letter-spacing: 1px;
+  color: #777;
+}
+
+.fila-header p {
+  margin: 5px 0 0;
+
+  color: #777;
+  font-size: 13px;
+}
+
+.fila-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fila-time {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 10px 12px;
+
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+
+  background: #fafafa;
+}
+
+.fila-time strong {
+  flex: 1;
+
+  color: #222;
+}
+
+.fila-primeiros {
+  border-color: #222;
+  background: #f1f1f1;
+}
+
+.fila-status {
+  font-size: 12px;
+  font-weight: 700;
+
+  white-space: nowrap;
+}
+
+.fila-primeiros .fila-status {
+  color: #087208;
+}
+
+
+/* ==================================================
+   NÚMERO DO TIME
+================================================== */
+
+.numero-time-card {
+  width: 32px;
+  height: 32px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-right: 8px;
+
+  border-radius: 50%;
+
+  background: #fff;
+  color: #111;
+
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.time-identificacao {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+}
+
+.time-identificacao h3 {
+  margin: 0;
+}
+
+
+/* ==================================================
+   TIME VAZIO
+================================================== */
+
+.time-vazio {
+  border-style: dashed;
+  border-color: #888;
+}
+
+.time-sem-jogadores {
+  min-height: 120px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  gap: 5px;
+
+  color: #888;
+}
+
+.time-sem-jogadores span {
+  font-size: 25px;
+}
+
+.time-sem-jogadores strong {
+  font-size: 14px;
+}
+
+.time-sem-jogadores small {
+  font-size: 12px;
+  color: #999;
 }
