@@ -3,7 +3,7 @@
 ━━━━━━━━━━━━━━━━━━━━
 
 🆔 001 | ATA 23 | DEF 19 | VEL 22 | PAS 28 | DRI 27
-🆔 002 | ATA 17 | DEF 27 | VEL 10 | PAS 20 | DRI 10
+🆔 002 | ATA 17 | DEF 27 | VEL 13 | PAS 20 | DRI 13
 🆔 003 | ATA 5 | DEF 15 | VEL 13 | PAS 17 | DRI 9
 🆔 004 | ATA 12 | DEF 20 | VEL 12 | PAS 20 | DRI 18
 🆔 005 | ATA 20 | DEF 40 | VEL 15 | PAS 20 | DRI 15
@@ -32,7 +32,7 @@
 🆔 028 | ATA 25 | DEF 22 | VEL 18 | PAS 20 | DRI 20
 🆔 029 | ATA 20 | DEF 20 | VEL 20 | PAS 20 | DRI 20
 🆔 030 | ATA 21 | DEF 20 | VEL 20 | PAS 20 | DRI 15
-🆔 031 | ATA 25 | DEF 20 | VEL 20 | PAS 20 | DRI 15
+🆔 031 | ATA 20 | DEF 20 | VEL 20 | PAS 18 | DRI 11
 🆔 032 | ATA 20 | DEF 20 | VEL 20 | PAS 25 | DRI 20
 🆔 033 | ATA 20 | DEF 22 | VEL 20 | PAS 25 | DRI 20
 🆔 034 | ATA 21 | DEF 20 | VEL 20 | PAS 22 | DRI 20
@@ -44,6 +44,7 @@
 🆔 040 | ATA 20 | DEF 20 | VEL 20 | PAS 20 | DRI 20
 🆔 041 | ATA 20 | DEF 20 | VEL 20 | PAS 20 | DRI 20
 🆔 042 | ATA 20 | DEF 20 | VEL 20 | PAS 20 | DRI 20
+🆔 043 | ATA 20 | DEF 20 | VEL 20 | PAS 20 | DRI 20
 
 
 ━━━━━━━━━━━━━━━━━━━━
