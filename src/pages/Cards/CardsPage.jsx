@@ -1,18 +1,41 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, {
+  useEffect,
+  useMemo,
+  useState
+} from "react";
+
 import "./CardsPage.css";
+
 import { calcularOVRJogador } from "./cardUtils";
 
-function CardsPage({ jogadores, onAbrirFicha }) {
+function CardsPage({
+  jogadores,
+  onAbrirFicha
+}) {
   const [cards, setCards] = useState([]);
-  const [carregando, setCarregando] = useState(true);
+
+  const [carregando, setCarregando] =
+    useState(true);
+
   const [erro, setErro] = useState("");
 
-  const [pesquisa, setPesquisa] = useState("");
-  const [ovrMinimo, setOvrMinimo] = useState("todos");
-  const [atributoFiltro, setAtributoFiltro] = useState("todos");
-  const [atributoMinimo, setAtributoMinimo] = useState("todos");
-  const [ordenacao, setOrdenacao] = useState("cadastro");
-  const [tipoFiltro, setTipoFiltro] = useState("todos");
+  const [pesquisa, setPesquisa] =
+    useState("");
+
+  const [ovrMinimo, setOvrMinimo] =
+    useState("todos");
+
+  const [atributoFiltro, setAtributoFiltro] =
+    useState("todos");
+
+  const [atributoMinimo, setAtributoMinimo] =
+    useState("todos");
+
+  const [ordenacao, setOrdenacao] =
+    useState("cadastro");
+
+  const [tipoFiltro, setTipoFiltro] =
+    useState("todos");
 
   // ============================================================
   // CARREGAR CARDS.TXT
@@ -24,9 +47,12 @@ function CardsPage({ jogadores, onAbrirFicha }) {
         setCarregando(true);
         setErro("");
 
-        const resposta = await fetch("/cards.txt", {
-          cache: "no-store",
-        });
+        const resposta = await fetch(
+          "/cards.txt",
+          {
+            cache: "no-store"
+          }
+        );
 
         if (!resposta.ok) {
           throw new Error(
@@ -34,10 +60,17 @@ function CardsPage({ jogadores, onAbrirFicha }) {
           );
         }
 
-        const texto = await resposta.text();
+        const texto =
+          await resposta.text();
 
-        if (!texto.includes("PELADA_CARDS_V1")) {
-          throw new Error("Arquivo cards.txt inválido.");
+        if (
+          !texto.includes(
+            "PELADA_CARDS_V1"
+          )
+        ) {
+          throw new Error(
+            "Arquivo cards.txt inválido."
+          );
         }
 
         const linhas = texto
@@ -54,7 +87,9 @@ function CardsPage({ jogadores, onAbrirFicha }) {
 
           const partes = linha
             .split("|")
-            .map((parte) => parte.trim());
+            .map((parte) =>
+              parte.trim()
+            );
 
           if (partes.length < 8) {
             return;
@@ -99,7 +134,11 @@ function CardsPage({ jogadores, onAbrirFicha }) {
                 .trim()
             ) || 0;
 
-          // Dados GERAIS vindos do cards.txt
+          // ====================================================
+          // ESTATÍSTICAS GERAIS
+          // Vindas do cards.txt
+          // ====================================================
+
           const gols =
             Number(
               partes[6]
@@ -110,9 +149,9 @@ function CardsPage({ jogadores, onAbrirFicha }) {
           const assistencias =
             Number(
               partes[7]
-                .replace("ASSIST", "")
                 .replace("ASSISTÊNCIAS", "")
                 .replace("ASSISTENCIA", "")
+                .replace("ASSIST", "")
                 .trim()
             ) || 0;
 
@@ -124,7 +163,7 @@ function CardsPage({ jogadores, onAbrirFicha }) {
             passe,
             drible,
             gols,
-            assistencias,
+            assistencias
           });
         });
 
@@ -134,49 +173,52 @@ function CardsPage({ jogadores, onAbrirFicha }) {
         // jogador.gols
         // jogador.assistencias
         //
-        // continuam sendo os dados da API / temporada atual.
+        // = temporada atual
         //
         // golsGeral
         // assistenciasGeral
         //
-        // vêm do cards.txt.
+        // = histórico geral do cards.txt
         // ========================================================
 
-        const jogadoresComCards = jogadores.map((jogador) => {
-          const card = cardsLidos.find(
-            (item) =>
-              String(item.id) ===
-              String(jogador.id)
-          );
+        const jogadoresComCards =
+          jogadores.map((jogador) => {
+            const card =
+              cardsLidos.find(
+                (item) =>
+                  String(item.id) ===
+                  String(jogador.id)
+              );
 
-          return {
-            ...jogador,
+            return {
+              ...jogador,
 
-            atributos: card
-              ? {
-                  ataque: card.ataque,
-                  defesa: card.defesa,
-                  velocidade: card.velocidade,
-                  passe: card.passe,
-                  drible: card.drible,
-                }
-              : {
-                  ataque: 0,
-                  defesa: 0,
-                  velocidade: 0,
-                  passe: 0,
-                  drible: 0,
-                },
+              atributos: card
+                ? {
+                    ataque: card.ataque,
+                    defesa: card.defesa,
+                    velocidade:
+                      card.velocidade,
+                    passe: card.passe,
+                    drible: card.drible
+                  }
+                : {
+                    ataque: 0,
+                    defesa: 0,
+                    velocidade: 0,
+                    passe: 0,
+                    drible: 0
+                  },
 
-            golsGeral: card
-              ? card.gols
-              : 0,
+              golsGeral: card
+                ? card.gols
+                : 0,
 
-            assistenciasGeral: card
-              ? card.assistencias
-              : 0,
-          };
-        });
+              assistenciasGeral: card
+                ? card.assistencias
+                : 0
+            };
+          });
 
         setCards(jogadoresComCards);
       } catch (error) {
@@ -204,68 +246,96 @@ function CardsPage({ jogadores, onAbrirFicha }) {
   const cardsFiltrados = useMemo(() => {
     let resultado = [...cards];
 
+    // ========================================================
     // PESQUISA
+    // ========================================================
+
     if (pesquisa.trim()) {
-      const termo = pesquisa
-        .toLowerCase()
-        .trim();
+      const termo =
+        pesquisa
+          .toLowerCase()
+          .trim();
 
-      resultado = resultado.filter(
-        (jogador) =>
-          String(jogador.nome || "")
-            .toLowerCase()
-            .includes(termo) ||
-          String(jogador.id || "")
-            .toLowerCase()
-            .includes(termo)
-      );
+      resultado =
+        resultado.filter(
+          (jogador) =>
+            String(
+              jogador.nome || ""
+            )
+              .toLowerCase()
+              .includes(termo) ||
+            String(
+              jogador.id || ""
+            )
+              .toLowerCase()
+              .includes(termo)
+        );
     }
 
+    // ========================================================
     // OVR MÍNIMO
-    if (ovrMinimo !== "todos") {
-      const minimo = Number(ovrMinimo);
+    // ========================================================
 
-      resultado = resultado.filter(
-        (jogador) =>
-          calcularOVRJogador(jogador) >= minimo
-      );
+    if (ovrMinimo !== "todos") {
+      const minimo =
+        Number(ovrMinimo);
+
+      resultado =
+        resultado.filter(
+          (jogador) =>
+            calcularOVRJogador(
+              jogador
+            ) >= minimo
+        );
     }
 
+    // ========================================================
     // ATRIBUTO
+    // ========================================================
+
     if (
       atributoFiltro !== "todos" &&
       atributoMinimo !== "todos"
     ) {
-      const minimo = Number(atributoMinimo);
+      const minimo =
+        Number(atributoMinimo);
 
-      resultado = resultado.filter(
-        (jogador) => {
-          const valor =
-            Number(
-              jogador.atributos?.[
-                atributoFiltro
-              ]
-            ) || 0;
+      resultado =
+        resultado.filter(
+          (jogador) => {
+            const valor =
+              Number(
+                jogador.atributos?.[
+                  atributoFiltro
+                ]
+              ) || 0;
 
-          return valor >= minimo;
-        }
-      );
+            return valor >= minimo;
+          }
+        );
     }
 
+    // ========================================================
     // TIPO
+    // ========================================================
+
     if (tipoFiltro !== "todos") {
-      resultado = resultado.filter(
-        (jogador) =>
-          String(
-            jogador.tipo || ""
-          ).toUpperCase() ===
-          String(
-            tipoFiltro
-          ).toUpperCase()
-      );
+      resultado =
+        resultado.filter(
+          (jogador) =>
+            String(
+              jogador.tipo || ""
+            ).toUpperCase() ===
+            String(
+              tipoFiltro
+            ).toUpperCase()
+        );
     }
 
+    // ========================================================
     // ORDENAÇÃO
+    // ========================================================
+
     if (ordenacao === "ovr") {
       resultado.sort(
         (a, b) =>
@@ -277,8 +347,12 @@ function CardsPage({ jogadores, onAbrirFicha }) {
     if (ordenacao === "nome") {
       resultado.sort(
         (a, b) =>
-          String(a.nome || "").localeCompare(
-            String(b.nome || "")
+          String(
+            a.nome || ""
+          ).localeCompare(
+            String(
+              b.nome || ""
+            )
           )
       );
     }
@@ -286,12 +360,19 @@ function CardsPage({ jogadores, onAbrirFicha }) {
     if (ordenacao === "gols") {
       resultado.sort(
         (a, b) =>
-          (Number(b.golsGeral) || 0) -
-          (Number(a.golsGeral) || 0)
+          (Number(
+            b.golsGeral
+          ) || 0) -
+          (Number(
+            a.golsGeral
+          ) || 0)
       );
     }
 
-    if (ordenacao === "assistencias") {
+    if (
+      ordenacao ===
+      "assistencias"
+    ) {
       resultado.sort(
         (a, b) =>
           (Number(
@@ -311,7 +392,7 @@ function CardsPage({ jogadores, onAbrirFicha }) {
     atributoFiltro,
     atributoMinimo,
     ordenacao,
-    tipoFiltro,
+    tipoFiltro
   ]);
 
   // ============================================================
@@ -335,7 +416,9 @@ function CardsPage({ jogadores, onAbrirFicha }) {
     return (
       <div className="cards-page">
         <div className="cards-estado">
-          <h2>🃏 CARREGANDO CARDS...</h2>
+          <h2>
+            🃏 CARREGANDO CARDS...
+          </h2>
         </div>
       </div>
     );
@@ -350,6 +433,7 @@ function CardsPage({ jogadores, onAbrirFicha }) {
       <div className="cards-page">
         <div className="cards-estado">
           <h2>❌ ERRO</h2>
+
           <p>{erro}</p>
         </div>
       </div>
@@ -363,11 +447,15 @@ function CardsPage({ jogadores, onAbrirFicha }) {
   return (
     <div className="cards-page">
 
-      {/* CABEÇALHO */}
+      {/* ======================================================
+          CABEÇALHO
+          ====================================================== */}
 
       <div className="cards-header">
         <div>
-          <h1>🃏 CARDS DOS JOGADORES</h1>
+          <h1>
+            🃏 CARDS DOS JOGADORES
+          </h1>
 
           <p className="cards-subtitle">
             {cardsFiltrados.length} jogadores
@@ -375,34 +463,47 @@ function CardsPage({ jogadores, onAbrirFicha }) {
         </div>
       </div>
 
-      {/* FILTROS */}
+
+      {/* ======================================================
+          FILTROS
+          ====================================================== */}
 
       <div className="cards-filtros">
 
         {/* PESQUISA */}
 
-        <div className="filtro-grupo filtro-pesquisa">
-          <label>PESQUISAR</label>
+        <div className="filtro-grupo">
+          <label>
+            PESQUISAR
+          </label>
 
           <input
+            className="filtro-pesquisa"
             type="text"
             value={pesquisa}
             onChange={(e) =>
-              setPesquisa(e.target.value)
+              setPesquisa(
+                e.target.value
+              )
             }
             placeholder="Nome ou ID..."
           />
         </div>
 
+
         {/* OVR */}
 
         <div className="filtro-grupo">
-          <label>OVR MÍNIMO</label>
+          <label>
+            OVR MÍNIMO
+          </label>
 
           <select
             value={ovrMinimo}
             onChange={(e) =>
-              setOvrMinimo(e.target.value)
+              setOvrMinimo(
+                e.target.value
+              )
             }
           >
             <option value="todos">
@@ -431,10 +532,13 @@ function CardsPage({ jogadores, onAbrirFicha }) {
           </select>
         </div>
 
+
         {/* ATRIBUTO */}
 
         <div className="filtro-grupo">
-          <label>ATRIBUTO</label>
+          <label>
+            ATRIBUTO
+          </label>
 
           <select
             value={atributoFiltro}
@@ -470,10 +574,13 @@ function CardsPage({ jogadores, onAbrirFicha }) {
           </select>
         </div>
 
-        {/* VALOR DO ATRIBUTO */}
+
+        {/* MÍNIMO */}
 
         <div className="filtro-grupo">
-          <label>MÍNIMO</label>
+          <label>
+            MÍNIMO
+          </label>
 
           <select
             value={atributoMinimo}
@@ -517,10 +624,13 @@ function CardsPage({ jogadores, onAbrirFicha }) {
           </select>
         </div>
 
+
         {/* TIPO */}
 
         <div className="filtro-grupo">
-          <label>TIPO</label>
+          <label>
+            TIPO
+          </label>
 
           <select
             value={tipoFiltro}
@@ -544,10 +654,13 @@ function CardsPage({ jogadores, onAbrirFicha }) {
           </select>
         </div>
 
+
         {/* ORDENAÇÃO */}
 
         <div className="filtro-grupo">
-          <label>ORDENAR</label>
+          <label>
+            ORDENAR
+          </label>
 
           <select
             value={ordenacao}
@@ -579,6 +692,7 @@ function CardsPage({ jogadores, onAbrirFicha }) {
           </select>
         </div>
 
+
         {/* LIMPAR */}
 
         <button
@@ -587,11 +701,16 @@ function CardsPage({ jogadores, onAbrirFicha }) {
         >
           LIMPAR FILTROS
         </button>
+
       </div>
 
-      {/* CARDS */}
+
+      {/* ======================================================
+          CARDS
+          ====================================================== */}
 
       <div className="cards-grid">
+
         {cardsFiltrados.map(
           (jogador) => {
             const ovr =
@@ -611,18 +730,23 @@ function CardsPage({ jogadores, onAbrirFicha }) {
               <div
                 key={jogador.id}
                 className="card-jogador"
+
                 onClick={() =>
                   onAbrirFicha(
                     jogador
                   )
                 }
+
                 role="button"
                 tabIndex={0}
+
                 onKeyDown={(e) => {
                   if (
                     e.key === "Enter" ||
                     e.key === " "
                   ) {
+                    e.preventDefault();
+
                     onAbrirFicha(
                       jogador
                     );
@@ -630,7 +754,9 @@ function CardsPage({ jogadores, onAbrirFicha }) {
                 }}
               >
 
-                {/* TOPO */}
+                {/* ==================================================
+                    TOPO
+                    ================================================== */}
 
                 <div className="card-topo">
 
@@ -639,26 +765,36 @@ function CardsPage({ jogadores, onAbrirFicha }) {
                   </span>
 
                   <div className="card-ovr">
-                    <span>OVR</span>
+
+                    <span>
+                      OVR
+                    </span>
 
                     <strong>
                       {ovr}
                     </strong>
+
                   </div>
 
                 </div>
 
-                {/* FOTO */}
+
+                {/* ==================================================
+                    FOTO
+                    ================================================== */}
 
                 <div className="card-foto-container">
 
                   <img
                     className="card-foto"
+
                     src={`/fotos/${jogador.id}.png`}
+
                     alt={
                       jogador.nome ||
                       "Jogador"
                     }
+
                     onError={(e) => {
                       e.currentTarget.src =
                         "/fotos/default.png";
@@ -667,31 +803,45 @@ function CardsPage({ jogadores, onAbrirFicha }) {
 
                 </div>
 
-                {/* NOME */}
+
+                {/* ==================================================
+                    NOME
+                    ================================================== */}
 
                 <div className="card-nome">
                   {jogador.nome ||
                     "JOGADOR"}
                 </div>
 
-                {/* TIPO */}
+
+                {/* ==================================================
+                    TIPO
+                    ================================================== */}
 
                 <div className="card-tipo">
                   {jogador.tipo ||
                     "JOGADOR"}
                 </div>
 
-                {/* ESTRELAS */}
+
+                {/* ==================================================
+                    ESTRELAS
+                    ================================================== */}
 
                 <div className="card-estrelas">
+
                   {"⭐".repeat(
                     Number(
                       jogador.estrelas
                     ) || 0
                   )}
+
                 </div>
 
-                {/* ATRIBUTOS */}
+
+                {/* ==================================================
+                    ATRIBUTOS
+                    ================================================== */}
 
                 <div className="card-atributos">
 
@@ -711,6 +861,7 @@ function CardsPage({ jogadores, onAbrirFicha }) {
                     </strong>
                   </div>
 
+
                   <div>
                     <span>
                       DEF
@@ -725,6 +876,7 @@ function CardsPage({ jogadores, onAbrirFicha }) {
                     </strong>
                   </div>
 
+
                   <div>
                     <span>
                       {ehGoleiro
@@ -736,10 +888,12 @@ function CardsPage({ jogadores, onAbrirFicha }) {
                       {
                         jogador
                           .atributos
-                          ?.velocidade || 0
+                          ?.velocidade ||
+                        0
                       }
                     </strong>
                   </div>
+
 
                   <div>
                     <span>
@@ -754,6 +908,7 @@ function CardsPage({ jogadores, onAbrirFicha }) {
                       }
                     </strong>
                   </div>
+
 
                   <div>
                     <span>
@@ -773,13 +928,16 @@ function CardsPage({ jogadores, onAbrirFicha }) {
 
                 </div>
 
-                {/* ESTATÍSTICAS GERAIS DO CARDS.TXT */}
+
+                {/* ==================================================
+                    ESTATÍSTICAS GERAIS
+                    ================================================== */}
 
                 <div className="card-estatisticas">
 
-                  <div className="estatistica">
+                  <div className="card-estatistica">
 
-                    <span className="estatistica-icone">
+                    <span className="card-estatistica-icone">
                       ⚽
                     </span>
 
@@ -796,9 +954,10 @@ function CardsPage({ jogadores, onAbrirFicha }) {
 
                   </div>
 
-                  <div className="estatistica">
 
-                    <span className="estatistica-icone">
+                  <div className="card-estatistica">
+
+                    <span className="card-estatistica-icone">
                       🅰️
                     </span>
 
@@ -822,9 +981,13 @@ function CardsPage({ jogadores, onAbrirFicha }) {
             );
           }
         )}
+
       </div>
 
-      {/* NENHUM RESULTADO */}
+
+      {/* ======================================================
+          NENHUM RESULTADO
+          ====================================================== */}
 
       {cardsFiltrados.length === 0 && (
         <div className="cards-estado">
@@ -848,4 +1011,3 @@ function CardsPage({ jogadores, onAbrirFicha }) {
 }
 
 export default CardsPage;
-

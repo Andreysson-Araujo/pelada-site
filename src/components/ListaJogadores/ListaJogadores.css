@@ -1,42 +1,47 @@
-/* =========================
+/* =========================================================
    LISTA DE JOGADORES
-========================= */
+   ========================================================= */
 
 .lista-jogadores {
   width: 100%;
 }
 
-/* =========================
+
+/* =========================================================
    CABEÇALHO DA LISTA
-========================= */
+   ========================================================= */
 
 .lista-header {
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
-
   align-items: center;
 
   padding: 12px 20px;
 
   color: #888;
+
   font-size: 11px;
   font-weight: 700;
 
   letter-spacing: 0.5px;
 }
 
-/* =========================
-   JOGADOR
-========================= */
 
-.jogador {
+/* =========================================================
+   JOGADOR
+   ========================================================= */
+
+.lista-jogadores .jogador {
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
 
   align-items: center;
 
   min-height: 72px;
+
   padding: 12px 20px;
+
+  box-sizing: border-box;
 
   background: #fff;
 
@@ -45,25 +50,40 @@
 
   margin-bottom: 8px;
 
-  transition: all 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
-.jogador:hover {
+.lista-jogadores .jogador:hover {
   border-color: #ccc;
+
   transform: translateY(-1px);
+
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
 }
 
-/* =========================
-   NOME DO JOGADOR
-========================= */
 
-.jogador-nome {
+/* =========================================================
+   NOME DO JOGADOR
+   ========================================================= */
+
+.lista-jogadores .jogador-nome {
   display: flex;
   align-items: center;
+
   gap: 12px;
+
+  min-width: 0;
 }
 
-.avatar {
+
+/* =========================================================
+   AVATAR
+   ========================================================= */
+
+.lista-jogadores .avatar {
   width: 42px;
   height: 42px;
 
@@ -74,6 +94,7 @@
   flex-shrink: 0;
 
   background: #222;
+
   color: #fff;
 
   border-radius: 50%;
@@ -82,44 +103,75 @@
   font-weight: 700;
 }
 
-.jogador-identidade {
+
+/* =========================================================
+   IDENTIDADE
+   ========================================================= */
+
+.lista-jogadores .jogador-identidade {
+  min-width: 0;
+
   display: flex;
   flex-direction: column;
+
   gap: 4px;
 }
 
-.jogador-identidade strong {
+.lista-jogadores .jogador-identidade strong {
   color: #222;
+
   font-size: 14px;
   font-weight: 600;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.posicao-mobile {
+
+/* =========================================================
+   POSIÇÃO MOBILE
+   ========================================================= */
+
+.lista-jogadores .posicao-mobile {
   display: none;
 
-  font-size: 11px;
   color: #888;
+
+  font-size: 11px;
 }
 
-/* =========================
+
+/* =========================================================
    ESTRELAS
-========================= */
+   ========================================================= */
 
-.estrelas {
+.lista-jogadores .estrelas {
+  color: #d39e00;
+
   font-size: 15px;
+
   letter-spacing: 1px;
+
+  white-space: nowrap;
 }
 
-/* =========================
-   POSIÇÃO
-========================= */
 
-.posicao-desktop {
+/* =========================================================
+   POSIÇÃO DESKTOP
+   ========================================================= */
+
+.lista-jogadores .posicao-desktop {
   display: flex;
   align-items: center;
 }
 
-.badge {
+
+/* =========================================================
+   BADGES
+   ========================================================= */
+
+.lista-jogadores .badge {
   display: inline-flex;
   align-items: center;
 
@@ -129,244 +181,103 @@
 
   font-size: 11px;
   font-weight: 600;
+
+  white-space: nowrap;
 }
 
-.badge.goleiro {
+.lista-jogadores .badge.goleiro {
   background: #eef6ff;
   color: #3575b8;
 }
 
-.badge.linha {
+.lista-jogadores .badge.linha {
   background: #f1f1f1;
   color: #555;
 }
 
-/* =========================
-   ESTATÍSTICAS
-========================= */
 
-.estatistica {
+/* =========================================================
+   ESTATÍSTICAS
+   IMPORTANTE:
+   Tudo está dentro de .lista-jogadores para evitar
+   conflito com CardsPage.css
+   ========================================================= */
+
+.lista-jogadores .estatistica {
   display: flex;
   align-items: center;
+
   gap: 9px;
+
+  min-width: 0;
 }
 
-.estatistica-icone {
+.lista-jogadores .estatistica-icone {
+  flex-shrink: 0;
+
   font-size: 17px;
 }
 
-.estatistica div {
+.lista-jogadores .estatistica-conteudo {
+  min-width: 0;
+
   display: flex;
   flex-direction: column;
+
   gap: 2px;
 }
 
-.estatistica strong {
+.lista-jogadores .estatistica-conteudo strong {
   color: #222;
+
   font-size: 15px;
   font-weight: 700;
 }
 
-.estatistica small {
+.lista-jogadores .estatistica-conteudo small {
   color: #999;
+
   font-size: 10px;
+
+  white-space: nowrap;
 }
 
-/* =========================
-   ESTADO VAZIO
-========================= */
 
-.vazio {
-  width: 100%;
+/* =========================================================
+   CONTROLES DAS ESTATÍSTICAS
+   ========================================================= */
 
-  padding: 60px 20px;
-
+.lista-jogadores .estatistica-controles {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  text-align: center;
-}
-
-.vazio span {
-  font-size: 42px;
-  margin-bottom: 12px;
-}
-
-.vazio h2 {
-  margin: 0 0 8px;
-
-  color: #222;
-
-  font-size: 20px;
-}
-
-.vazio p {
-  margin: 0;
-
-  color: #888;
-
-  font-size: 14px;
-}
-
-/* =========================
-   RESPONSIVO
-========================= */
-
-@media (max-width: 768px) {
-
-  .lista-header {
-    display: none;
-  }
-
-  .jogador {
-    display: grid;
-
-    grid-template-columns: 1fr auto;
-
-    gap: 12px;
-
-    padding: 14px 16px;
-  }
-
-  .jogador-nome {
-    min-width: 0;
-  }
-
-  .avatar {
-    width: 40px;
-    height: 40px;
-  }
-
-  .jogador-identidade strong {
-    font-size: 14px;
-
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .posicao-mobile {
-    display: block;
-  }
-
-  .estrelas {
-    grid-column: 2;
-    grid-row: 1;
-
-    text-align: right;
-  }
-
-  .posicao-desktop {
-    display: none;
-  }
-
-  .estatistica {
-    grid-column: span 1;
-  }
-
-  .jogador-gols {
-    grid-column: 1;
-  }
-
-  .jogador-assistencias {
-    grid-column: 2;
-    justify-self: end;
-  }
-}
-
-/* =========================
-   CELULAR PEQUENO
-========================= */
-
-@media (max-width: 480px) {
-
-  .jogador {
-    padding: 12px;
-  }
-
-  .avatar {
-    width: 36px;
-    height: 36px;
-
-    font-size: 13px;
-  }
-
-  .estrelas {
-    font-size: 13px;
-  }
-
-  .estatistica-icone {
-    font-size: 15px;
-  }
-
-  .estatistica strong {
-    font-size: 14px;
-  }
-
-  .estatistica small {
-    font-size: 9px;
-  }
-}
-/* =========================
-   CONTROLES DE ESTATÍSTICA
-========================= */
-
-.estatistica-conteudo {
-
-  display: flex;
-
-  flex-direction: column;
-
-  gap: 2px;
-
-}
-
-
-
-
-/* =========================
-   BOTÕES
-========================= */
-
-.estatistica-controles {
-
-  display: flex;
-
   align-items: center;
 
   gap: 4px;
 
   margin-left: 8px;
-
 }
 
 
-.botao-estatistica {
+/* =========================================================
+   BOTÕES + / -
+   ========================================================= */
 
+.lista-jogadores .botao-estatistica {
   width: 25px;
-
   height: 25px;
 
   display: flex;
-
   align-items: center;
-
   justify-content: center;
 
   padding: 0;
 
   border: 1px solid #ddd;
-
   border-radius: 6px;
 
-  background: #000000;
-
+  background: #fff;
   color: #333;
 
   font-size: 16px;
-
   font-weight: 700;
 
   line-height: 1;
@@ -377,124 +288,111 @@
     background 0.15s ease,
     border-color 0.15s ease,
     transform 0.1s ease;
-
 }
 
-
-.botao-estatistica:hover:not(:disabled) {
-
+.lista-jogadores .botao-estatistica:hover:not(:disabled) {
   background: #f3f3f3;
 
   border-color: #bbb;
-
 }
 
-
-.botao-estatistica:active:not(:disabled) {
-
+.lista-jogadores .botao-estatistica:active:not(:disabled) {
   transform: scale(0.92);
-
 }
 
-
-.botao-estatistica:disabled {
-
+.lista-jogadores .botao-estatistica:disabled {
   opacity: 0.35;
 
   cursor: not-allowed;
-
 }
 
 
-/* =========================
+/* =========================================================
    BOTÃO ADICIONAR
-========================= */
+   ========================================================= */
 
-.botao-estatistica.adicionar {
-
+.lista-jogadores .botao-estatistica.adicionar {
   background: #047420;
 
   color: #fff;
 
-  border-color: #222;
+  border-color: #047420;
+}
 
+.lista-jogadores .botao-estatistica.adicionar:hover:not(:disabled) {
+  background: #05952a;
+
+  border-color: #05952a;
 }
 
 
-.botao-estatistica.adicionar:hover:not(:disabled) {
-
-  background: #444;
-
-  border-color: #444;
-
-}
-
-
-/* =========================
+/* =========================================================
    BOTÃO REMOVER
-========================= */
+   ========================================================= */
 
-.botao-estatistica.remover {
+.lista-jogadores .botao-estatistica.remover {
+  background: #fff;
 
   color: #555;
 
+  border-color: #ddd;
 }
 
+.lista-jogadores .botao-estatistica.remover:hover:not(:disabled) {
+  background: #f3f3f3;
 
-/* =========================
-   RESPONSIVO
-========================= */
+  color: #222;
 
-@media (max-width: 768px) {
-
-  .estatistica-controles {
-
-    margin-left: auto;
-
-    gap: 3px;
-
-  }
-
-  .botao-estatistica {
-
-    width: 24px;
-
-    height: 24px;
-
-    font-size: 15px;
-
-  }
-
+  border-color: #bbb;
 }
 
-
-@media (max-width: 480px) {
-
-  .estatistica-controles {
-
-    gap: 2px;
-
-  }
-
-  .botao-estatistica {
-
-    width: 22px;
-
-    height: 22px;
-
-    font-size: 14px;
-
-  }
-
-}
 
 /* =========================================================
-   MODAIS DE ESTATÍSTICAS
+   ESTADO VAZIO
+   ========================================================= */
+
+.lista-jogadores .vazio {
+  width: 100%;
+
+  padding: 60px 20px;
+
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+}
+
+.lista-jogadores .vazio h3 {
+  margin: 0 0 8px;
+
+  color: #444;
+
+  font-size: 18px;
+}
+
+.lista-jogadores .vazio p {
+  margin: 0;
+
+  color: #999;
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   MODAL PIN
    ========================================================= */
 
 .modal-pin-overlay {
   position: fixed;
+
   inset: 0;
+
   z-index: 9999;
 
   display: flex;
@@ -503,292 +401,368 @@
 
   padding: 20px;
 
-  background: rgba(0, 0, 0, 0.72);
-  backdrop-filter: blur(6px);
+  background: rgba(0, 0, 0, 0.65);
 
-  animation: modalOverlayEntrada 0.18s ease;
+  box-sizing: border-box;
 }
 
 .modal-pin {
-  width: min(420px, 100%);
+  width: 100%;
+  max-width: 380px;
 
-  padding: 30px 26px 26px;
+  padding: 25px;
 
-  border-radius: 22px;
+  box-sizing: border-box;
 
-  background: #151515;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #fff;
 
-  box-shadow:
-    0 25px 80px rgba(0, 0, 0, 0.55),
-    0 0 0 1px rgba(255, 255, 255, 0.03);
+  border-radius: 14px;
+
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
 
   text-align: center;
-
-  animation: modalEntrada 0.2s ease;
 }
 
 .modal-pin-icone {
-  width: 64px;
-  height: 64px;
+  width: 50px;
+  height: 50px;
 
-  margin: 0 auto 16px;
+  margin: 0 auto 15px;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  border-radius: 18px;
+  background: #f5f5f5;
 
-  background: rgba(255, 255, 255, 0.07);
-
-  font-size: 30px;
-}
-
-.modal-pin h3 {
-  margin: 0 0 8px;
-
-  color: #ffffff;
+  border-radius: 50%;
 
   font-size: 22px;
-  font-weight: 700;
 }
-
-.modal-pin p {
-  margin: 0 auto 22px;
-
-  max-width: 340px;
-
-  color: #a7a7a7;
-
-  font-size: 14px;
-  line-height: 1.5;
-}
-
-/* =========================================================
-   LABEL
-   ========================================================= */
 
 .modal-pin-label {
   display: block;
 
   margin-bottom: 8px;
 
-  color: #cfcfcf;
+  color: #444;
 
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 12px;
+  font-weight: 700;
 
   text-align: left;
 }
 
-/* =========================================================
-   INPUT DO MODAL
-   ========================================================= */
-
 .modal-pin input {
   width: 100%;
-  height: 54px;
+
+  height: 42px;
+
+  padding: 0 12px;
 
   box-sizing: border-box;
 
-  padding: 0 16px;
-
-  border: 1px solid #363636;
-  border-radius: 13px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
 
   outline: none;
 
-  background: #0e0e0e;
-  color: #ffffff;
+  color: #222;
 
-  font-family: inherit;
-  font-size: 20px;
-  font-weight: 600;
-
-  text-align: center;
+  font-size: 14px;
 
   transition:
     border-color 0.2s ease,
-    box-shadow 0.2s ease,
-    background 0.2s ease;
-}
-
-.modal-pin input::placeholder {
-  color: #555;
-}
-
-.modal-pin input:hover {
-  border-color: #4a4a4a;
+    box-shadow 0.2s ease;
 }
 
 .modal-pin input:focus {
-  border-color: #ffffff;
-
-  background: #111111;
+  border-color: #c99600;
 
   box-shadow:
-    0 0 0 3px rgba(255, 255, 255, 0.08);
+    0 0 0 3px rgba(201, 150, 0, 0.1);
 }
-
-/* Remove setinhas do input number */
-.modal-pin input[type="number"]::-webkit-inner-spin-button,
-.modal-pin input[type="number"]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-.modal-pin input[type="number"] {
-  appearance: textfield;
-  -moz-appearance: textfield;
-}
-
-/* =========================================================
-   TEXTO ABAIXO DO INPUT
-   ========================================================= */
-
-.modal-pin small {
-  display: block;
-
-  margin-top: 8px;
-
-  color: #777;
-
-  font-size: 12px;
-}
-
-/* =========================================================
-   ERRO
-   ========================================================= */
 
 .modal-pin-erro {
-  margin-top: 12px;
-  padding: 10px 12px;
+  margin-top: 8px;
 
-  border-radius: 10px;
+  color: #c62828;
 
-  background: rgba(255, 70, 70, 0.1);
-  border: 1px solid rgba(255, 70, 70, 0.2);
+  font-size: 12px;
 
-  color: #ff7777;
-
-  font-size: 13px;
-  font-weight: 500;
+  text-align: left;
 }
-
-/* =========================================================
-   BOTÕES
-   ========================================================= */
 
 .modal-pin-botoes {
   display: flex;
+
   gap: 10px;
 
-  margin-top: 22px;
+  margin-top: 20px;
 }
 
-.modal-pin-botoes button {
+.modal-pin-cancelar,
+.modal-pin-confirmar {
   flex: 1;
 
-  height: 48px;
+  min-height: 40px;
 
-  border: none;
-  border-radius: 12px;
+  border-radius: 8px;
 
-  font-family: inherit;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 700;
 
   cursor: pointer;
 
   transition:
-    transform 0.15s ease,
-    opacity 0.15s ease,
-    background 0.15s ease;
-}
-
-.modal-pin-botoes button:hover {
-  transform: translateY(-1px);
-}
-
-.modal-pin-botoes button:active {
-  transform: translateY(0);
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.1s ease;
 }
 
 .modal-pin-cancelar {
-  background: #292929;
-  color: #d0d0d0;
+  background: #fff;
+
+  color: #555;
+
+  border: 1px solid #ddd;
 }
 
 .modal-pin-cancelar:hover {
-  background: #343434;
+  background: #f5f5f5;
+
+  border-color: #bbb;
 }
 
 .modal-pin-confirmar {
-  background: #ffffff;
-  color: #111111;
+  background: #222;
+
+  color: #fff;
+
+  border: 1px solid #222;
 }
 
 .modal-pin-confirmar:hover {
-  background: #e9e9e9;
+  background: #333;
 }
 
-.modal-pin-confirmar:disabled {
-  opacity: 0.35;
-  cursor: not-allowed;
-  transform: none;
+.modal-pin-cancelar:active,
+.modal-pin-confirmar:active {
+  transform: scale(0.98);
 }
+
 
 /* =========================================================
-   ANIMAÇÕES
+   TABLET
    ========================================================= */
 
-@keyframes modalOverlayEntrada {
-  from {
-    opacity: 0;
+@media (max-width: 900px) {
+  .lista-header,
+  .lista-jogadores .jogador {
+    grid-template-columns:
+      2fr
+      0.9fr
+      0.9fr
+      1fr
+      1fr;
   }
 
-  to {
-    opacity: 1;
+  .lista-jogadores .jogador {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .lista-jogadores .estatistica {
+    gap: 6px;
+  }
+
+  .lista-jogadores .estatistica-controles {
+    margin-left: 3px;
+  }
+
+  .lista-jogadores .botao-estatistica {
+    width: 23px;
+    height: 23px;
   }
 }
 
-@keyframes modalEntrada {
-  from {
-    opacity: 0;
-    transform: translateY(12px) scale(0.97);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
 
 /* =========================================================
    MOBILE
    ========================================================= */
 
+@media (max-width: 768px) {
+  .lista-header {
+    display: none;
+  }
+
+  .lista-jogadores .jogador {
+    display: grid;
+
+    grid-template-columns: 1fr auto;
+
+    gap: 12px;
+
+    min-height: 72px;
+
+    padding: 14px 16px;
+  }
+
+  .lista-jogadores .jogador-nome {
+    min-width: 0;
+  }
+
+  .lista-jogadores .avatar {
+    width: 40px;
+    height: 40px;
+  }
+
+  .lista-jogadores .jogador-identidade strong {
+    font-size: 14px;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .lista-jogadores .posicao-mobile {
+    display: block;
+  }
+
+  .lista-jogadores .estrelas {
+    grid-column: 2;
+    grid-row: 1;
+
+    align-self: center;
+
+    text-align: right;
+  }
+
+  .lista-jogadores .posicao-desktop {
+    display: none;
+  }
+
+  .lista-jogadores .estatistica {
+    min-width: 0;
+
+    grid-column: span 1;
+  }
+
+  .lista-jogadores .jogador-gols {
+    grid-column: 1;
+  }
+
+  .lista-jogadores .jogador-assistencias {
+    grid-column: 2;
+
+    justify-self: end;
+  }
+
+  .lista-jogadores .estatistica-controles {
+    margin-left: 4px;
+  }
+}
+
+
+/* =========================================================
+   MOBILE PEQUENO
+   ========================================================= */
+
 @media (max-width: 480px) {
-  .modal-pin-overlay {
-    padding: 15px;
+  .lista-jogadores .jogador {
+    padding: 12px;
+
+    gap: 8px;
   }
 
-  .modal-pin {
-    padding: 26px 20px 20px;
+  .lista-jogadores .avatar {
+    width: 38px;
+    height: 38px;
 
-    border-radius: 19px;
+    font-size: 14px;
   }
 
-  .modal-pin h3 {
-    font-size: 20px;
+  .lista-jogadores .jogador-nome {
+    gap: 9px;
   }
 
-  .modal-pin input {
-    height: 52px;
+  .lista-jogadores .jogador-identidade strong {
+    font-size: 13px;
   }
 
-  .modal-pin-botoes button {
-    height: 46px;
+  .lista-jogadores .posicao-mobile {
+    font-size: 10px;
+  }
+
+  .lista-jogadores .estrelas {
+    font-size: 12px;
+
+    letter-spacing: 0;
+  }
+
+  .lista-jogadores .estatistica {
+    gap: 5px;
+  }
+
+  .lista-jogadores .estatistica-icone {
+    font-size: 15px;
+  }
+
+  .lista-jogadores .estatistica-conteudo strong {
+    font-size: 14px;
+  }
+
+  .lista-jogadores .estatistica-conteudo small {
+    font-size: 9px;
+  }
+
+  .lista-jogadores .estatistica-controles {
+    gap: 3px;
+
+    margin-left: 2px;
+  }
+
+  .lista-jogadores .botao-estatistica {
+    width: 23px;
+    height: 23px;
+
+    font-size: 14px;
+  }
+}
+
+
+/* =========================================================
+   CELULAR MUITO PEQUENO
+   ========================================================= */
+
+@media (max-width: 350px) {
+  .lista-jogadores .jogador {
+    padding: 10px;
+  }
+
+  .lista-jogadores .avatar {
+    width: 35px;
+    height: 35px;
+
+    font-size: 13px;
+  }
+
+  .lista-jogadores .jogador-nome {
+    gap: 7px;
+  }
+
+  .lista-jogadores .estatistica {
+    gap: 3px;
+  }
+
+  .lista-jogadores .estatistica-conteudo small {
+    font-size: 8px;
+  }
+
+  .lista-jogadores .botao-estatistica {
+    width: 21px;
+    height: 21px;
+
+    font-size: 13px;
   }
 }
