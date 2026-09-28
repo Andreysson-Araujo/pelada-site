@@ -485,3 +485,308 @@
   }
 
 }
+
+/* =========================================================
+   MODAIS DE ESTATÍSTICAS
+   ========================================================= */
+
+.modal-pin-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(6px);
+
+  animation: modalOverlayEntrada 0.18s ease;
+}
+
+.modal-pin {
+  width: min(420px, 100%);
+
+  padding: 30px 26px 26px;
+
+  border-radius: 22px;
+
+  background: #151515;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  box-shadow:
+    0 25px 80px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(255, 255, 255, 0.03);
+
+  text-align: center;
+
+  animation: modalEntrada 0.2s ease;
+}
+
+.modal-pin-icone {
+  width: 64px;
+  height: 64px;
+
+  margin: 0 auto 16px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 18px;
+
+  background: rgba(255, 255, 255, 0.07);
+
+  font-size: 30px;
+}
+
+.modal-pin h3 {
+  margin: 0 0 8px;
+
+  color: #ffffff;
+
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.modal-pin p {
+  margin: 0 auto 22px;
+
+  max-width: 340px;
+
+  color: #a7a7a7;
+
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* =========================================================
+   LABEL
+   ========================================================= */
+
+.modal-pin-label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #cfcfcf;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  text-align: left;
+}
+
+/* =========================================================
+   INPUT DO MODAL
+   ========================================================= */
+
+.modal-pin input {
+  width: 100%;
+  height: 54px;
+
+  box-sizing: border-box;
+
+  padding: 0 16px;
+
+  border: 1px solid #363636;
+  border-radius: 13px;
+
+  outline: none;
+
+  background: #0e0e0e;
+  color: #ffffff;
+
+  font-family: inherit;
+  font-size: 20px;
+  font-weight: 600;
+
+  text-align: center;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.modal-pin input::placeholder {
+  color: #555;
+}
+
+.modal-pin input:hover {
+  border-color: #4a4a4a;
+}
+
+.modal-pin input:focus {
+  border-color: #ffffff;
+
+  background: #111111;
+
+  box-shadow:
+    0 0 0 3px rgba(255, 255, 255, 0.08);
+}
+
+/* Remove setinhas do input number */
+.modal-pin input[type="number"]::-webkit-inner-spin-button,
+.modal-pin input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.modal-pin input[type="number"] {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+/* =========================================================
+   TEXTO ABAIXO DO INPUT
+   ========================================================= */
+
+.modal-pin small {
+  display: block;
+
+  margin-top: 8px;
+
+  color: #777;
+
+  font-size: 12px;
+}
+
+/* =========================================================
+   ERRO
+   ========================================================= */
+
+.modal-pin-erro {
+  margin-top: 12px;
+  padding: 10px 12px;
+
+  border-radius: 10px;
+
+  background: rgba(255, 70, 70, 0.1);
+  border: 1px solid rgba(255, 70, 70, 0.2);
+
+  color: #ff7777;
+
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* =========================================================
+   BOTÕES
+   ========================================================= */
+
+.modal-pin-botoes {
+  display: flex;
+  gap: 10px;
+
+  margin-top: 22px;
+}
+
+.modal-pin-botoes button {
+  flex: 1;
+
+  height: 48px;
+
+  border: none;
+  border-radius: 12px;
+
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.15s ease,
+    opacity 0.15s ease,
+    background 0.15s ease;
+}
+
+.modal-pin-botoes button:hover {
+  transform: translateY(-1px);
+}
+
+.modal-pin-botoes button:active {
+  transform: translateY(0);
+}
+
+.modal-pin-cancelar {
+  background: #292929;
+  color: #d0d0d0;
+}
+
+.modal-pin-cancelar:hover {
+  background: #343434;
+}
+
+.modal-pin-confirmar {
+  background: #ffffff;
+  color: #111111;
+}
+
+.modal-pin-confirmar:hover {
+  background: #e9e9e9;
+}
+
+.modal-pin-confirmar:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* =========================================================
+   ANIMAÇÕES
+   ========================================================= */
+
+@keyframes modalOverlayEntrada {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalEntrada {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 480px) {
+  .modal-pin-overlay {
+    padding: 15px;
+  }
+
+  .modal-pin {
+    padding: 26px 20px 20px;
+
+    border-radius: 19px;
+  }
+
+  .modal-pin h3 {
+    font-size: 20px;
+  }
+
+  .modal-pin input {
+    height: 52px;
+  }
+
+  .modal-pin-botoes button {
+    height: 46px;
+  }
+}

@@ -7,21 +7,17 @@ const API_URL =
 // ========================================
 
 export async function listarJogadores() {
-
   const resposta = await fetch(
     `${API_URL}?acao=listarJogadores`
   );
 
   if (!resposta.ok) {
-
     throw new Error(
       "Erro ao buscar jogadores."
     );
-
   }
 
   return await resposta.json();
-
 }
 
 
@@ -29,22 +25,29 @@ export async function listarJogadores() {
 // ADICIONAR GOL
 // ========================================
 
-export async function adicionarGol(id) {
+export async function adicionarGol(
+  id,
+  quantidade,
+  pin
+) {
+  const parametros = new URLSearchParams({
+    acao: "adicionarGol",
+    id: id,
+    quantidade: quantidade,
+    pin: pin,
+  });
 
   const resposta = await fetch(
-    `${API_URL}?acao=adicionarGol&id=${encodeURIComponent(id)}`
+    `${API_URL}?${parametros.toString()}`
   );
 
   if (!resposta.ok) {
-
     throw new Error(
       "Erro ao adicionar gol."
     );
-
   }
 
   return await resposta.json();
-
 }
 
 
@@ -52,22 +55,27 @@ export async function adicionarGol(id) {
 // REMOVER GOL
 // ========================================
 
-export async function removerGol(id) {
+export async function removerGol(
+  id,
+  pin
+) {
+  const parametros = new URLSearchParams({
+    acao: "removerGol",
+    id: id,
+    pin: pin,
+  });
 
   const resposta = await fetch(
-    `${API_URL}?acao=removerGol&id=${encodeURIComponent(id)}`
+    `${API_URL}?${parametros.toString()}`
   );
 
   if (!resposta.ok) {
-
     throw new Error(
       "Erro ao remover gol."
     );
-
   }
 
   return await resposta.json();
-
 }
 
 
@@ -75,22 +83,29 @@ export async function removerGol(id) {
 // ADICIONAR ASSISTÊNCIA
 // ========================================
 
-export async function adicionarAssistencia(id) {
+export async function adicionarAssistencia(
+  id,
+  quantidade,
+  pin
+) {
+  const parametros = new URLSearchParams({
+    acao: "adicionarAssistencia",
+    id: id,
+    quantidade: quantidade,
+    pin: pin,
+  });
 
   const resposta = await fetch(
-    `${API_URL}?acao=adicionarAssistencia&id=${encodeURIComponent(id)}`
+    `${API_URL}?${parametros.toString()}`
   );
 
   if (!resposta.ok) {
-
     throw new Error(
       "Erro ao adicionar assistência."
     );
-
   }
 
   return await resposta.json();
-
 }
 
 
@@ -98,22 +113,27 @@ export async function adicionarAssistencia(id) {
 // REMOVER ASSISTÊNCIA
 // ========================================
 
-export async function removerAssistencia(id) {
+export async function removerAssistencia(
+  id,
+  pin
+) {
+  const parametros = new URLSearchParams({
+    acao: "removerAssistencia",
+    id: id,
+    pin: pin,
+  });
 
   const resposta = await fetch(
-    `${API_URL}?acao=removerAssistencia&id=${encodeURIComponent(id)}`
+    `${API_URL}?${parametros.toString()}`
   );
 
   if (!resposta.ok) {
-
     throw new Error(
       "Erro ao remover assistência."
     );
-
   }
 
   return await resposta.json();
-
 }
 
 
@@ -122,21 +142,17 @@ export async function removerAssistencia(id) {
 // ========================================
 
 export async function listarTimes() {
-
   const resposta = await fetch(
     `${API_URL}?acao=listarTimes`
   );
 
   if (!resposta.ok) {
-
     throw new Error(
       "Erro ao buscar times."
     );
-
   }
 
   return await resposta.json();
-
 }
 
 
@@ -149,35 +165,22 @@ export async function registrarResultado(
   resultado,
   pin
 ) {
-
-  const parametros =
-    new URLSearchParams({
-
-      acao: "registrarResultado",
-
-      id: id,
-
-      resultado: resultado,
-
-      pin: pin
-
-    });
-
+  const parametros = new URLSearchParams({
+    acao: "registrarResultado",
+    id: id,
+    resultado: resultado,
+    pin: pin,
+  });
 
   const resposta = await fetch(
     `${API_URL}?${parametros.toString()}`
   );
 
-
   if (!resposta.ok) {
-
     throw new Error(
       "Erro ao registrar resultado."
     );
-
   }
 
-
   return await resposta.json();
-
 }
