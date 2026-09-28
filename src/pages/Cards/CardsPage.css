@@ -38,6 +38,7 @@
 .cards-header p {
   margin-top: 8px;
   opacity: 0.6;
+  font-size: 14px;
 }
 
 .cards-arquivo {
@@ -54,13 +55,11 @@
 
 .cards-grid {
   display: grid;
-
   grid-template-columns:
     repeat(
       auto-fill,
       minmax(220px, 1fr)
     );
-
   gap: 20px;
 }
 
@@ -71,9 +70,7 @@
 
 .card-jogador {
   min-height: 430px;
-
   padding: 20px;
-
   border-radius: 16px;
 
   background:
@@ -99,12 +96,11 @@
     box-shadow 0.2s ease;
 
   display: flex;
-
   flex-direction: column;
 
   overflow: hidden;
-
   box-sizing: border-box;
+  cursor: pointer;
 }
 
 .card-jogador:hover {
@@ -122,13 +118,10 @@
 
 .card-topo {
   display: flex;
-
   justify-content: space-between;
-
   align-items: center;
 
   font-size: 12px;
-
   opacity: 0.7;
 }
 
@@ -138,9 +131,7 @@
 
 .card-id {
   font-size: 12px;
-
   font-weight: 700;
-
   opacity: 0.7;
 }
 
@@ -156,11 +147,8 @@
   border-radius: 50%;
 
   display: flex;
-
   flex-direction: column;
-
   align-items: center;
-
   justify-content: center;
 
   background:
@@ -180,31 +168,22 @@
     rgba(0, 0, 0, 0.4);
 
   flex-shrink: 0;
-
   z-index: 2;
 }
 
 .card-ovr span {
   font-size: 10px;
-
   font-weight: 900;
-
   letter-spacing: 1px;
-
   color: #111;
-
   line-height: 1;
 }
 
 .card-ovr strong {
   font-size: 30px;
-
   font-weight: 900;
-
   line-height: 1;
-
   color: #111;
-
   margin-top: 3px;
 }
 
@@ -215,16 +194,11 @@
 
 .card-foto-container {
   width: 100%;
-
-  /*
-    PROPORÇÃO 3x4
-  */
   aspect-ratio: 3 / 4;
 
   margin-top: 15px;
 
   overflow: hidden;
-
   border-radius: 10px;
 
   background: #222;
@@ -234,21 +208,11 @@
 
 .card-foto {
   width: 100%;
-
   height: 100%;
 
   display: block;
 
-  /*
-    Preenche a área sem deformar
-    a imagem.
-  */
   object-fit: cover;
-
-  /*
-    Mantém o rosto mais próximo
-    da parte superior.
-  */
   object-position: center top;
 
   transition:
@@ -273,15 +237,12 @@
   margin-top: 10px;
 
   font-size: 23px;
-
   font-weight: 800;
 
   text-align: center;
 
   white-space: nowrap;
-
   overflow: hidden;
-
   text-overflow: ellipsis;
 }
 
@@ -294,11 +255,9 @@
   margin-top: 5px;
 
   font-size: 11px;
-
   font-weight: 700;
 
   letter-spacing: 1px;
-
   opacity: 0.6;
 
   text-align: center;
@@ -339,20 +298,139 @@
 
 .card-atributos div {
   display: flex;
-
   justify-content: space-between;
-
   align-items: center;
 }
 
 .card-atributos span {
   font-size: 11px;
-
   opacity: 0.6;
 }
 
 .card-atributos strong {
   font-size: 18px;
+}
+
+
+/* =========================================================
+   ESTATÍSTICAS
+   GOLS + ASSISTÊNCIAS
+========================================================= */
+
+.card-estatisticas {
+  display: grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap: 8px;
+
+  margin-top: 14px;
+
+  padding-top: 12px;
+
+  border-top:
+    1px solid
+    rgba(255, 255, 255, 0.1);
+}
+
+
+/* =========================================================
+   BLOCO DE ESTATÍSTICA
+========================================================= */
+
+.estatistica {
+  min-height: 45px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 5px;
+
+  padding: 6px 5px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 216, 77, 0.16),
+      rgba(255, 216, 77, 0.035)
+    );
+
+  border:
+    1px solid
+    rgba(255, 216, 77, 0.18);
+
+  border-radius: 10px;
+
+  box-shadow:
+    inset 0 1px 0
+    rgba(255, 255, 255, 0.04);
+
+  box-sizing: border-box;
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+
+/* =========================================================
+   HOVER DAS ESTATÍSTICAS
+========================================================= */
+
+.estatistica:hover {
+  transform: translateY(-2px);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 216, 77, 0.22),
+      rgba(255, 216, 77, 0.06)
+    );
+
+  border-color:
+    rgba(255, 216, 77, 0.35);
+}
+
+
+/* =========================================================
+   ÍCONE DA ESTATÍSTICA
+========================================================= */
+
+.estatistica-icone {
+  font-size: 15px;
+  line-height: 1;
+}
+
+
+/* =========================================================
+   NÚMERO DA ESTATÍSTICA
+========================================================= */
+
+.estatistica strong {
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1;
+
+  color: #ffd84d;
+}
+
+
+/* =========================================================
+   TEXTO DA ESTATÍSTICA
+========================================================= */
+
+.estatistica small {
+  font-size: 8px;
+  font-weight: 900;
+
+  letter-spacing: 0.5px;
+
+  opacity: 0.7;
+
+  line-height: 1;
 }
 
 
@@ -364,11 +442,9 @@
   min-height: 400px;
 
   display: flex;
-
   flex-direction: column;
 
   align-items: center;
-
   justify-content: center;
 
   text-align: center;
@@ -376,7 +452,6 @@
 
 .cards-estado span {
   font-size: 45px;
-
   margin-bottom: 15px;
 }
 
@@ -390,396 +465,41 @@
 
 
 /* =========================================================
-   TABLETS / CELULARES
-========================================================= */
-
-@media (max-width: 700px) {
-
-  .cards-page {
-    padding: 15px;
-  }
-
-
-  /* CABEÇALHO */
-
-  .cards-header {
-    flex-direction: column;
-
-    gap: 15px;
-  }
-
-  .cards-header h1 {
-    font-size: 25px;
-  }
-
-
-  /* GRID */
-
-  .cards-grid {
-    grid-template-columns:
-      repeat(
-        2,
-        minmax(0, 1fr)
-      );
-
-    gap: 12px;
-  }
-
-
-  /* CARD */
-
-  .card-jogador {
-    min-height: auto;
-
-    padding: 12px;
-
-    border-radius: 14px;
-  }
-
-
-  /* FOTO 3x4 */
-
-  .card-foto-container {
-    width: 100%;
-
-    aspect-ratio: 3 / 4;
-
-    margin-top: 10px;
-
-    border-radius: 8px;
-  }
-
-  .card-foto {
-    width: 100%;
-
-    height: 100%;
-
-    object-fit: cover;
-
-    object-position: center top;
-  }
-
-
-  /* OVR */
-
-  .card-ovr {
-    width: 55px;
-
-    height: 55px;
-  }
-
-  .card-ovr strong {
-    font-size: 23px;
-  }
-
-  .card-ovr span {
-    font-size: 8px;
-  }
-
-
-  /* NOME */
-
-  .card-nome {
-    margin-top: 10px;
-
-    font-size: 17px;
-  }
-
-
-  /* TIPO */
-
-  .card-tipo {
-    font-size: 9px;
-  }
-
-
-  /* ESTRELAS */
-
-  .card-estrelas {
-    font-size: 12px;
-  }
-
-
-  /* ATRIBUTOS */
-
-  .card-atributos {
-    gap: 8px;
-
-    padding-top: 15px;
-  }
-
-  .card-atributos strong {
-    font-size: 15px;
-  }
-
-  .card-atributos span {
-    font-size: 9px;
-  }
-}
-
-
-/* =========================================================
-   CELULARES PEQUENOS
-========================================================= */
-
-@media (max-width: 450px) {
-
-  .cards-page {
-    padding: 12px;
-  }
-
-
-  /* GRID */
-
-  .cards-grid {
-    grid-template-columns:
-      repeat(
-        2,
-        minmax(0, 1fr)
-      );
-
-    gap: 8px;
-  }
-
-
-  /* CARD */
-
-  .card-jogador {
-    width: 100%;
-
-    min-height: auto;
-
-    padding: 10px;
-
-    border-radius: 12px;
-  }
-
-
-  /* FOTO 3x4 */
-
-  .card-foto-container {
-    width: 100%;
-
-    aspect-ratio: 3 / 4;
-
-    margin-top: 8px;
-
-    border-radius: 7px;
-  }
-
-  .card-foto {
-    width: 100%;
-
-    height: 100%;
-
-    object-fit: cover;
-
-    object-position: center top;
-  }
-
-
-  /* OVR */
-
-  .card-ovr {
-    width: 50px;
-
-    height: 50px;
-
-    border-width: 2px;
-  }
-
-  .card-ovr strong {
-    font-size: 21px;
-  }
-
-  .card-ovr span {
-    font-size: 7px;
-  }
-
-
-  /* ID */
-
-  .card-id {
-    font-size: 9px;
-  }
-
-
-  /* NOME */
-
-  .card-nome {
-    font-size: 15px;
-
-    margin-top: 8px;
-  }
-
-
-  /* TIPO */
-
-  .card-tipo {
-    font-size: 8px;
-
-    margin-top: 3px;
-  }
-
-
-  /* ESTRELAS */
-
-  .card-estrelas {
-    font-size: 10px;
-
-    margin-top: 5px;
-  }
-
-
-  /* ATRIBUTOS */
-
-  .card-atributos {
-    gap: 6px;
-
-    padding-top: 12px;
-  }
-
-  .card-atributos strong {
-    font-size: 13px;
-  }
-
-  .card-atributos span {
-    font-size: 8px;
-  }
-}
-
-
-/* =========================================================
-   CELULARES MUITO PEQUENOS
-========================================================= */
-
-@media (max-width: 350px) {
-
-  .cards-page {
-    padding: 8px;
-  }
-
-
-  /* GRID */
-
-  .cards-grid {
-    gap: 6px;
-  }
-
-
-  /* CARD */
-
-  .card-jogador {
-    padding: 8px;
-
-    border-radius: 10px;
-  }
-
-
-  /* FOTO 3x4 */
-
-  .card-foto-container {
-    aspect-ratio: 3 / 4;
-  }
-
-  .card-foto {
-    width: 100%;
-
-    height: 100%;
-
-    object-fit: cover;
-
-    object-position: center top;
-  }
-
-
-  /* OVR */
-
-  .card-ovr {
-    width: 45px;
-
-    height: 45px;
-  }
-
-  .card-ovr strong {
-    font-size: 19px;
-  }
-
-  .card-ovr span {
-    font-size: 6px;
-  }
-
-
-  /* ID */
-
-  .card-id {
-    font-size: 8px;
-  }
-
-
-  /* NOME */
-
-  .card-nome {
-    font-size: 13px;
-  }
-
-
-  /* TIPO */
-
-  .card-tipo {
-    font-size: 7px;
-  }
-
-
-  /* ESTRELAS */
-
-  .card-estrelas {
-    font-size: 9px;
-  }
-
-
-  /* ATRIBUTOS */
-
-  .card-atributos {
-    gap: 4px;
-
-    padding-top: 10px;
-  }
-
-  .card-atributos strong {
-    font-size: 12px;
-  }
-
-  .card-atributos span {
-    font-size: 7px;
-  }
-}
-
-/* =========================================================
    FILTROS DOS CARDS
 ========================================================= */
 
 .cards-filtros {
   width: 100%;
+
   display: grid;
+
   grid-template-columns:
-    minmax(220px, 2fr)
+    minmax(300px, 2.4fr)
     repeat(4, minmax(140px, 1fr))
     auto;
 
   gap: 12px;
 
   margin-bottom: 30px;
+
   padding: 18px;
 
-  background: rgba(255, 255, 255, 0.04);
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.055),
+      rgba(255, 255, 255, 0.025)
+    );
 
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.08);
 
   border-radius: 16px;
 
   box-shadow:
-    0 8px 25px rgba(0, 0, 0, 0.18);
+    0 8px 25px
+    rgba(0, 0, 0, 0.18);
 
   box-sizing: border-box;
 }
@@ -792,7 +512,10 @@
 .filtro-grupo {
   display: flex;
   flex-direction: column;
+
   gap: 7px;
+
+  min-width: 0;
 }
 
 
@@ -802,7 +525,6 @@
 
 .filtro-grupo label {
   font-size: 11px;
-
   font-weight: 800;
 
   letter-spacing: 0.8px;
@@ -820,16 +542,18 @@
 .filtro-grupo input,
 .filtro-grupo select {
   width: 100%;
-
   height: 42px;
 
   padding: 0 12px;
 
   border-radius: 9px;
 
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.1);
 
-  background: rgba(0, 0, 0, 0.3);
+  background:
+    rgba(0, 0, 0, 0.3);
 
   color: inherit;
 
@@ -842,20 +566,84 @@
   transition:
     border-color 0.2s ease,
     background 0.2s ease,
-    box-shadow 0.2s ease;
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
 }
 
 
 /* =========================================================
-   INPUT DE PESQUISA
+   PESQUISA
 ========================================================= */
 
 .filtro-pesquisa {
   min-width: 0;
+  position: relative;
 }
 
+
+/* =========================================================
+   CAMPO DE PESQUISA
+========================================================= */
+
 .filtro-pesquisa input {
-  padding-left: 14px;
+  height: 46px;
+
+  padding:
+    0 16px 0 45px;
+
+  border-radius: 12px;
+
+  border:
+    1px solid
+    rgba(255, 216, 77, 0.18);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 216, 77, 0.07),
+      rgba(0, 0, 0, 0.35)
+    );
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  letter-spacing: 0.2px;
+
+  box-shadow:
+    inset 0 0 0 1px
+    rgba(255, 255, 255, 0.02),
+
+    0 4px 15px
+    rgba(0, 0, 0, 0.12);
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+/* =========================================================
+   ÍCONE DA PESQUISA
+========================================================= */
+
+.filtro-pesquisa::before {
+  content: "🔎";
+
+  position: absolute;
+
+  left: 14px;
+  bottom: 13px;
+
+  font-size: 17px;
+
+  opacity: 0.75;
+
+  pointer-events: none;
+
+  z-index: 2;
 }
 
 
@@ -863,26 +651,55 @@
    PLACEHOLDER
 ========================================================= */
 
-.filtro-grupo input::placeholder {
+.filtro-pesquisa input::placeholder {
   color: inherit;
-
   opacity: 0.4;
+  font-weight: 500;
 }
 
 
 /* =========================================================
-   FOCUS
+   PESQUISA EM FOCO
+========================================================= */
+
+.filtro-pesquisa input:focus {
+  border-color:
+    rgba(255, 216, 77, 0.7);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 216, 77, 0.11),
+      rgba(0, 0, 0, 0.42)
+    );
+
+  box-shadow:
+    0 0 0 3px
+    rgba(255, 216, 77, 0.08),
+
+    0 6px 20px
+    rgba(0, 0, 0, 0.2);
+
+  transform:
+    translateY(-1px);
+}
+
+
+/* =========================================================
+   INPUT NORMAL EM FOCO
 ========================================================= */
 
 .filtro-grupo input:focus,
 .filtro-grupo select:focus {
+  border-color:
+    rgba(255, 216, 77, 0.65);
 
-  border-color: rgba(255, 216, 77, 0.65);
-
-  background: rgba(0, 0, 0, 0.45);
+  background:
+    rgba(0, 0, 0, 0.45);
 
   box-shadow:
-    0 0 0 2px rgba(255, 216, 77, 0.08);
+    0 0 0 2px
+    rgba(255, 216, 77, 0.08);
 }
 
 
@@ -894,27 +711,18 @@
   cursor: pointer;
 }
 
-
-/* =========================================================
-   SELECT DESABILITADO
-========================================================= */
-
 .filtro-grupo select:disabled {
-
   opacity: 0.35;
-
   cursor: not-allowed;
-
 }
 
 
 /* =========================================================
-   OPÇÕES DO SELECT
+   OPÇÕES DOS SELECTS
 ========================================================= */
 
 .filtro-grupo select option {
   background: #181818;
-
   color: #fff;
 }
 
@@ -924,18 +732,20 @@
 ========================================================= */
 
 .botao-limpar-filtros {
-
   align-self: flex-end;
 
   height: 42px;
 
   padding: 0 16px;
 
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.1);
 
   border-radius: 9px;
 
-  background: rgba(255, 255, 255, 0.06);
+  background:
+    rgba(255, 255, 255, 0.06);
 
   color: inherit;
 
@@ -953,22 +763,20 @@
     border-color 0.2s ease;
 }
 
-
 .botao-limpar-filtros:hover {
+  background:
+    rgba(255, 255, 255, 0.1);
 
-  background: rgba(255, 255, 255, 0.1);
+  border-color:
+    rgba(255, 255, 255, 0.18);
 
-  border-color: rgba(255, 255, 255, 0.18);
-
-  transform: translateY(-1px);
-
+  transform:
+    translateY(-1px);
 }
 
-
 .botao-limpar-filtros:active {
-
-  transform: translateY(0);
-
+  transform:
+    translateY(0);
 }
 
 
@@ -977,53 +785,57 @@
 ========================================================= */
 
 .cards-header p {
-
   margin-top: 8px;
-
   opacity: 0.6;
-
   font-size: 14px;
-
 }
 
 
 /* =========================================================
-   RESPONSIVO
    TABLETS
 ========================================================= */
 
 @media (max-width: 1100px) {
-
   .cards-filtros {
-
     grid-template-columns:
-      repeat(3, minmax(150px, 1fr));
-
+      repeat(
+        3,
+        minmax(150px, 1fr)
+      );
   }
 
   .filtro-pesquisa {
-
     grid-column: span 2;
-
   }
 
   .botao-limpar-filtros {
-
     align-self: stretch;
-
   }
-
 }
 
 
 /* =========================================================
-   CELULAR
+   TABLETS / CELULARES
 ========================================================= */
 
 @media (max-width: 700px) {
 
-  .cards-filtros {
+  .cards-page {
+    padding: 15px;
+  }
 
+
+  .cards-header {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .cards-header h1 {
+    font-size: 25px;
+  }
+
+
+  .cards-filtros {
     grid-template-columns: 1fr;
 
     gap: 12px;
@@ -1033,42 +845,141 @@
     margin-bottom: 20px;
 
     border-radius: 14px;
-
   }
 
-
   .filtro-pesquisa {
-
     grid-column: auto;
-
   }
 
 
   .filtro-grupo input,
   .filtro-grupo select {
-
     height: 44px;
-
     font-size: 14px;
+  }
 
+  .filtro-grupo label {
+    font-size: 10px;
   }
 
 
-  .filtro-grupo label {
-
-    font-size: 10px;
-
+  .filtro-pesquisa input {
+    height: 46px;
+    font-size: 14px;
   }
 
 
   .botao-limpar-filtros {
-
     width: 100%;
-
     height: 44px;
-
   }
 
+
+  .cards-grid {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+
+    gap: 12px;
+  }
+
+
+  .card-jogador {
+    min-height: auto;
+    padding: 12px;
+    border-radius: 14px;
+  }
+
+
+  .card-foto-container {
+    width: 100%;
+
+    aspect-ratio: 3 / 4;
+
+    margin-top: 10px;
+
+    border-radius: 8px;
+  }
+
+  .card-foto {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+    object-position: center top;
+  }
+
+
+  .card-ovr {
+    width: 55px;
+    height: 55px;
+  }
+
+  .card-ovr strong {
+    font-size: 23px;
+  }
+
+  .card-ovr span {
+    font-size: 8px;
+  }
+
+
+  .card-nome {
+    margin-top: 10px;
+    font-size: 17px;
+  }
+
+
+  .card-tipo {
+    font-size: 9px;
+  }
+
+
+  .card-estrelas {
+    font-size: 12px;
+  }
+
+
+  .card-atributos {
+    gap: 8px;
+    padding-top: 15px;
+  }
+
+  .card-atributos strong {
+    font-size: 15px;
+  }
+
+  .card-atributos span {
+    font-size: 9px;
+  }
+
+
+  .card-estatisticas {
+    gap: 6px;
+    margin-top: 10px;
+    padding-top: 10px;
+  }
+
+  .estatistica {
+    min-height: 36px;
+    padding: 5px 3px;
+    border-radius: 8px;
+    gap: 3px;
+  }
+
+  .estatistica-icone {
+    font-size: 12px;
+  }
+
+  .estatistica strong {
+    font-size: 15px;
+  }
+
+  .estatistica small {
+    font-size: 7px;
+  }
 }
 
 
@@ -1078,23 +989,257 @@
 
 @media (max-width: 450px) {
 
-  .cards-filtros {
-
+  .cards-page {
     padding: 12px;
-
-    gap: 10px;
-
   }
 
+
+  .cards-filtros {
+    padding: 12px;
+    gap: 10px;
+  }
 
   .filtro-grupo input,
   .filtro-grupo select {
-
     height: 42px;
-
     font-size: 13px;
-
   }
 
+
+  .cards-grid {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+
+    gap: 8px;
+  }
+
+
+  .card-jogador {
+    width: 100%;
+    min-height: auto;
+
+    padding: 10px;
+
+    border-radius: 12px;
+  }
+
+
+  .card-foto-container {
+    width: 100%;
+
+    aspect-ratio: 3 / 4;
+
+    margin-top: 8px;
+
+    border-radius: 7px;
+  }
+
+  .card-foto {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+    object-position: center top;
+  }
+
+
+  .card-ovr {
+    width: 50px;
+    height: 50px;
+
+    border-width: 2px;
+  }
+
+  .card-ovr strong {
+    font-size: 21px;
+  }
+
+  .card-ovr span {
+    font-size: 7px;
+  }
+
+
+  .card-id {
+    font-size: 9px;
+  }
+
+
+  .card-nome {
+    font-size: 15px;
+    margin-top: 8px;
+  }
+
+
+  .card-tipo {
+    font-size: 8px;
+    margin-top: 3px;
+  }
+
+
+  .card-estrelas {
+    font-size: 10px;
+    margin-top: 5px;
+  }
+
+
+  .card-atributos {
+    gap: 6px;
+    padding-top: 12px;
+  }
+
+  .card-atributos strong {
+    font-size: 13px;
+  }
+
+  .card-atributos span {
+    font-size: 8px;
+  }
+
+
+  .card-estatisticas {
+    gap: 5px;
+    margin-top: 8px;
+    padding-top: 8px;
+  }
+
+  .estatistica {
+    min-height: 32px;
+    padding: 4px 2px;
+    border-radius: 7px;
+    gap: 2px;
+  }
+
+  .estatistica-icone {
+    font-size: 10px;
+  }
+
+  .estatistica strong {
+    font-size: 13px;
+  }
+
+  .estatistica small {
+    font-size: 6px;
+  }
+}
+
+
+/* =========================================================
+   CELULARES MUITO PEQUENOS
+========================================================= */
+
+@media (max-width: 350px) {
+
+  .cards-page {
+    padding: 8px;
+  }
+
+
+  .cards-grid {
+    gap: 6px;
+  }
+
+
+  .card-jogador {
+    padding: 8px;
+    border-radius: 10px;
+  }
+
+
+  .card-foto-container {
+    aspect-ratio: 3 / 4;
+  }
+
+  .card-foto {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+    object-position: center top;
+  }
+
+
+  .card-ovr {
+    width: 45px;
+    height: 45px;
+  }
+
+  .card-ovr strong {
+    font-size: 19px;
+  }
+
+  .card-ovr span {
+    font-size: 6px;
+  }
+
+
+  .card-id {
+    font-size: 8px;
+  }
+
+
+  .card-nome {
+    font-size: 13px;
+  }
+
+
+  .card-tipo {
+    font-size: 7px;
+  }
+
+
+  .card-estrelas {
+    font-size: 9px;
+  }
+
+
+  .card-atributos {
+    gap: 4px;
+    padding-top: 10px;
+  }
+
+  .card-atributos strong {
+    font-size: 12px;
+  }
+
+  .card-atributos span {
+    font-size: 7px;
+  }
+
+
+  .card-estatisticas {
+    gap: 4px;
+    margin-top: 7px;
+    padding-top: 7px;
+  }
+
+  .estatistica {
+    min-height: 29px;
+    padding: 3px 1px;
+  }
+
+  .estatistica-icone {
+    font-size: 9px;
+  }
+
+  .estatistica strong {
+    font-size: 12px;
+  }
+
+  .estatistica small {
+    font-size: 5px;
+  }
+}
+
+
+/* =========================================================
+   FOCO DO CARD
+========================================================= */
+
+.card-jogador:focus-visible {
+  outline: 2px solid #ffd84d;
+  outline-offset: 3px;
 }
 

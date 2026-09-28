@@ -5,27 +5,21 @@ import React, {
 } from "react";
 
 import Header from "./components/Header/Header";
-
 import Filtros from "./components/Filtros/Filtros";
-
 import ListaJogadores from "./components/ListaJogadores/ListaJogadores";
-
 import Resumo from "./components/Resumo";
 
 import Ranking from "./pages/Ranking";
-
 import Dashboard from "./pages/Dashboard/Dashboard";
-
 import Timer from "./components/Timer/Timer";
-
 import TimerFlutuante from "./components/Timer/TimerFlutuante";
 
 import CardsPage from "./pages/Cards/CardsPage";
+import PlayerCardPage from "./pages/Cards/PlayerCardPage";
 
 import PeladaPage from "./pages/Pelada/PeladaPage";
 
 import { listarJogadores } from "./services/api";
-
 import { gerarListaJogadores } from "./services/exportarJogadores";
 
 import "./style.css";
@@ -41,57 +35,55 @@ function App() {
 
   const [pesquisa, setPesquisa] = useState("");
 
-  const [estrelas, setEstrelas] =
-    useState("todas");
+  const [estrelas, setEstrelas] = useState("todas");
 
-  const [tipo, setTipo] =
-    useState("todos");
+  const [tipo, setTipo] = useState("todos");
 
-  const [ordem, setOrdem] =
-    useState("recentes");
+  const [ordem, setOrdem] = useState("recentes");
 
 
   // ==================================================
   // CARREGAMENTO
   // ==================================================
 
-  const [carregando, setCarregando] =
-    useState(true);
+  const [carregando, setCarregando] = useState(true);
 
-  const [erro, setErro] =
-    useState("");
+  const [erro, setErro] = useState("");
 
 
   // ==================================================
   // PÁGINA ATUAL
   // ==================================================
 
-  const [pagina, setPagina] =
-    useState("dashboard");
+  const [pagina, setPagina] = useState("dashboard");
+
+
+  // ==================================================
+  // JOGADOR SELECIONADO
+  // ==================================================
+
+  const [jogadorSelecionado, setJogadorSelecionado] =
+    useState(null);
 
 
   // ==================================================
   // TIMER
   // ==================================================
 
-  const [duracao, setDuracao] =
-    useState(10);
+  const [duracao, setDuracao] = useState(10);
 
-  const [tempo, setTempo] =
-    useState(10 * 60);
+  const [tempo, setTempo] = useState(10 * 60);
 
-  const [rodando, setRodando] =
-    useState(false);
+  const [rodando, setRodando] = useState(false);
 
-  const [acrescimos, setAcrescimos] =
-    useState(0);
+  const [acrescimos, setAcrescimos] = useState(0);
 
   const [modoAcrescimo, setModoAcrescimo] =
     useState(false);
 
 
   // ==================================================
-  // CRONÔMETRO
+  // CONTROLE DO TIMER
   // ==================================================
 
   useEffect(() => {
@@ -105,9 +97,7 @@ function App() {
       setTempo((tempoAtual) => {
 
         if (tempoAtual > 0) {
-
           return tempoAtual - 1;
-
         }
 
         setRodando(false);
@@ -115,16 +105,13 @@ function App() {
         setModoAcrescimo(true);
 
         return 0;
-
       });
 
     }, 1000);
 
 
     return () => {
-
       clearInterval(intervalo);
-
     };
 
   }, [rodando]);
@@ -145,34 +132,29 @@ function App() {
     setModoAcrescimo(false);
 
     setAcrescimos(0);
-
   }
 
 
   // ==================================================
-  // INICIAR
+  // INICIAR TIMER
   // ==================================================
 
   function iniciar() {
-
     setRodando(true);
-
   }
 
 
   // ==================================================
-  // PAUSAR
+  // PAUSAR TIMER
   // ==================================================
 
   function pausar() {
-
     setRodando(false);
-
   }
 
 
   // ==================================================
-  // REINICIAR
+  // REINICIAR TIMER
   // ==================================================
 
   function reiniciar() {
@@ -184,7 +166,6 @@ function App() {
     setModoAcrescimo(false);
 
     setAcrescimos(0);
-
   }
 
 
@@ -194,20 +175,50 @@ function App() {
 
   function adicionarAcrescimo(minutos) {
 
-    setAcrescimos(
-      (atual) =>
-        atual + minutos
-    );
+    setAcrescimos((atual) => {
+      return atual + minutos;
+    });
 
-    setTempo(
-      (atual) =>
-        atual + minutos * 60
-    );
+    setTempo((atual) => {
+      return atual + minutos * 60;
+    });
 
     setModoAcrescimo(true);
 
     setRodando(true);
+  }
 
+
+  // ==================================================
+  // ABRIR FICHA DO JOGADOR
+  // ==================================================
+
+  function abrirFicha(jogador) {
+
+    console.log(
+      "ABRINDO FICHA DO JOGADOR:",
+      jogador
+    );
+
+    setJogadorSelecionado(jogador);
+
+    setPagina("playerCard");
+  }
+
+
+  // ==================================================
+  // VOLTAR PARA CARDS
+  // ==================================================
+
+  function voltarParaCards() {
+
+    console.log(
+      "VOLTANDO PARA CARDS"
+    );
+
+    setJogadorSelecionado(null);
+
+    setPagina("cards");
   }
 
 
@@ -266,42 +277,45 @@ function App() {
   }, []);
 
 
- // ==================================================
-// ATUALIZAR JOGADOR
-// ==================================================
+  // ==================================================
+  // ATUALIZAR JOGADOR
+  // ==================================================
 
-function atualizarJogador(resultado) {
+  function atualizarJogador(resultado) {
 
-  setJogadores((jogadoresAtuais) => {
+    setJogadores((jogadoresAtuais) => {
 
-    return jogadoresAtuais.map((jogador) => {
+      return jogadoresAtuais.map((jogador) => {
 
-      if (
-        String(jogador.id) !==
-        String(resultado.id)
-      ) {
-        return jogador;
-      }
+        if (
+          String(jogador.id) !==
+          String(resultado.id)
+        ) {
 
-      return {
-        ...jogador,
+          return jogador;
+        }
 
-        // Atualiza somente se a API enviou gols
-        ...(resultado.gols !== undefined && {
-          gols: Number(resultado.gols),
-        }),
 
-        // Atualiza somente se a API enviou assistências
-        ...(resultado.assistencias !== undefined && {
-          assistencias: Number(resultado.assistencias),
-        }),
-      };
+        return {
+
+          ...jogador,
+
+          ...(resultado.gols !== undefined && {
+            gols: Number(resultado.gols),
+          }),
+
+          ...(resultado.assistencias !== undefined && {
+            assistencias:
+              Number(resultado.assistencias),
+          }),
+
+        };
+
+      });
 
     });
 
-  });
-
-}
+  }
 
 
   // ==================================================
@@ -313,9 +327,7 @@ function atualizarJogador(resultado) {
     try {
 
       const texto =
-        gerarListaJogadores(
-          jogadores
-        );
+        gerarListaJogadores(jogadores);
 
 
       if (
@@ -326,15 +338,11 @@ function atualizarJogador(resultado) {
       ) {
 
         await navigator.share({
-
           title: "Pelada App",
-
           text: texto,
-
         });
 
         return;
-
       }
 
 
@@ -351,12 +359,9 @@ function atualizarJogador(resultado) {
     } catch (error) {
 
       if (
-        error?.name ===
-        "AbortError"
+        error?.name === "AbortError"
       ) {
-
         return;
-
       }
 
 
@@ -376,131 +381,123 @@ function atualizarJogador(resultado) {
 
 
   // ==================================================
-  // FILTROS DOS JOGADORES
+  // FILTRAR JOGADORES
   // ==================================================
 
-  const jogadoresFiltrados =
-    useMemo(() => {
+  const jogadoresFiltrados = useMemo(() => {
 
-      const filtrados =
-        jogadores.filter(
-          (jogador) => {
+    const filtrados = jogadores.filter(
+      (jogador) => {
 
-            const nomeMatch =
-              jogador.nome
-                ?.toLowerCase()
-                .includes(
-                  pesquisa.toLowerCase()
-                );
-
-
-            const estrelasMatch =
-              estrelas === "todas" ||
-              Number(jogador.estrelas) ===
-              Number(estrelas);
-
-
-            const tipoJogador =
-              jogador.tipo
-                ?.trim()
-                .toUpperCase();
-
-
-            const tipoSelecionado =
-              tipo
-                ?.trim()
-                .toUpperCase();
-
-
-            const tipoMatch =
-              tipoSelecionado === "TODOS" ||
-              tipoJogador ===
-              tipoSelecionado;
-
-
-            return (
-              nomeMatch &&
-              estrelasMatch &&
-              tipoMatch
+        const nomeMatch =
+          jogador.nome
+            ?.toLowerCase()
+            .includes(
+              pesquisa.toLowerCase()
             );
 
-          }
+
+        const estrelasMatch =
+          estrelas === "todas" ||
+          Number(jogador.estrelas) ===
+          Number(estrelas);
+
+
+        const tipoJogador =
+          jogador.tipo
+            ?.trim()
+            .toUpperCase();
+
+
+        const tipoSelecionado =
+          tipo
+            ?.trim()
+            .toUpperCase();
+
+
+        const tipoMatch =
+          tipoSelecionado === "TODOS" ||
+          tipoJogador ===
+          tipoSelecionado;
+
+
+        return (
+          nomeMatch &&
+          estrelasMatch &&
+          tipoMatch
         );
 
-
-      return [...filtrados].sort(
-        (a, b) => {
-
-          if (
-            ordem === "recentes"
-          ) {
-
-            return (
-              b.ordemCadastro -
-              a.ordemCadastro
-            );
-
-          }
+      }
+    );
 
 
-          if (
-            ordem === "antigos"
-          ) {
+    return [...filtrados].sort(
+      (a, b) => {
 
-            return (
-              a.ordemCadastro -
-              b.ordemCadastro
-            );
+        if (
+          ordem === "recentes"
+        ) {
 
-          }
-
-
-          if (
-            ordem === "az"
-          ) {
-
-            return a.nome.localeCompare(
-              b.nome,
-              "pt-BR"
-            );
-
-          }
-
-
-          if (
-            ordem === "za"
-          ) {
-
-            return b.nome.localeCompare(
-              a.nome,
-              "pt-BR"
-            );
-
-          }
-
-
-          return 0;
+          return (
+            b.ordemCadastro -
+            a.ordemCadastro
+          );
 
         }
-      );
 
-    }, [
 
-      jogadores,
+        if (
+          ordem === "antigos"
+        ) {
 
-      pesquisa,
+          return (
+            a.ordemCadastro -
+            b.ordemCadastro
+          );
 
-      estrelas,
+        }
 
-      tipo,
 
-      ordem
+        if (
+          ordem === "az"
+        ) {
 
-    ]);
+          return a.nome.localeCompare(
+            b.nome,
+            "pt-BR"
+          );
+
+        }
+
+
+        if (
+          ordem === "za"
+        ) {
+
+          return b.nome.localeCompare(
+            a.nome,
+            "pt-BR"
+          );
+
+        }
+
+
+        return 0;
+
+      }
+    );
+
+  }, [
+    jogadores,
+    pesquisa,
+    estrelas,
+    tipo,
+    ordem
+  ]);
 
 
   // ==================================================
-  // CARREGANDO JOGADORES
+  // CARREGANDO
   // ==================================================
 
   if (carregando) {
@@ -575,18 +572,12 @@ function atualizarJogador(resultado) {
           tempo={tempo}
           rodando={rodando}
           acrescimos={acrescimos}
-          modoAcrescimo={
-            modoAcrescimo
-          }
-          selecionarDuracao={
-            selecionarDuracao
-          }
+          modoAcrescimo={modoAcrescimo}
+          selecionarDuracao={selecionarDuracao}
           iniciar={iniciar}
           pausar={pausar}
           reiniciar={reiniciar}
-          adicionarAcrescimo={
-            adicionarAcrescimo
-          }
+          adicionarAcrescimo={adicionarAcrescimo}
         />
 
       </div>
@@ -621,9 +612,46 @@ function atualizarJogador(resultado) {
         <TimerFlutuante
           tempo={tempo}
           rodando={rodando}
-          modoAcrescimo={
-            modoAcrescimo
-          }
+          modoAcrescimo={modoAcrescimo}
+          setPagina={setPagina}
+          pausar={pausar}
+          iniciar={iniciar}
+        />
+
+      </div>
+
+    );
+
+  }
+
+
+  // ==================================================
+  // FICHA DO JOGADOR
+  // ==================================================
+
+  if (pagina === "playerCard") {
+
+    return (
+
+      <div className="app">
+
+        <Header
+          total={jogadores.length}
+          pagina="cards"
+          setPagina={setPagina}
+        />
+
+
+        <PlayerCardPage
+          jogador={jogadorSelecionado}
+          onVoltar={voltarParaCards}
+        />
+
+
+        <TimerFlutuante
+          tempo={tempo}
+          rodando={rodando}
+          modoAcrescimo={modoAcrescimo}
           setPagina={setPagina}
           pausar={pausar}
           iniciar={iniciar}
@@ -655,15 +683,14 @@ function atualizarJogador(resultado) {
 
         <CardsPage
           jogadores={jogadores}
+          onAbrirFicha={abrirFicha}
         />
 
 
         <TimerFlutuante
           tempo={tempo}
           rodando={rodando}
-          modoAcrescimo={
-            modoAcrescimo
-          }
+          modoAcrescimo={modoAcrescimo}
           setPagina={setPagina}
           pausar={pausar}
           iniciar={iniciar}
@@ -677,7 +704,7 @@ function atualizarJogador(resultado) {
 
 
   // ==================================================
-  // SEPARAR TIMES
+  // PELADA
   // ==================================================
 
   if (pagina === "pelada") {
@@ -701,9 +728,7 @@ function atualizarJogador(resultado) {
         <TimerFlutuante
           tempo={tempo}
           rodando={rodando}
-          modoAcrescimo={
-            modoAcrescimo
-          }
+          modoAcrescimo={modoAcrescimo}
           setPagina={setPagina}
           pausar={pausar}
           iniciar={iniciar}
@@ -739,9 +764,7 @@ function atualizarJogador(resultado) {
         <TimerFlutuante
           tempo={tempo}
           rodando={rodando}
-          modoAcrescimo={
-            modoAcrescimo
-          }
+          modoAcrescimo={modoAcrescimo}
           setPagina={setPagina}
           pausar={pausar}
           iniciar={iniciar}
@@ -800,9 +823,7 @@ function atualizarJogador(resultado) {
                 className="botao-exportar"
                 onClick={exportarLista}
               >
-
                 📋 Exportar lista
-
               </button>
 
             </div>
@@ -847,12 +868,8 @@ function atualizarJogador(resultado) {
 
 
           <ListaJogadores
-            jogadores={
-              jogadoresFiltrados
-            }
-            onAtualizarJogador={
-              atualizarJogador
-            }
+            jogadores={jogadoresFiltrados}
+            onAtualizarJogador={atualizarJogador}
           />
 
         </main>
@@ -861,9 +878,7 @@ function atualizarJogador(resultado) {
         <TimerFlutuante
           tempo={tempo}
           rodando={rodando}
-          modoAcrescimo={
-            modoAcrescimo
-          }
+          modoAcrescimo={modoAcrescimo}
           setPagina={setPagina}
           pausar={pausar}
           iniciar={iniciar}
@@ -879,8 +894,6 @@ function atualizarJogador(resultado) {
   // ==================================================
   // FALLBACK
   // ==================================================
-
-  setPagina("dashboard");
 
   return null;
 

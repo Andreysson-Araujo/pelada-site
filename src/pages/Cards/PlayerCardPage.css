@@ -1,0 +1,1072 @@
+
+/* =========================================================
+   PLAYER CARD PAGE
+========================================================= */
+
+.player-card-page {
+  width: 100%;
+  min-height: 100vh;
+  padding: 30px 20px 60px;
+  box-sizing: border-box;
+
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(255, 216, 77, 0.08),
+      transparent 35%
+    ),
+    #0b0b0b;
+
+  color: #fff;
+}
+
+
+/* =========================================================
+   TOPO
+========================================================= */
+
+.player-card-topo {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto 20px;
+
+  display: flex;
+  align-items: center;
+}
+
+
+/* =========================================================
+   BOTÃO VOLTAR
+========================================================= */
+
+.player-card-voltar {
+  border: 1px solid rgba(255, 216, 77, 0.25);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 216, 77, 0.10),
+      rgba(255, 216, 77, 0.03)
+    );
+
+  color: #ffd84d;
+
+  padding: 11px 18px;
+
+  border-radius: 10px;
+
+  font-size: 12px;
+  font-weight: 900;
+
+  letter-spacing: 0.5px;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.player-card-voltar:hover {
+  transform: translateX(-3px);
+
+  background:
+    rgba(255, 216, 77, 0.15);
+
+  border-color:
+    rgba(255, 216, 77, 0.55);
+
+  box-shadow:
+    0 5px 20px
+    rgba(255, 216, 77, 0.08);
+}
+
+.player-card-voltar:active {
+  transform: translateX(-1px);
+}
+
+
+/* =========================================================
+   FICHA PRINCIPAL
+========================================================= */
+
+.player-card-ficha {
+  position: relative;
+
+  width: 100%;
+  max-width: 900px;
+
+  min-height: 470px;
+
+  margin: 0 auto 24px;
+
+  padding: 28px;
+
+  box-sizing: border-box;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(280px, 380px)
+    1fr;
+
+  gap: 30px;
+
+  align-items: center;
+
+  border-radius: 24px;
+
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      145deg,
+      #292929 0%,
+      #151515 48%,
+      #0d0d0d 100%
+    );
+
+  border:
+    1px solid
+    rgba(255, 216, 77, 0.20);
+
+  box-shadow:
+    0 25px 60px
+    rgba(0, 0, 0, 0.55),
+
+    inset 0 1px 0
+    rgba(255, 255, 255, 0.06);
+}
+
+
+/* brilho decorativo */
+
+.player-card-ficha::before {
+  content: "";
+
+  position: absolute;
+
+  width: 350px;
+  height: 350px;
+
+  top: -180px;
+  right: -120px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(255, 216, 77, 0.07);
+
+  filter: blur(5px);
+
+  pointer-events: none;
+}
+
+
+/* linha dourada */
+
+.player-card-ficha::after {
+  content: "";
+
+  position: absolute;
+
+  left: 28px;
+  right: 28px;
+
+  bottom: 0;
+
+  height: 2px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      #ffd84d,
+      transparent
+    );
+
+  opacity: 0.6;
+}
+
+
+/* =========================================================
+   FOTO
+========================================================= */
+
+.player-card-foto-area {
+  position: relative;
+
+  width: 100%;
+
+  aspect-ratio: 3 / 4;
+
+  max-height: 430px;
+
+  border-radius: 18px;
+
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      145deg,
+      #252525,
+      #111
+    );
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.08);
+
+  box-shadow:
+    0 15px 35px
+    rgba(0, 0, 0, 0.45);
+
+  z-index: 1;
+}
+
+
+/* imagem */
+
+.player-card-foto {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+
+  object-position: center top;
+
+  transition:
+    transform 0.35s ease,
+    filter 0.35s ease;
+}
+
+.player-card-ficha:hover
+.player-card-foto {
+  transform: scale(1.025);
+
+  filter:
+    brightness(1.04)
+    contrast(1.02);
+}
+
+
+/* degradê na parte inferior da foto */
+
+.player-card-foto-area::after {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  height: 35%;
+
+  background:
+    linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.55),
+      transparent
+    );
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   OVR
+========================================================= */
+
+.player-card-ovr {
+  position: absolute;
+
+  right: 15px;
+  top: 15px;
+
+  width: 82px;
+  height: 82px;
+
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background:
+    linear-gradient(
+      145deg,
+      #ffe66d,
+      #d5a900
+    );
+
+  color: #111;
+
+  font-size: 38px;
+  font-weight: 950;
+
+  border:
+    4px solid
+    #fff;
+
+  box-shadow:
+    0 0 0 4px
+    rgba(255, 216, 77, 0.25),
+
+    0 10px 25px
+    rgba(0, 0, 0, 0.55);
+
+  z-index: 5;
+}
+
+
+/* =========================================================
+   INFORMAÇÕES DO JOGADOR
+========================================================= */
+
+.player-card-info {
+  position: relative;
+
+  z-index: 2;
+
+  padding: 15px 5px;
+}
+
+
+/* pequeno título */
+
+.player-card-label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color:
+    rgba(255, 216, 77, 0.75);
+
+  font-size: 11px;
+
+  font-weight: 900;
+
+  letter-spacing: 2px;
+}
+
+
+/* nome */
+
+.player-card-nome {
+  margin: 0;
+
+  color: #fff;
+
+  font-size: clamp(38px, 5vw, 65px);
+
+  line-height: 0.95;
+
+  font-weight: 950;
+
+  letter-spacing: -2px;
+
+  text-transform: uppercase;
+
+  word-break: break-word;
+
+  text-shadow:
+    0 5px 20px
+    rgba(0, 0, 0, 0.5);
+}
+
+
+/* linha */
+
+.player-card-info::after {
+  content: "";
+
+  display: block;
+
+  width: 70px;
+
+  height: 4px;
+
+  margin: 22px 0;
+
+  border-radius: 5px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #ffd84d,
+      transparent
+    );
+}
+
+
+/* posição + estrelas */
+
+.player-card-meta {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  align-items: center;
+
+  gap: 12px;
+}
+
+
+/* posição */
+
+.player-card-meta span:first-child {
+  padding: 8px 13px;
+
+  border-radius: 8px;
+
+  background:
+    rgba(255, 255, 255, 0.06);
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.08);
+
+  color:
+    rgba(255, 255, 255, 0.75);
+
+  font-size: 11px;
+
+  font-weight: 900;
+
+  letter-spacing: 1px;
+
+  text-transform: uppercase;
+}
+
+
+/* estrelas */
+
+.player-card-meta span:last-child {
+  color: #ffd84d;
+
+  font-size: 18px;
+
+  letter-spacing: 1px;
+
+  filter:
+    drop-shadow(
+      0 2px 5px
+      rgba(255, 216, 77, 0.2)
+    );
+}
+
+
+/* =========================================================
+   SEÇÕES
+========================================================= */
+
+.player-card-secao {
+  width: 100%;
+  max-width: 900px;
+
+  margin: 0 auto 20px;
+
+  padding: 22px;
+
+  box-sizing: border-box;
+
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.045),
+      rgba(255, 255, 255, 0.018)
+    );
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.07);
+
+  box-shadow:
+    0 10px 30px
+    rgba(0, 0, 0, 0.20);
+}
+
+
+/* título da seção */
+
+.player-card-secao h2 {
+  margin: 0 0 20px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  color: #fff;
+
+  font-size: 14px;
+
+  font-weight: 950;
+
+  letter-spacing: 1.5px;
+}
+
+
+/* linha dourada antes do título */
+
+.player-card-secao h2::before {
+  content: "";
+
+  width: 4px;
+  height: 20px;
+
+  border-radius: 5px;
+
+  background: #ffd84d;
+
+  box-shadow:
+    0 0 12px
+    rgba(255, 216, 77, 0.35);
+}
+
+
+/* =========================================================
+   ATRIBUTOS
+========================================================= */
+
+.player-card-atributos {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  column-gap: 35px;
+
+  row-gap: 18px;
+}
+
+
+/* atributo */
+
+.player-atributo {
+  width: 100%;
+}
+
+
+/* topo do atributo */
+
+.player-atributo-topo {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  margin-bottom: 7px;
+}
+
+
+/* nome do atributo */
+
+.player-atributo-topo span {
+  color:
+    rgba(255, 255, 255, 0.55);
+
+  font-size: 11px;
+
+  font-weight: 900;
+
+  letter-spacing: 1px;
+}
+
+
+/* valor */
+
+.player-atributo-topo strong {
+  color: #fff;
+
+  font-size: 19px;
+
+  font-weight: 950;
+}
+
+
+/* barra */
+
+.player-atributo-barra {
+  width: 100%;
+
+  height: 8px;
+
+  overflow: hidden;
+
+  border-radius: 10px;
+
+  background:
+    rgba(255, 255, 255, 0.07);
+
+  box-shadow:
+    inset 0 1px 3px
+    rgba(0, 0, 0, 0.4);
+}
+
+
+/* progresso */
+
+.player-atributo-progresso {
+  height: 100%;
+
+  border-radius: inherit;
+
+  background:
+    linear-gradient(
+      90deg,
+      #a97b00,
+      #ffd84d
+    );
+
+  box-shadow:
+    0 0 10px
+    rgba(255, 216, 77, 0.20);
+
+  transition:
+    width 0.5s ease;
+}
+
+
+/* =========================================================
+   ESTATÍSTICAS
+========================================================= */
+
+.player-card-estatisticas {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 15px;
+}
+
+
+/* bloco */
+
+.player-estatistica {
+  min-height: 115px;
+
+  padding: 18px;
+
+  box-sizing: border-box;
+
+  display: grid;
+
+  grid-template-columns:
+    auto 1fr;
+
+  grid-template-rows:
+    1fr auto;
+
+  column-gap: 12px;
+
+  align-items: center;
+
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 216, 77, 0.09),
+      rgba(255, 216, 77, 0.025)
+    );
+
+  border:
+    1px solid
+    rgba(255, 216, 77, 0.14);
+
+  box-shadow:
+    inset 0 1px 0
+    rgba(255, 255, 255, 0.04);
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+
+/* hover */
+
+.player-estatistica:hover {
+  transform: translateY(-3px);
+
+  border-color:
+    rgba(255, 216, 77, 0.35);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 216, 77, 0.13),
+      rgba(255, 216, 77, 0.035)
+    );
+}
+
+
+/* ícone */
+
+.player-estatistica > span {
+  grid-row: 1 / 3;
+
+  font-size: 30px;
+
+  filter:
+    drop-shadow(
+      0 3px 5px
+      rgba(0, 0, 0, 0.35)
+    );
+}
+
+
+/* número */
+
+.player-estatistica strong {
+  align-self: end;
+
+  color: #ffd84d;
+
+  font-size: 36px;
+
+  line-height: 1;
+
+  font-weight: 950;
+}
+
+
+/* legenda */
+
+.player-estatistica small {
+  align-self: start;
+
+  color:
+    rgba(255, 255, 255, 0.55);
+
+  font-size: 9px;
+
+  font-weight: 900;
+
+  letter-spacing: 1px;
+}
+
+
+/* =========================================================
+   BOTÃO FINAL
+========================================================= */
+
+.player-card-final {
+  width: 100%;
+  max-width: 900px;
+
+  margin: 30px auto 0;
+
+  display: flex;
+
+  justify-content: center;
+}
+
+
+/* =========================================================
+   ERRO
+========================================================= */
+
+.player-card-erro {
+  width: 100%;
+  max-width: 500px;
+
+  margin: 100px auto;
+
+  padding: 40px;
+
+  box-sizing: border-box;
+
+  text-align: center;
+
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #222,
+      #111
+    );
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.08);
+
+  box-shadow:
+    0 20px 50px
+    rgba(0, 0, 0, 0.45);
+}
+
+.player-card-erro h2 {
+  margin-top: 0;
+
+  margin-bottom: 25px;
+
+  font-size: 22px;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 800px) {
+
+  .player-card-page {
+    padding:
+      20px
+      15px
+      50px;
+  }
+
+  .player-card-ficha {
+    grid-template-columns: 280px 1fr;
+
+    gap: 22px;
+
+    padding: 20px;
+  }
+
+  .player-card-nome {
+    font-size: 42px;
+  }
+
+  .player-card-ovr {
+    width: 70px;
+    height: 70px;
+
+    font-size: 32px;
+  }
+
+  .player-card-atributos {
+    column-gap: 20px;
+  }
+}
+
+
+/* =========================================================
+   CELULAR
+========================================================= */
+
+@media (max-width: 650px) {
+
+  .player-card-page {
+    padding:
+      15px
+      10px
+      40px;
+  }
+
+  .player-card-topo {
+    margin-bottom: 15px;
+  }
+
+  .player-card-voltar {
+    width: 100%;
+
+    padding: 12px;
+  }
+
+
+  /* ficha */
+
+  .player-card-ficha {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 18px;
+
+    padding: 14px;
+
+    border-radius: 18px;
+  }
+
+
+  /* foto */
+
+  .player-card-foto-area {
+    width: 100%;
+
+    aspect-ratio: 3 / 4;
+
+    max-height: none;
+
+    border-radius: 14px;
+  }
+
+
+  /* OVR */
+
+  .player-card-ovr {
+    width: 65px;
+    height: 65px;
+
+    right: 12px;
+    top: 12px;
+
+    font-size: 29px;
+
+    border-width: 3px;
+  }
+
+
+  /* informações */
+
+  .player-card-info {
+    padding:
+      5px
+      5px
+      10px;
+  }
+
+  .player-card-label {
+    font-size: 9px;
+
+    letter-spacing: 1.5px;
+  }
+
+  .player-card-nome {
+    font-size: clamp(
+      30px,
+      10vw,
+      48px
+    );
+
+    letter-spacing: -1px;
+  }
+
+  .player-card-info::after {
+    margin: 15px 0;
+
+    width: 55px;
+
+    height: 3px;
+  }
+
+
+  /* seção */
+
+  .player-card-secao {
+    padding: 16px;
+
+    border-radius: 15px;
+  }
+
+  .player-card-secao h2 {
+    font-size: 12px;
+
+    margin-bottom: 16px;
+  }
+
+
+  /* atributos */
+
+  .player-card-atributos {
+    grid-template-columns: 1fr;
+
+    gap: 14px;
+  }
+
+
+  /* estatísticas */
+
+  .player-card-estatisticas {
+    grid-template-columns: 1fr;
+
+    gap: 10px;
+  }
+
+  .player-estatistica {
+    min-height: 95px;
+  }
+}
+
+
+/* =========================================================
+   CELULARES PEQUENOS
+========================================================= */
+
+@media (max-width: 380px) {
+
+  .player-card-page {
+    padding:
+      10px
+      7px
+      35px;
+  }
+
+  .player-card-ficha {
+    padding: 10px;
+
+    border-radius: 15px;
+  }
+
+  .player-card-foto-area {
+    border-radius: 11px;
+  }
+
+  .player-card-ovr {
+    width: 58px;
+    height: 58px;
+
+    font-size: 25px;
+
+    right: 8px;
+    top: 8px;
+  }
+
+  .player-card-nome {
+    font-size: 29px;
+  }
+
+  .player-card-secao {
+    padding: 13px;
+  }
+
+  .player-atributo-topo strong {
+    font-size: 17px;
+  }
+
+  .player-estatistica {
+    min-height: 85px;
+
+    padding: 14px;
+  }
+
+  .player-estatistica > span {
+    font-size: 25px;
+  }
+
+  .player-estatistica strong {
+    font-size: 30px;
+  }
+}
+
+
+/* =========================================================
+   ACESSIBILIDADE
+========================================================= */
+
+.player-card-voltar:focus-visible {
+  outline:
+    2px solid
+    #ffd84d;
+
+  outline-offset: 3px;
+}
+
+
+

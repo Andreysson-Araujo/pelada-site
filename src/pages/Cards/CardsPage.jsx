@@ -1,49 +1,32 @@
 import React, { useEffect, useMemo, useState } from "react";
-
 import "./CardsPage.css";
-
 import { calcularOVRJogador } from "./cardUtils";
 
-function CardsPage({ jogadores }) {
-
-  // =====================================================
-  // ESTADOS DOS CARDS
-  // =====================================================
-
+function CardsPage({ jogadores, onAbrirFicha }) {
   const [cards, setCards] = useState([]);
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState("");
 
-  // =====================================================
-  // ESTADOS DOS FILTROS
-  // =====================================================
-
   const [pesquisa, setPesquisa] = useState("");
-
   const [ovrMinimo, setOvrMinimo] = useState("todos");
-
   const [atributoFiltro, setAtributoFiltro] = useState("todos");
-
   const [atributoMinimo, setAtributoMinimo] = useState("todos");
-
   const [ordenacao, setOrdenacao] = useState("cadastro");
-
   const [tipoFiltro, setTipoFiltro] = useState("todos");
 
-  // =====================================================
+  // ============================================================
   // CARREGAR CARDS.TXT
-  // =====================================================
+  // ============================================================
 
   useEffect(() => {
-
     async function carregarCards() {
-
       try {
-
         setCarregando(true);
         setErro("");
 
-        const resposta = await fetch("/cards.txt");
+        const resposta = await fetch("/cards.txt", {
+          cache: "no-store",
+        });
 
         if (!resposta.ok) {
           throw new Error(
@@ -53,70 +36,33 @@ function CardsPage({ jogadores }) {
 
         const texto = await resposta.text();
 
-        // =================================================
-        // VALIDAR ARQUIVO
-        // =================================================
-
         if (!texto.includes("PELADA_CARDS_V1")) {
-
-          throw new Error(
-            "Arquivo cards.txt inválido."
-          );
-
+          throw new Error("Arquivo cards.txt inválido.");
         }
 
-        const linhas = texto.split("\n");
+        const linhas = texto
+          .split("\n")
+          .map((linha) => linha.trim())
+          .filter(Boolean);
 
         const cardsLidos = [];
 
-        // =================================================
-        // LER CARDS
-        // =================================================
-
         linhas.forEach((linha) => {
-
-          const textoLinha = linha.trim();
-
-          // Ignora títulos, separadores e linhas vazias
-          if (!textoLinha.startsWith("🆔")) {
+          if (!linha.startsWith("🆔")) {
             return;
           }
 
-          const partes = textoLinha
+          const partes = linha
             .split("|")
             .map((parte) => parte.trim());
 
-          if (partes.length < 6) {
-
-            console.warn(
-              "Linha de card inválida:",
-              textoLinha
-            );
-
+          if (partes.length < 8) {
             return;
           }
-
-          // =================================================
-          // ID
-          // =================================================
 
           const id = partes[0]
             .replace("🆔", "")
             .trim();
-
-          if (!id) {
-
-            console.warn(
-              "Card sem ID:",
-              textoLinha
-            );
-
-            return;
-          }
-
-          // =================================================
-          // ATAQUE
-          // =================================================
 
           const ataque =
             Number(
@@ -125,20 +71,12 @@ function CardsPage({ jogadores }) {
                 .trim()
             ) || 0;
 
-          // =================================================
-          // DEFESA
-          // =================================================
-
           const defesa =
             Number(
               partes[2]
                 .replace("DEF", "")
                 .trim()
             ) || 0;
-
-          // =================================================
-          // VELOCIDADE
-          // =================================================
 
           const velocidade =
             Number(
@@ -147,20 +85,12 @@ function CardsPage({ jogadores }) {
                 .trim()
             ) || 0;
 
-          // =================================================
-          // PASSE
-          // =================================================
-
           const passe =
             Number(
               partes[4]
                 .replace("PAS", "")
                 .trim()
             ) || 0;
-
-          // =================================================
-          // DRIBLE
-          // =================================================
 
           const drible =
             Number(
@@ -169,9 +99,22 @@ function CardsPage({ jogadores }) {
                 .trim()
             ) || 0;
 
-          // =================================================
-          // ADICIONAR CARD
-          // =================================================
+          // Dados GERAIS vindos do cards.txt
+          const gols =
+            Number(
+              partes[6]
+                .replace("GOLS", "")
+                .trim()
+            ) || 0;
+
+          const assistencias =
+            Number(
+              partes[7]
+                .replace("ASSIST", "")
+                .replace("ASSISTÊNCIAS", "")
+                .replace("ASSISTENCIA", "")
+                .trim()
+            ) || 0;
 
           cardsLidos.push({
             id,
@@ -179,505 +122,369 @@ function CardsPage({ jogadores }) {
             defesa,
             velocidade,
             passe,
-            drible
+            drible,
+            gols,
+            assistencias,
           });
-
         });
 
-        console.log(
-          "CARDS LIDOS:",
-          cardsLidos
-        );
+        // ========================================================
+        // JUNTAR API + CARDS.TXT
+        //
+        // jogador.gols
+        // jogador.assistencias
+        //
+        // continuam sendo os dados da API / temporada atual.
+        //
+        // golsGeral
+        // assistenciasGeral
+        //
+        // vêm do cards.txt.
+        // ========================================================
 
-        // =================================================
-        // VINCULAR JOGADORES COM CARDS
-        // =================================================
+        const jogadoresComCards = jogadores.map((jogador) => {
+          const card = cardsLidos.find(
+            (item) =>
+              String(item.id) ===
+              String(jogador.id)
+          );
 
-        const jogadoresComCards = jogadores.map(
-          (jogador) => {
+          return {
+            ...jogador,
 
-            const card = cardsLidos.find(
-              (item) =>
-                item.id === jogador.id
-            );
-
-            return {
-
-              ...jogador,
-
-              atributos: card
-                ? {
+            atributos: card
+              ? {
                   ataque: card.ataque,
                   defesa: card.defesa,
                   velocidade: card.velocidade,
                   passe: card.passe,
-                  drible: card.drible
+                  drible: card.drible,
                 }
-                : {
+              : {
                   ataque: 0,
                   defesa: 0,
                   velocidade: 0,
                   passe: 0,
-                  drible: 0
-                }
+                  drible: 0,
+                },
 
-            };
+            golsGeral: card
+              ? card.gols
+              : 0,
 
-          }
-        );
-
-        console.log(
-          "JOGADORES + CARDS:",
-          jogadoresComCards
-        );
+            assistenciasGeral: card
+              ? card.assistencias
+              : 0,
+          };
+        });
 
         setCards(jogadoresComCards);
-
       } catch (error) {
-
         console.error(
-          "Erro ao carregar cards:",
+          "ERRO AO CARREGAR CARDS:",
           error
         );
 
         setErro(
           error.message ||
-          "Não foi possível carregar os cards."
+            "Erro ao carregar cards."
         );
-
       } finally {
-
         setCarregando(false);
-
       }
-
     }
 
     carregarCards();
-
   }, [jogadores]);
 
-  // =====================================================
-  // FOTO DO JOGADOR
-  // =====================================================
-
-  function obterFotoJogador(jogador) {
-
-    // Exemplo:
-    // 001 -> /fotos/001.png
-    // 002 -> /fotos/002.png
-
-    return `/fotos/${jogador.id}.png`;
-
-  }
-
-  // =====================================================
-  // LIMPAR FILTROS
-  // =====================================================
-
-  function limparFiltros() {
-
-    setPesquisa("");
-
-    setOvrMinimo("todos");
-
-    setAtributoFiltro("todos");
-
-    setAtributoMinimo("todos");
-
-    setOrdenacao("cadastro");
-    setTipoFiltro("todos");
-
-  }
-
-  // =====================================================
-  // FILTRAR E ORDENAR CARDS
-  // =====================================================
+  // ============================================================
+  // FILTROS
+  // ============================================================
 
   const cardsFiltrados = useMemo(() => {
-
     let resultado = [...cards];
 
-    // ===================================================
     // PESQUISA
-    // ===================================================
-
-    if (pesquisa.trim() !== "") {
-
+    if (pesquisa.trim()) {
       const termo = pesquisa
         .toLowerCase()
         .trim();
 
       resultado = resultado.filter(
-        (jogador) => {
-
-          const nome =
-            jogador.nome?.toLowerCase() || "";
-
-          const id =
-            jogador.id?.toString() || "";
-
-          return (
-            nome.includes(termo) ||
-            id.includes(termo)
-          );
-
-        }
+        (jogador) =>
+          String(jogador.nome || "")
+            .toLowerCase()
+            .includes(termo) ||
+          String(jogador.id || "")
+            .toLowerCase()
+            .includes(termo)
       );
-
     }
 
-    // ===================================================
     // OVR MÍNIMO
-    // ===================================================
-
     if (ovrMinimo !== "todos") {
-
-      const minimo =
-        Number(ovrMinimo);
+      const minimo = Number(ovrMinimo);
 
       resultado = resultado.filter(
-        (jogador) => {
-
-          const ovr =
-            calcularOVRJogador(jogador);
-
-          return ovr >= minimo;
-
-        }
+        (jogador) =>
+          calcularOVRJogador(jogador) >= minimo
       );
-
     }
 
-    // ===================================================
-    // ATRIBUTO MÍNIMO
-    // ===================================================
-
+    // ATRIBUTO
     if (
       atributoFiltro !== "todos" &&
       atributoMinimo !== "todos"
     ) {
-
-      const minimo =
-        Number(atributoMinimo);
+      const minimo = Number(atributoMinimo);
 
       resultado = resultado.filter(
         (jogador) => {
-
           const valor =
             Number(
               jogador.atributos?.[
-              atributoFiltro
-              ] || 0
-            );
+                atributoFiltro
+              ]
+            ) || 0;
 
           return valor >= minimo;
-
         }
       );
-
     }
 
+    // TIPO
     if (tipoFiltro !== "todos") {
-
       resultado = resultado.filter(
         (jogador) =>
-          jogador.tipo === tipoFiltro
+          String(
+            jogador.tipo || ""
+          ).toUpperCase() ===
+          String(
+            tipoFiltro
+          ).toUpperCase()
       );
-
     }
 
-    // ===================================================
     // ORDENAÇÃO
-    // ===================================================
+    if (ordenacao === "ovr") {
+      resultado.sort(
+        (a, b) =>
+          calcularOVRJogador(b) -
+          calcularOVRJogador(a)
+      );
+    }
 
-    resultado.sort((a, b) => {
+    if (ordenacao === "nome") {
+      resultado.sort(
+        (a, b) =>
+          String(a.nome || "").localeCompare(
+            String(b.nome || "")
+          )
+      );
+    }
 
-      switch (ordenacao) {
+    if (ordenacao === "gols") {
+      resultado.sort(
+        (a, b) =>
+          (Number(b.golsGeral) || 0) -
+          (Number(a.golsGeral) || 0)
+      );
+    }
 
-        // -----------------------------------------------
-        // NOME A-Z
-        // -----------------------------------------------
-
-        case "nomeAsc":
-
-          return (a.nome || "")
-            .localeCompare(
-              b.nome || "",
-              "pt-BR",
-              {
-                sensitivity: "base"
-              }
-            );
-
-        // -----------------------------------------------
-        // NOME Z-A
-        // -----------------------------------------------
-
-        case "nomeDesc":
-
-          return (b.nome || "")
-            .localeCompare(
-              a.nome || "",
-              "pt-BR",
-              {
-                sensitivity: "base"
-              }
-            );
-
-        // -----------------------------------------------
-        // OVR MAIOR
-        // -----------------------------------------------
-
-        case "ovrDesc":
-
-          return (
-            calcularOVRJogador(b) -
-            calcularOVRJogador(a)
-          );
-
-        // -----------------------------------------------
-        // OVR MENOR
-        // -----------------------------------------------
-
-        case "ovrAsc":
-
-          return (
-            calcularOVRJogador(a) -
-            calcularOVRJogador(b)
-          );
-
-        // -----------------------------------------------
-        // ID CRESCENTE
-        // -----------------------------------------------
-
-        case "idAsc":
-
-          return (
-            Number(a.id) -
-            Number(b.id)
-          );
-
-        // -----------------------------------------------
-        // ID DECRESCENTE
-        // -----------------------------------------------
-
-        case "idDesc":
-
-          return (
-            Number(b.id) -
-            Number(a.id)
-          );
-
-        // -----------------------------------------------
-        // CADASTRO CRESCENTE
-        // -----------------------------------------------
-
-        case "cadastro":
-
-          return (
-            Number(a.ordemCadastro || 0) -
-            Number(b.ordemCadastro || 0)
-          );
-
-        // -----------------------------------------------
-        // CADASTRO DECRESCENTE
-        // -----------------------------------------------
-
-        case "cadastroDesc":
-
-          return (
-            Number(b.ordemCadastro || 0) -
-            Number(a.ordemCadastro || 0)
-          );
-
-        default:
-
-          return 0;
-
-      }
-
-    });
+    if (ordenacao === "assistencias") {
+      resultado.sort(
+        (a, b) =>
+          (Number(
+            b.assistenciasGeral
+          ) || 0) -
+          (Number(
+            a.assistenciasGeral
+          ) || 0)
+      );
+    }
 
     return resultado;
-
   }, [
     cards,
     pesquisa,
-    tipoFiltro,
     ovrMinimo,
     atributoFiltro,
     atributoMinimo,
-    ordenacao
+    ordenacao,
+    tipoFiltro,
   ]);
 
-  // =====================================================
+  // ============================================================
+  // LIMPAR FILTROS
+  // ============================================================
+
+  function limparFiltros() {
+    setPesquisa("");
+    setOvrMinimo("todos");
+    setAtributoFiltro("todos");
+    setAtributoMinimo("todos");
+    setOrdenacao("cadastro");
+    setTipoFiltro("todos");
+  }
+
+  // ============================================================
   // CARREGANDO
-  // =====================================================
+  // ============================================================
 
   if (carregando) {
-
     return (
-
-      <main className="cards-page">
-
+      <div className="cards-page">
         <div className="cards-estado">
-
-          <span>🃏</span>
-
-          <h2>
-            Carregando cards...
-          </h2>
-
+          <h2>🃏 CARREGANDO CARDS...</h2>
         </div>
-
-      </main>
-
+      </div>
     );
-
   }
 
-  // =====================================================
+  // ============================================================
   // ERRO
-  // =====================================================
+  // ============================================================
 
   if (erro) {
-
     return (
-
-      <main className="cards-page">
-
+      <div className="cards-page">
         <div className="cards-estado">
-
-          <span>❌</span>
-
-          <h2>
-            Erro ao carregar cards
-          </h2>
-
-          <p>
-            {erro}
-          </p>
-
+          <h2>❌ ERRO</h2>
+          <p>{erro}</p>
         </div>
-
-      </main>
-
+      </div>
     );
-
   }
 
-  // =====================================================
-  // PÁGINA
-  // =====================================================
+  // ============================================================
+  // RENDER
+  // ============================================================
 
   return (
+    <div className="cards-page">
 
-    <main className="cards-page">
-
-      {/* =================================================
-          CABEÇALHO
-      ================================================= */}
+      {/* CABEÇALHO */}
 
       <div className="cards-header">
-
         <div>
+          <h1>🃏 CARDS DOS JOGADORES</h1>
 
-          <span className="cards-subtitle">
-            PELADA APP
-          </span>
-
-          <h1>
-            🃏 Cards dos Jogadores
-          </h1>
-
-          <p>
-            {cardsFiltrados.length} de{" "}
-            {cards.length} cards
+          <p className="cards-subtitle">
+            {cardsFiltrados.length} jogadores
           </p>
-
         </div>
-
-        <div className="cards-arquivo">
-          📄 cards.txt
-        </div>
-
       </div>
 
-      {/* =================================================
-          FILTROS
-      ================================================= */}
+      {/* FILTROS */}
 
       <div className="cards-filtros">
 
         {/* PESQUISA */}
 
         <div className="filtro-grupo filtro-pesquisa">
-
-          <label>
-            🔎 Pesquisar jogador
-          </label>
+          <label>PESQUISAR</label>
 
           <input
             type="text"
-            placeholder="Nome ..."
             value={pesquisa}
-            onChange={(evento) =>
-              setPesquisa(evento.target.value)
+            onChange={(e) =>
+              setPesquisa(e.target.value)
             }
+            placeholder="Nome ou ID..."
           />
-
-        </div>
-        <div className="filtro-grupo">
-          <label>
-            🧤 Posição
-          </label>
-
-          <select
-            value={tipoFiltro}
-            onChange={(evento) =>
-              setTipoFiltro(evento.target.value)
-            }
-          >
-            <option value="todos">
-              Todos
-            </option>
-
-            <option value="GOLEIRO">
-              🧤 Goleiros
-            </option>
-
-            <option value="LINHA">
-              ⚽ Jogadores de linha
-            </option>
-          </select>
         </div>
 
         {/* OVR */}
 
         <div className="filtro-grupo">
-
-          <label>
-            ⭐ OVR mínimo
-          </label>
+          <label>OVR MÍNIMO</label>
 
           <select
             value={ovrMinimo}
-            onChange={(evento) =>
-              setOvrMinimo(evento.target.value)
+            onChange={(e) =>
+              setOvrMinimo(e.target.value)
             }
           >
-
             <option value="todos">
               Todos
             </option>
 
-            <option value="10">
-              10+
+            <option value="90">
+              90+
             </option>
 
-            <option value="20">
-              20+
+            <option value="85">
+              85+
+            </option>
+
+            <option value="80">
+              80+
+            </option>
+
+            <option value="75">
+              75+
+            </option>
+
+            <option value="70">
+              70+
+            </option>
+          </select>
+        </div>
+
+        {/* ATRIBUTO */}
+
+        <div className="filtro-grupo">
+          <label>ATRIBUTO</label>
+
+          <select
+            value={atributoFiltro}
+            onChange={(e) =>
+              setAtributoFiltro(
+                e.target.value
+              )
+            }
+          >
+            <option value="todos">
+              Todos
+            </option>
+
+            <option value="ataque">
+              Ataque
+            </option>
+
+            <option value="defesa">
+              Defesa
+            </option>
+
+            <option value="velocidade">
+              Velocidade
+            </option>
+
+            <option value="passe">
+              Passe
+            </option>
+
+            <option value="drible">
+              Drible
+            </option>
+          </select>
+        </div>
+
+        {/* VALOR DO ATRIBUTO */}
+
+        <div className="filtro-grupo">
+          <label>MÍNIMO</label>
+
+          <select
+            value={atributoMinimo}
+            onChange={(e) =>
+              setAtributoMinimo(
+                e.target.value
+              )
+            }
+          >
+            <option value="todos">
+              Todos
             </option>
 
             <option value="30">
@@ -707,165 +514,69 @@ function CardsPage({ jogadores }) {
             <option value="90">
               90+
             </option>
-
           </select>
-
         </div>
 
-        {/* ATRIBUTO */}
+        {/* TIPO */}
 
         <div className="filtro-grupo">
-
-          <label>
-            📊 Atributo
-          </label>
+          <label>TIPO</label>
 
           <select
-            value={atributoFiltro}
-            onChange={(evento) => {
-
-              setAtributoFiltro(
-                evento.target.value
-              );
-
-              setAtributoMinimo("todos");
-
-            }}
-          >
-
-            <option value="todos">
-              Todos
-            </option>
-
-            <option value="ataque">
-              ATA
-            </option>
-
-            <option value="defesa">
-              DEF
-            </option>
-
-            <option value="velocidade">
-              VEL
-            </option>
-
-            <option value="passe">
-              PAS
-            </option>
-
-            <option value="drible">
-              DRI
-            </option>
-
-          </select>
-
-        </div>
-
-        {/* VALOR DO ATRIBUTO */}
-
-        <div className="filtro-grupo">
-
-          <label>
-            📈 Valor mínimo
-          </label>
-
-          <select
-            value={atributoMinimo}
-            onChange={(evento) =>
-              setAtributoMinimo(
-                evento.target.value
+            value={tipoFiltro}
+            onChange={(e) =>
+              setTipoFiltro(
+                e.target.value
               )
             }
-            disabled={
-              atributoFiltro === "todos"
-            }
           >
-
             <option value="todos">
               Todos
             </option>
 
-            <option value="10">
-              10+
+            <option value="JOGADOR">
+              Jogador
             </option>
 
-            <option value="20">
-              20+
+            <option value="GOLEIRO">
+              Goleiro
             </option>
-
-            <option value="25">
-              25+
-            </option>
-
-            <option value="30">
-              30+
-            </option>
-
-            <option value="35">
-              35+
-            </option>
-
-            <option value="40">
-              40+
-            </option>
-
-            <option value="50">
-              50+
-            </option>
-
           </select>
-
         </div>
 
         {/* ORDENAÇÃO */}
 
         <div className="filtro-grupo">
-
-          <label>
-            🔤 Ordenar por
-          </label>
+          <label>ORDENAR</label>
 
           <select
             value={ordenacao}
-            onChange={(evento) =>
-              setOrdenacao(evento.target.value)
+            onChange={(e) =>
+              setOrdenacao(
+                e.target.value
+              )
             }
           >
-
             <option value="cadastro">
-              Cadastro ↑
+              Cadastro
             </option>
 
-            <option value="cadastroDesc">
-              Cadastro ↓
+            <option value="ovr">
+              OVR
             </option>
 
-            <option value="nomeAsc">
-              Nome A → Z
+            <option value="nome">
+              Nome
             </option>
 
-            <option value="nomeDesc">
-              Nome Z → A
+            <option value="gols">
+              Gols
             </option>
 
-            <option value="ovrDesc">
-              OVR maior → menor
+            <option value="assistencias">
+              Assistências
             </option>
-
-            <option value="ovrAsc">
-              OVR menor → maior
-            </option>
-
-            <option value="idAsc">
-              ID crescente
-            </option>
-
-            <option value="idDesc">
-              ID decrescente
-            </option>
-
           </select>
-
         </div>
 
         {/* LIMPAR */}
@@ -873,237 +584,267 @@ function CardsPage({ jogadores }) {
         <button
           className="botao-limpar-filtros"
           onClick={limparFiltros}
-          type="button"
         >
-          🔄 Limpar
+          LIMPAR FILTROS
         </button>
-
       </div>
 
-      {/* =================================================
-          RESULTADO VAZIO
-      ================================================= */}
+      {/* CARDS */}
 
-      {cardsFiltrados.length === 0 ? (
-
-        <div className="cards-estado">
-
-          <span>🔎</span>
-
-          <h2>
-            Nenhum jogador encontrado
-          </h2>
-
-          <p>
-            Tente alterar os filtros ou a pesquisa.
-          </p>
-
-        </div>
-
-      ) : (
-
-        /* =================================================
-           GRID DOS CARDS
-        ================================================= */
-
-        <div className="cards-grid">
-
-          {cardsFiltrados.map((jogador) => {
-
+      <div className="cards-grid">
+        {cardsFiltrados.map(
+          (jogador) => {
             const ovr =
-              calcularOVRJogador(jogador);
+              calcularOVRJogador(
+                jogador
+              );
+
+            const tipo =
+              String(
+                jogador.tipo || ""
+              ).toUpperCase();
+
+            const ehGoleiro =
+              tipo === "GOLEIRO";
 
             return (
-
               <div
-                className="card-jogador"
                 key={jogador.id}
+                className="card-jogador"
+                onClick={() =>
+                  onAbrirFicha(
+                    jogador
+                  )
+                }
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (
+                    e.key === "Enter" ||
+                    e.key === " "
+                  ) {
+                    onAbrirFicha(
+                      jogador
+                    );
+                  }
+                }}
               >
 
-                {/* =========================================
-                    FOTO
-                ========================================= */}
+                {/* TOPO */}
+
+                <div className="card-topo">
+
+                  <span className="card-id">
+                    #{jogador.id}
+                  </span>
+
+                  <div className="card-ovr">
+                    <span>OVR</span>
+
+                    <strong>
+                      {ovr}
+                    </strong>
+                  </div>
+
+                </div>
+
+                {/* FOTO */}
 
                 <div className="card-foto-container">
 
                   <img
                     className="card-foto"
-                    src={obterFotoJogador(jogador)}
-                    alt={`Foto de ${jogador.nome}`}
-                    onError={(evento) => {
-
-                      evento.currentTarget.onerror =
-                        null;
-
-                      evento.currentTarget.src =
+                    src={`/fotos/${jogador.id}.png`}
+                    alt={
+                      jogador.nome ||
+                      "Jogador"
+                    }
+                    onError={(e) => {
+                      e.currentTarget.src =
                         "/fotos/default.png";
-
                     }}
                   />
 
                 </div>
 
-                {/* =========================================
-                    TOPO
-                ========================================= */}
+                {/* NOME */}
 
-                <div className="card-topo">
+                <div className="card-nome">
+                  {jogador.nome ||
+                    "JOGADOR"}
+                </div>
 
-                  <span className="card-id">
+                {/* TIPO */}
 
-                    ID {jogador.id}
+                <div className="card-tipo">
+                  {jogador.tipo ||
+                    "JOGADOR"}
+                </div>
 
-                  </span>
+                {/* ESTRELAS */}
 
-                  <div className="card-ovr">
+                <div className="card-estrelas">
+                  {"⭐".repeat(
+                    Number(
+                      jogador.estrelas
+                    ) || 0
+                  )}
+                </div>
 
+                {/* ATRIBUTOS */}
+
+                <div className="card-atributos">
+
+                  <div>
                     <span>
-                      OVR
+                      {ehGoleiro
+                        ? "REF"
+                        : "ATA"}
                     </span>
 
                     <strong>
-                      {ovr}
+                      {
+                        jogador
+                          .atributos
+                          ?.ataque || 0
+                      }
                     </strong>
+                  </div>
+
+                  <div>
+                    <span>
+                      DEF
+                    </span>
+
+                    <strong>
+                      {
+                        jogador
+                          .atributos
+                          ?.defesa || 0
+                      }
+                    </strong>
+                  </div>
+
+                  <div>
+                    <span>
+                      {ehGoleiro
+                        ? "SAI"
+                        : "VEL"}
+                    </span>
+
+                    <strong>
+                      {
+                        jogador
+                          .atributos
+                          ?.velocidade || 0
+                      }
+                    </strong>
+                  </div>
+
+                  <div>
+                    <span>
+                      PAS
+                    </span>
+
+                    <strong>
+                      {
+                        jogador
+                          .atributos
+                          ?.passe || 0
+                      }
+                    </strong>
+                  </div>
+
+                  <div>
+                    <span>
+                      {ehGoleiro
+                        ? "POS"
+                        : "DRI"}
+                    </span>
+
+                    <strong>
+                      {
+                        jogador
+                          .atributos
+                          ?.drible || 0
+                      }
+                    </strong>
+                  </div>
+
+                </div>
+
+                {/* ESTATÍSTICAS GERAIS DO CARDS.TXT */}
+
+                <div className="card-estatisticas">
+
+                  <div className="estatistica">
+
+                    <span className="estatistica-icone">
+                      ⚽
+                    </span>
+
+                    <strong>
+                      {
+                        jogador
+                          .golsGeral || 0
+                      }
+                    </strong>
+
+                    <small>
+                      GOLS
+                    </small>
+
+                  </div>
+
+                  <div className="estatistica">
+
+                    <span className="estatistica-icone">
+                      🅰️
+                    </span>
+
+                    <strong>
+                      {
+                        jogador
+                          .assistenciasGeral ||
+                        0
+                      }
+                    </strong>
+
+                    <small>
+                      ASSIST.
+                    </small>
 
                   </div>
 
                 </div>
 
-                {/* =========================================
-                    NOME
-                ========================================= */}
-
-                <div className="card-nome">
-
-                  {jogador.nome}
-
-                </div>
-
-                {/* =========================================
-                    TIPO
-                ========================================= */}
-
-                <div className="card-tipo">
-
-                  {jogador.tipo === "GOLEIRO"
-                    ? "🧤 GOLEIRO"
-                    : "⚽ JOGADOR DE LINHA"}
-
-                </div>
-
-                {/* =========================================
-                    ESTRELAS
-                ========================================= */}
-
-                <div className="card-estrelas">
-
-                  {"⭐".repeat(
-                    Math.max(
-                      0,
-                      jogador.estrelas || 0
-                    )
-                  )}
-
-                </div>
-
-                {/* =========================================
-                    ATRIBUTOS
-                ========================================= */}
-
-                <div className="card-atributos">
-
-                  {jogador.tipo === "GOLEIRO" ? (
-                    <>
-                      <div className="atributo">
-                        <span>REF</span>
-                        <strong>
-                          {jogador.atributos?.ataque || 0}
-                        </strong>
-                      </div>
-
-                      <div className="atributo">
-                        <span>DEF</span>
-                        <strong>
-                          {jogador.atributos?.defesa || 0}
-                        </strong>
-                      </div>
-
-                      <div className="atributo">
-                        <span>SAI</span>
-                        <strong>
-                          {jogador.atributos?.velocidade || 0}
-                        </strong>
-                      </div>
-
-                      <div className="atributo">
-                        <span>PAS</span>
-                        <strong>
-                          {jogador.atributos?.passe || 0}
-                        </strong>
-                      </div>
-
-                      <div className="atributo">
-                        <span>POS</span>
-                        <strong>
-                          {jogador.atributos?.drible || 0}
-                        </strong>
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      <div className="atributo">
-                        <span>ATA</span>
-                        <strong>
-                          {jogador.atributos?.ataque || 0}
-                        </strong>
-                      </div>
-
-                      <div className="atributo">
-                        <span>DEF</span>
-                        <strong>
-                          {jogador.atributos?.defesa || 0}
-                        </strong>
-                      </div>
-
-                      <div className="atributo">
-                        <span>VEL</span>
-                        <strong>
-                          {jogador.atributos?.velocidade || 0}
-                        </strong>
-                      </div>
-
-                      <div className="atributo">
-                        <span>PAS</span>
-                        <strong>
-                          {jogador.atributos?.passe || 0}
-                        </strong>
-                      </div>
-
-                      <div className="atributo">
-                        <span>DRI</span>
-                        <strong>
-                          {jogador.atributos?.drible || 0}
-                        </strong>
-                      </div>
-                    </>
-                  )}
-
-                </div>
-
               </div>
-
             );
+          }
+        )}
+      </div>
 
-          })}
+      {/* NENHUM RESULTADO */}
+
+      {cardsFiltrados.length === 0 && (
+        <div className="cards-estado">
+
+          <h2>
+            😕 NENHUM JOGADOR ENCONTRADO
+          </h2>
+
+          <button
+            className="botao-limpar-filtros"
+            onClick={limparFiltros}
+          >
+            LIMPAR FILTROS
+          </button>
 
         </div>
-
       )}
 
-    </main>
-
+    </div>
   );
-
 }
 
 export default CardsPage;
