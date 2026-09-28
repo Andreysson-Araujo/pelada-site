@@ -606,6 +606,7 @@ function App() {
 
         <Ranking
           jogadores={jogadores}
+          onAbrirFicha={abrirFicha}
         />
 
 

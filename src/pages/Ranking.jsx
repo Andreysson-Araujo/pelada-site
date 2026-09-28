@@ -17,10 +17,13 @@ import {
 
 import {
   calcularOVRJogador
-} from "../pages/Cards/cardUtils"
+} from "../pages/Cards/cardUtils";
 
 
-function Ranking({ jogadores: jogadoresProps }) {
+function Ranking({
+  jogadores: jogadoresProps,
+  onAbrirFicha
+}) {
 
   const [jogadores, setJogadores] = useState(
     jogadoresProps || []
@@ -40,7 +43,9 @@ function Ranking({ jogadores: jogadoresProps }) {
   useEffect(() => {
 
     if (jogadoresProps) {
+
       setJogadores(jogadoresProps);
+
     }
 
   }, [jogadoresProps]);
@@ -56,20 +61,29 @@ function Ranking({ jogadores: jogadoresProps }) {
 
       try {
 
-        const resposta = await fetch("/cards.txt");
+        const resposta = await fetch(
+          "/cards.txt",
+          {
+            cache: "no-store"
+          }
+        );
 
         if (!resposta.ok) {
+
           throw new Error(
             "Não foi possível carregar cards.txt"
           );
+
         }
 
         const texto = await resposta.text();
 
         if (!texto.includes("PELADA_CARDS_V1")) {
+
           throw new Error(
             "Arquivo cards.txt inválido."
           );
+
         }
 
         const cardsLidos = [];
@@ -82,8 +96,11 @@ function Ranking({ jogadores: jogadoresProps }) {
               linha.trim();
 
             // Ignora cabeçalhos e linhas vazias
+
             if (!textoLinha.startsWith("🆔")) {
+
               return;
+
             }
 
             const partes =
@@ -94,6 +111,7 @@ function Ranking({ jogadores: jogadoresProps }) {
                     parte.trim()
                 );
 
+
             /*
              * Formato:
              *
@@ -102,12 +120,14 @@ function Ranking({ jogadores: jogadoresProps }) {
              */
 
             if (partes.length < 6) {
+
               console.warn(
                 "Linha de card inválida:",
                 textoLinha
               );
 
               return;
+
             }
 
 
@@ -121,7 +141,9 @@ function Ranking({ jogadores: jogadoresProps }) {
                 .trim();
 
             if (!id) {
+
               return;
+
             }
 
 
@@ -136,12 +158,14 @@ function Ranking({ jogadores: jogadoresProps }) {
                   .trim()
               ) || 0;
 
+
             const defesa =
               Number(
                 partes[2]
                   .replace("DEF", "")
                   .trim()
               ) || 0;
+
 
             const velocidade =
               Number(
@@ -150,12 +174,14 @@ function Ranking({ jogadores: jogadoresProps }) {
                   .trim()
               ) || 0;
 
+
             const passe =
               Number(
                 partes[4]
                   .replace("PAS", "")
                   .trim()
               ) || 0;
+
 
             const drible =
               Number(
@@ -174,11 +200,17 @@ function Ranking({ jogadores: jogadoresProps }) {
               id,
 
               atributos: {
+
                 ataque,
+
                 defesa,
+
                 velocidade,
+
                 passe,
+
                 drible,
+
               },
 
             });
@@ -210,6 +242,7 @@ function Ranking({ jogadores: jogadoresProps }) {
 
     }
 
+
     carregarCards();
 
   }, []);
@@ -227,7 +260,8 @@ function Ranking({ jogadores: jogadoresProps }) {
         const card =
           cards.find(
             (item) =>
-              item.id === jogador.id
+              String(item.id) ===
+              String(jogador.id)
           );
 
 
@@ -244,9 +278,13 @@ function Ranking({ jogadores: jogadoresProps }) {
             card?.atributos || {
 
               ataque: 0,
+
               defesa: 0,
+
               velocidade: 0,
+
               passe: 0,
+
               drible: 0,
 
             },
@@ -287,7 +325,8 @@ function Ranking({ jogadores: jogadoresProps }) {
     const gols =
       jogadores.reduce(
         (total, jogador) =>
-          total + jogador.gols,
+          total +
+          (Number(jogador.gols) || 0),
         0
       );
 
@@ -295,7 +334,8 @@ function Ranking({ jogadores: jogadoresProps }) {
     const assistencias =
       jogadores.reduce(
         (total, jogador) =>
-          total + jogador.assistencias,
+          total +
+          (Number(jogador.assistencias) || 0),
         0
       );
 
@@ -317,8 +357,11 @@ function Ranking({ jogadores: jogadoresProps }) {
     return {
 
       gols,
+
       assistencias,
+
       goleiros,
+
       linha,
 
     };
@@ -333,16 +376,22 @@ function Ranking({ jogadores: jogadoresProps }) {
   const artilheiros = useMemo(() => {
 
     return [...jogadores]
+
       .sort((a, b) => {
 
-        if (b.gols !== a.gols) {
+        const golsA =
+          Number(a.gols) || 0;
 
-          return (
-            b.gols -
-            a.gols
-          );
+        const golsB =
+          Number(b.gols) || 0;
+
+
+        if (golsB !== golsA) {
+
+          return golsB - golsA;
 
         }
+
 
         return a.nome.localeCompare(
           b.nome,
@@ -350,6 +399,7 @@ function Ranking({ jogadores: jogadoresProps }) {
         );
 
       })
+
       .slice(0, 10);
 
   }, [jogadores]);
@@ -363,19 +413,28 @@ function Ranking({ jogadores: jogadoresProps }) {
     useMemo(() => {
 
       return [...jogadores]
+
         .sort((a, b) => {
 
+          const assistA =
+            Number(a.assistencias) || 0;
+
+          const assistB =
+            Number(b.assistencias) || 0;
+
+
           if (
-            b.assistencias !==
-            a.assistencias
+            assistB !==
+            assistA
           ) {
 
             return (
-              b.assistencias -
-              a.assistencias
+              assistB -
+              assistA
             );
 
           }
+
 
           return a.nome.localeCompare(
             b.nome,
@@ -383,6 +442,7 @@ function Ranking({ jogadores: jogadoresProps }) {
           );
 
         })
+
         .slice(0, 10);
 
     }, [jogadores]);
@@ -390,13 +450,13 @@ function Ranking({ jogadores: jogadoresProps }) {
 
   // =========================================================
   // MELHORES AVALIADOS
-  // AGORA USA O OVR DOS CARDS
   // =========================================================
 
   const melhoresAvaliados =
     useMemo(() => {
 
       return [...jogadoresComOVR]
+
         .sort((a, b) => {
 
           // Primeiro: maior OVR
@@ -414,14 +474,21 @@ function Ranking({ jogadores: jogadoresProps }) {
           // Desempate: maior quantidade
           // de estrelas
 
+          const estrelasA =
+            Number(a.estrelas) || 0;
+
+          const estrelasB =
+            Number(b.estrelas) || 0;
+
+
           if (
-            b.estrelas !==
-            a.estrelas
+            estrelasB !==
+            estrelasA
           ) {
 
             return (
-              b.estrelas -
-              a.estrelas
+              estrelasB -
+              estrelasA
             );
 
           }
@@ -436,9 +503,41 @@ function Ranking({ jogadores: jogadoresProps }) {
           );
 
         })
+
         .slice(0, 10);
 
     }, [jogadoresComOVR]);
+
+
+  // =========================================================
+  // GOAT DA TEMPORADA
+  //
+  // O GOAT É AUTOMATICAMENTE O PRIMEIRO
+  // COLOCADO DO RANKING DE MELHORES AVALIADOS
+  // =========================================================
+
+  const goatTemporada =
+    melhoresAvaliados[0] || null;
+
+
+  // =========================================================
+  // ABRIR CARD DO GOAT
+  // =========================================================
+
+  function abrirCardDoGoat() {
+
+    if (
+      goatTemporada &&
+      onAbrirFicha
+    ) {
+
+      onAbrirFicha(
+        goatTemporada
+      );
+
+    }
+
+  }
 
 
   // =========================================================
@@ -453,7 +552,8 @@ function Ranking({ jogadores: jogadoresProps }) {
 
           nome: jogador.nome,
 
-          gols: jogador.gols,
+          gols:
+            Number(jogador.gols) || 0,
 
         })
       );
@@ -470,7 +570,9 @@ function Ranking({ jogadores: jogadoresProps }) {
           nome: jogador.nome,
 
           assistencias:
-            jogador.assistencias,
+            Number(
+              jogador.assistencias
+            ) || 0,
 
         })
       );
@@ -486,7 +588,8 @@ function Ranking({ jogadores: jogadoresProps }) {
 
     backgroundColor: "#1b1f28",
 
-    border: "1px solid #343a48",
+    border:
+      "1px solid #343a48",
 
     borderRadius: "10px",
 
@@ -576,11 +679,57 @@ function Ranking({ jogadores: jogadoresProps }) {
           <p>
             Desempenho geral dos jogadores
           </p>
+
           <p>
-            For chorar contate o suporte 😭: anaodajebapreta@orkut.com
+            For chorar contate o suporte 😭:
+            anaodajebapreta@orkut.com
           </p>
 
         </div>
+
+      </div>
+
+
+      {/* =====================================================
+          GOAT DA TEMPORADA
+      ===================================================== */}
+
+      <div className="ranking-goat">
+
+        <button
+          type="button"
+          className="botao-goat"
+          onClick={abrirCardDoGoat}
+          disabled={!goatTemporada}
+        >
+
+          <span className="goat-icone">
+            🐐
+          </span>
+
+
+          <span className="goat-texto">
+
+            <strong>
+              GOAT DA TEMPORADA
+            </strong>
+
+            <small>
+
+              {goatTemporada
+                ? goatTemporada.nome
+                : "Nenhum jogador encontrado"}
+
+            </small>
+
+          </span>
+
+
+          <span className="goat-seta">
+            →
+          </span>
+
+        </button>
 
       </div>
 
@@ -1104,5 +1253,6 @@ function Ranking({ jogadores: jogadoresProps }) {
   );
 
 }
+
 
 export default Ranking;
