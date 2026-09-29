@@ -11,6 +11,14 @@ function SeletorTempo({ duracao, selecionarDuracao }) {
       <div className="timer-opcoes">
 
         <button
+          className={duracao === 7 ? "ativo" : ""}
+          onClick={() => selecionarDuracao(7)}
+        >
+          <strong>7</strong>
+          <span>MIN</span>
+        </button>
+
+        <button
           className={duracao === 8 ? "ativo" : ""}
           onClick={() => selecionarDuracao(8)}
         >
