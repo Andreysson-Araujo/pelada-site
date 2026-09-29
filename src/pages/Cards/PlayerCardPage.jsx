@@ -209,8 +209,8 @@ function PlayerCardPage({ jogador, onVoltar }) {
 
               <span>
                 {ehGoleiro
-                  ? "REF"
-                  : "ATA"}
+                  ? "REFLEXOS"
+                  : "ATAQUE"}
               </span>
 
               <strong>
@@ -248,7 +248,7 @@ function PlayerCardPage({ jogador, onVoltar }) {
             <div className="player-atributo-topo">
 
               <span>
-                DEF
+                DEFESA
               </span>
 
               <strong>
@@ -287,8 +287,8 @@ function PlayerCardPage({ jogador, onVoltar }) {
 
               <span>
                 {ehGoleiro
-                  ? "SAI"
-                  : "VEL"}
+                  ? "SAÍDA DE BOLA"
+                  : "VELOCIDADE"}
               </span>
 
               <strong>
@@ -326,7 +326,7 @@ function PlayerCardPage({ jogador, onVoltar }) {
             <div className="player-atributo-topo">
 
               <span>
-                PAS
+                PASSE
               </span>
 
               <strong>
@@ -365,8 +365,8 @@ function PlayerCardPage({ jogador, onVoltar }) {
 
               <span>
                 {ehGoleiro
-                  ? "POS"
-                  : "DRI"}
+                  ? "POSICIONAMENTO"
+                  : "DRIBLE"}
               </span>
 
               <strong>
