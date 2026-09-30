@@ -1,6 +1,7 @@
 import React from "react";
 
 import "./PlayerCardPage.css";
+import { calcularOVRJogador } from "./cardUtils";
 
 function PlayerCardPage({ jogador, onVoltar }) {
   if (!jogador) {
@@ -50,28 +51,7 @@ function PlayerCardPage({ jogador, onVoltar }) {
      OVR
   ========================================================= */
 
-  const ovr =
-    Number(jogador.ovr) ||
-    Number(jogador.OVR) ||
-    Math.round(
-      (
-        Number(
-          atributos.ataque
-        ) +
-        Number(
-          atributos.defesa
-        ) +
-        Number(
-          atributos.velocidade
-        ) +
-        Number(
-          atributos.passe
-        ) +
-        Number(
-          atributos.drible
-        )
-      ) / 5
-    );
+  const ovr = calcularOVRJogador(jogador);
 
 
   /* =========================================================
