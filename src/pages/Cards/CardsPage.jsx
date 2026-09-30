@@ -510,24 +510,24 @@ function CardsPage({
               Todos
             </option>
 
-            <option value="90">
-              90+
+            <option value="40">
+              40+
             </option>
 
-            <option value="85">
-              85+
+            <option value="30">
+              30+
             </option>
 
-            <option value="80">
-              80+
+            <option value="25">
+              25+
             </option>
 
-            <option value="75">
-              75+
+            <option value="20">
+              20+
             </option>
 
-            <option value="70">
-              70+
+            <option value="10">
+              10+
             </option>
           </select>
         </div>
@@ -594,8 +594,24 @@ function CardsPage({
               Todos
             </option>
 
+            <option value="10">
+              10+
+            </option>
+
+            <option value="20">
+              20+
+            </option>
+
+            <option value="25">
+              25+
+            </option>
+
             <option value="30">
               30+
+            </option>
+
+            <option value="35">
+              35+
             </option>
 
             <option value="40">
@@ -604,22 +620,6 @@ function CardsPage({
 
             <option value="50">
               50+
-            </option>
-
-            <option value="60">
-              60+
-            </option>
-
-            <option value="70">
-              70+
-            </option>
-
-            <option value="80">
-              80+
-            </option>
-
-            <option value="90">
-              90+
             </option>
           </select>
         </div>
