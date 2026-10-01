@@ -1407,7 +1407,7 @@ const dadosSalvamentos =
             </div>
 
             <small>
-              Top 10 Defensores
+              Top 10 
             </small>
 
           </div>
@@ -1535,7 +1535,7 @@ const dadosSalvamentos =
             </div>
 
             <small>
-              Top 10
+              Top 10 Artilheiros
             </small>
 
           </div>
@@ -1592,7 +1592,7 @@ const dadosSalvamentos =
             </div>
 
             <small>
-              Top 10
+              Top 10 Garçons
             </small>
 
           </div>
@@ -1653,7 +1653,7 @@ const dadosSalvamentos =
             </div>
 
             <small>
-              Top 10 Salvamentos
+              Top 10 Guarda Redes
             </small>
 
           </div>
@@ -1714,7 +1714,7 @@ const dadosSalvamentos =
             </div>
 
             <small>
-              Top 10 Salvamentos
+              Top 10 Zagueiros
             </small>
 
           </div>
