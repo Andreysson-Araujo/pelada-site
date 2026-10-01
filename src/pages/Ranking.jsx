@@ -41,9 +41,11 @@ function Ranking({
   // =========================================================
 
   useEffect(() => {
+
     if (jogadoresProps) {
       setJogadores(jogadoresProps);
     }
+
   }, [jogadoresProps]);
 
   // =========================================================
@@ -64,9 +66,11 @@ function Ranking({
         );
 
         if (!resposta.ok) {
+
           throw new Error(
             "Não foi possível carregar cards.txt"
           );
+
         }
 
         const texto =
@@ -77,9 +81,11 @@ function Ranking({
             "PELADA_CARDS_V1"
           )
         ) {
+
           throw new Error(
             "Arquivo cards.txt inválido."
           );
+
         }
 
         const cardsLidos = [];
@@ -180,14 +186,23 @@ function Ranking({
             // =================================================
 
             cardsLidos.push({
+
               id,
+
               atributos: {
+
                 ataque,
+
                 defesa,
+
                 velocidade,
+
                 passe,
+
                 drible,
+
               }
+
             });
 
           });
@@ -236,11 +251,17 @@ function Ranking({
 
           atributos:
             card?.atributos || {
+
               ataque: 0,
+
               defesa: 0,
+
               velocidade: 0,
+
               passe: 0,
+
               drible: 0,
+
             },
 
         };
@@ -251,11 +272,15 @@ function Ranking({
           );
 
         return {
+
           ...jogadorComCard,
+
           ovr,
+
         };
 
       }
+
     );
 
   }, [jogadores, cards]);
@@ -315,11 +340,17 @@ function Ranking({
       ).length;
 
     return {
+
       gols,
+
       assistencias,
+
       salvamentos,
+
       goleiros,
+
       linha,
+
     };
 
   }, [jogadores]);
@@ -331,6 +362,7 @@ function Ranking({
   const artilheiros = useMemo(() => {
 
     return [...jogadores]
+
       .sort((a, b) => {
 
         const golsA =
@@ -340,7 +372,9 @@ function Ranking({
           Number(b.gols) || 0;
 
         if (golsB !== golsA) {
+
           return golsB - golsA;
+
         }
 
         return a.nome.localeCompare(
@@ -349,6 +383,7 @@ function Ranking({
         );
 
       })
+
       .slice(0, 10);
 
   }, [jogadores]);
@@ -361,6 +396,7 @@ function Ranking({
     useMemo(() => {
 
       return [...jogadores]
+
         .sort((a, b) => {
 
           const assistA =
@@ -372,10 +408,12 @@ function Ranking({
           if (
             assistB !== assistA
           ) {
+
             return (
               assistB -
               assistA
             );
+
           }
 
           return a.nome.localeCompare(
@@ -384,6 +422,7 @@ function Ranking({
           );
 
         })
+
         .slice(0, 10);
 
     }, [jogadores]);
@@ -396,12 +435,14 @@ function Ranking({
     useMemo(() => {
 
       return jogadoresComOVR
+
         .filter(
           (jogador) =>
             String(jogador.tipo)
               .toUpperCase() ===
             "GOLEIRO"
         )
+
         .sort((a, b) => {
 
           const salvA =
@@ -411,22 +452,30 @@ function Ranking({
             Number(b.salvamentos) || 0;
 
           // 1º critério: salvamentos
+
           if (salvB !== salvA) {
+
             return salvB - salvA;
+
           }
 
           // 2º critério: OVR
+
           if (b.ovr !== a.ovr) {
+
             return b.ovr - a.ovr;
+
           }
 
           // 3º critério: nome
+
           return a.nome.localeCompare(
             b.nome,
             "pt-BR"
           );
 
         })
+
         .slice(0, 10);
 
     }, [jogadoresComOVR]);
@@ -434,27 +483,31 @@ function Ranking({
   // =========================================================
   // DEFENSORES DA TEMPORADA
   // =========================================================
-  //
-  // SOMENTE jogadores LINHA.
-  //
-  // O critério é:
-  // 1º - mais salvamentos
-  // 2º - maior OVR
-  // 3º - nome
-  //
-  // GOLEIRO NÃO PARTICIPA.
-  // =========================================================
+
+  /*
+   * SOMENTE jogadores LINHA.
+   *
+   * O critério é:
+   *
+   * 1º - mais salvamentos
+   * 2º - maior OVR
+   * 3º - nome
+   *
+   * GOLEIRO NÃO PARTICIPA.
+   */
 
   const melhoresDefensores =
     useMemo(() => {
 
       return jogadoresComOVR
+
         .filter(
           (jogador) =>
             String(jogador.tipo)
               .toUpperCase() ===
             "LINHA"
         )
+
         .sort((a, b) => {
 
           const salvA =
@@ -464,22 +517,30 @@ function Ranking({
             Number(b.salvamentos) || 0;
 
           // 1º critério: salvamentos
+
           if (salvB !== salvA) {
+
             return salvB - salvA;
+
           }
 
           // 2º critério: OVR
+
           if (b.ovr !== a.ovr) {
+
             return b.ovr - a.ovr;
+
           }
 
           // 3º critério: nome
+
           return a.nome.localeCompare(
             b.nome,
             "pt-BR"
           );
 
         })
+
         .slice(0, 10);
 
     }, [jogadoresComOVR]);
@@ -489,18 +550,22 @@ function Ranking({
   // =========================================================
 
   // GOAT = MAIS GOLS DA TEMPORADA
+
   const goatTemporada =
     artilheiros[0] || null;
 
   // GOLEIRO = MAIS SALVAMENTOS ENTRE GOLEIROS
+
   const goleiroTemporada =
     melhoresGoleiros[0] || null;
 
   // GARÇOM = MAIS ASSISTÊNCIAS
+
   const garcomTemporada =
     melhoresAssistentes[0] || null;
 
   // DEFENSOR = MAIS SALVAMENTOS ENTRE JOGADORES DE LINHA
+
   const defensorTemporada =
     melhoresDefensores[0] || null;
 
@@ -511,10 +576,37 @@ function Ranking({
   function abrirFicha(jogador) {
 
     if (
-      jogador &&
-      onAbrirFicha
+      !jogador ||
+      !onAbrirFicha
     ) {
-      onAbrirFicha(jogador);
+
+      return;
+
+    }
+
+    /*
+     * Procura o mesmo jogador pelo ID
+     * dentro de jogadoresComOVR.
+     *
+     * Dessa forma, o jogador enviado
+     * para a ficha é o mesmo jogador,
+     * mas já possui os atributos
+     * vindos do cards.txt.
+     */
+
+    const jogadorComCard =
+      jogadoresComOVR.find(
+        (item) =>
+          String(item.id) ===
+          String(jogador.id)
+      );
+
+    if (jogadorComCard) {
+
+      onAbrirFicha(
+        jogadorComCard
+      );
+
     }
 
   }
@@ -528,9 +620,12 @@ function Ranking({
 
       return artilheiros.map(
         (jogador) => ({
+
           nome: jogador.nome,
+
           gols:
             Number(jogador.gols) || 0,
+
         })
       );
 
@@ -541,64 +636,80 @@ function Ranking({
 
       return melhoresAssistentes.map(
         (jogador) => ({
+
           nome: jogador.nome,
+
           assistencias:
             Number(
               jogador.assistencias
             ) || 0,
+
         })
       );
 
     }, [melhoresAssistentes]);
 
- // =========================================================
-// DADOS DO GRÁFICO DE SALVAMENTOS
-// SOMENTE GOLEIROS
-// =========================================================
+  // =========================================================
+  // DADOS DO GRÁFICO DE SALVAMENTOS
+  // SOMENTE GOLEIROS
+  // =========================================================
 
-const dadosSalvamentos =
-  useMemo(() => {
+  const dadosSalvamentos =
+    useMemo(() => {
 
-    return [...jogadores]
-      .filter(
-        (jogador) =>
-          String(jogador.tipo)
-            .toUpperCase() ===
-          "GOLEIRO"
-      )
-      .sort((a, b) => {
+      return [...jogadores]
 
-        const salvA =
-          Number(a.salvamentos) || 0;
+        .filter(
+          (jogador) =>
+            String(jogador.tipo)
+              .toUpperCase() ===
+            "GOLEIRO"
+        )
 
-        const salvB =
-          Number(b.salvamentos) || 0;
+        .sort((a, b) => {
 
-        return salvB - salvA;
+          const salvA =
+            Number(a.salvamentos) || 0;
 
-      })
-      .slice(0, 10)
-      .map((jogador) => ({
-        nome: jogador.nome,
-        salvamentos:
-          Number(
-            jogador.salvamentos
-          ) || 0,
-      }));
+          const salvB =
+            Number(b.salvamentos) || 0;
 
-  }, [jogadores]);
+          return salvB - salvA;
 
+        })
+
+        .slice(0, 10)
+
+        .map((jogador) => ({
+
+          nome: jogador.nome,
+
+          salvamentos:
+            Number(
+              jogador.salvamentos
+            ) || 0,
+
+        }));
+
+    }, [jogadores]);
+
+  // =========================================================
   // DEFENSORES = SALVAMENTOS DOS JOGADORES DE LINHA
+  // =========================================================
+
   const dadosDefesa =
     useMemo(() => {
 
       return melhoresDefensores.map(
         (jogador) => ({
+
           nome: jogador.nome,
+
           salvamentos:
             Number(
               jogador.salvamentos
             ) || 0,
+
         })
       );
 
@@ -1407,7 +1518,7 @@ const dadosSalvamentos =
             </div>
 
             <small>
-              Top 10 
+              Top 10 Defensores
             </small>
 
           </div>
@@ -1781,10 +1892,13 @@ const dadosSalvamentos =
           </div>
 
           {jogadoresComOVR
+
             .sort((a, b) => {
 
               if (b.ovr !== a.ovr) {
+
                 return b.ovr - a.ovr;
+
               }
 
               const estrelasA =
@@ -1796,7 +1910,12 @@ const dadosSalvamentos =
               if (
                 estrelasB !== estrelasA
               ) {
-                return estrelasB - estrelasA;
+
+                return (
+                  estrelasB -
+                  estrelasA
+                );
+
               }
 
               return a.nome.localeCompare(
@@ -1805,7 +1924,9 @@ const dadosSalvamentos =
               );
 
             })
+
             .slice(0, 10)
+
             .map(
               (jogador, index) => (
 
