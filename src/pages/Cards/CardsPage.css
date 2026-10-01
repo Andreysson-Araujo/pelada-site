@@ -603,73 +603,60 @@
 
 .cards-page .card-estatisticas {
   width: 100%;
-
   display: grid;
-
-  grid-template-columns:
-    repeat(2, 1fr);
-
+  grid-template-columns: repeat(2, 1fr);
   gap: 8px;
 }
 
 .cards-page .card-estatistica {
   min-width: 0;
-
   padding: 9px;
-
   box-sizing: border-box;
-
   display: flex;
-
   align-items: center;
-
+  justify-content: center;
   gap: 8px;
-
   background:
     rgba(255, 216, 77, 0.07);
-
   border:
     1px solid
     rgba(255, 216, 77, 0.1);
-
   border-radius: 8px;
-
   transition:
     background 0.2s ease,
     border-color 0.2s ease;
 }
 
+/* Salvamentos fica centralizado na segunda linha */
+.cards-page .card-estatistica:nth-child(3) {
+  grid-column: 1 / -1;
+  justify-self: center;
+  width: 50%;
+}
+
 .cards-page .card-estatistica:hover {
   background:
     rgba(255, 216, 77, 0.11);
-
   border-color:
     rgba(255, 216, 77, 0.2);
 }
 
 .cards-page .card-estatistica-icone {
   flex-shrink: 0;
-
   font-size: 17px;
 }
 
 .cards-page .card-estatistica strong {
   color: #fff;
-
   font-size: 15px;
-
   font-weight: 800;
 }
 
 .cards-page .card-estatistica small {
   margin-left: auto;
-
   color: #999;
-
   font-size: 9px;
-
   font-weight: 600;
-
   text-transform: uppercase;
 }
 
@@ -908,6 +895,10 @@
   .cards-page .card-estatisticas {
     gap: 7px;
   }
+
+  .cards-page .card-estatistica:nth-child(3) {
+  width: 60%;
+}
 }
 
 
@@ -963,5 +954,8 @@
   .cards-page .card-estatistica small {
     font-size: 7px;
   }
+  .cards-page .card-estatistica:nth-child(3) {
+  width: 65%;
+}
 }
 

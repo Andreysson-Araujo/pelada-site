@@ -70,6 +70,11 @@ function PlayerCardPage({ jogador, onVoltar }) {
       jogador.assistencias
     ) || 0;
 
+  const salvamentosTemporada =
+    Number(
+      jogador.salvamentos
+    ) || 0;
+
 
   /* =========================================================
      ESTATÍSTICAS NO GERAL
@@ -85,6 +90,11 @@ function PlayerCardPage({ jogador, onVoltar }) {
   const assistenciasGeral =
     Number(
       jogador.assistenciasGeral
+    ) || 0;
+
+  const salvamentosGeral =
+    Number(
+      jogador.salvamentosGeral
     ) || 0;
 
 
@@ -157,8 +167,8 @@ function PlayerCardPage({ jogador, onVoltar }) {
             <span>
               {estrelas > 0
                 ? "⭐".repeat(
-                    estrelas
-                  )
+                  estrelas
+                )
                 : "⭐"}
             </span>
 
@@ -382,8 +392,8 @@ function PlayerCardPage({ jogador, onVoltar }) {
 
 
       {/* =====================================================
-          TEMPORADA ATUAL
-      ====================================================== */}
+    TEMPORADA ATUAL
+====================================================== */}
 
       <div className="player-card-secao">
 
@@ -409,7 +419,6 @@ function PlayerCardPage({ jogador, onVoltar }) {
 
           </div>
 
-
           <div className="player-estatistica">
 
             <span>
@@ -426,14 +435,30 @@ function PlayerCardPage({ jogador, onVoltar }) {
 
           </div>
 
+          <div className="player-estatistica">
+
+            <span>
+              🛡️
+            </span>
+
+            <strong>
+              {salvamentosTemporada}
+            </strong>
+
+            <small>
+              SALVAMENTOS
+            </small>
+
+          </div>
+
         </div>
 
       </div>
 
 
       {/* =====================================================
-          GERAL
-      ====================================================== */}
+    GERAL
+====================================================== */}
 
       <div className="player-card-secao">
 
@@ -459,7 +484,6 @@ function PlayerCardPage({ jogador, onVoltar }) {
 
           </div>
 
-
           <div className="player-estatistica">
 
             <span>
@@ -472,6 +496,22 @@ function PlayerCardPage({ jogador, onVoltar }) {
 
             <small>
               ASSISTÊNCIAS
+            </small>
+
+          </div>
+
+          <div className="player-estatistica">
+
+            <span>
+              🛡️
+            </span>
+
+            <strong>
+              {salvamentosGeral}
+            </strong>
+
+            <small>
+              SALVAMENTOS
             </small>
 
           </div>

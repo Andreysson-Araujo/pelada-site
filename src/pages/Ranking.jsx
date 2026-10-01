@@ -19,7 +19,6 @@ import {
   calcularOVRJogador
 } from "../pages/Cards/cardUtils";
 
-
 function Ranking({
   jogadores: jogadoresProps,
   onAbrirFicha
@@ -31,25 +30,21 @@ function Ranking({
 
   const [cards, setCards] = useState([]);
 
-  const [carregando, setCarregando] = useState(true);
+  const [carregando, setCarregando] =
+    useState(true);
 
-  const [erro, setErro] = useState("");
-
+  const [erro, setErro] =
+    useState("");
 
   // =========================================================
   // ATUALIZAR JOGADORES RECEBIDOS DO APP
   // =========================================================
 
   useEffect(() => {
-
     if (jogadoresProps) {
-
       setJogadores(jogadoresProps);
-
     }
-
   }, [jogadoresProps]);
-
 
   // =========================================================
   // CARREGAR CARDS.TXT
@@ -69,21 +64,22 @@ function Ranking({
         );
 
         if (!resposta.ok) {
-
           throw new Error(
             "Não foi possível carregar cards.txt"
           );
-
         }
 
-        const texto = await resposta.text();
+        const texto =
+          await resposta.text();
 
-        if (!texto.includes("PELADA_CARDS_V1")) {
-
+        if (
+          !texto.includes(
+            "PELADA_CARDS_V1"
+          )
+        ) {
           throw new Error(
             "Arquivo cards.txt inválido."
           );
-
         }
 
         const cardsLidos = [];
@@ -95,12 +91,10 @@ function Ranking({
             const textoLinha =
               linha.trim();
 
-            // Ignora cabeçalhos e linhas vazias
-
-            if (!textoLinha.startsWith("🆔")) {
-
+            if (
+              !textoLinha.startsWith("🆔")
+            ) {
               return;
-
             }
 
             const partes =
@@ -111,12 +105,12 @@ function Ranking({
                     parte.trim()
                 );
 
-
             /*
              * Formato:
              *
              * 🆔 001 | ATA 20 | DEF 20 |
-             * VEL 20 | PAS 20 | DRI 20
+             * VEL 20 | PAS 20 | DRI 20 |
+             * GOLS 2 | ASSIST 5 | SALVAMENTOS 3
              */
 
             if (partes.length < 6) {
@@ -127,9 +121,7 @@ function Ranking({
               );
 
               return;
-
             }
-
 
             // =================================================
             // ID
@@ -141,11 +133,8 @@ function Ranking({
                 .trim();
 
             if (!id) {
-
               return;
-
             }
-
 
             // =================================================
             // ATRIBUTOS
@@ -158,14 +147,12 @@ function Ranking({
                   .trim()
               ) || 0;
 
-
             const defesa =
               Number(
                 partes[2]
                   .replace("DEF", "")
                   .trim()
               ) || 0;
-
 
             const velocidade =
               Number(
@@ -174,14 +161,12 @@ function Ranking({
                   .trim()
               ) || 0;
 
-
             const passe =
               Number(
                 partes[4]
                   .replace("PAS", "")
                   .trim()
               ) || 0;
-
 
             const drible =
               Number(
@@ -190,39 +175,22 @@ function Ranking({
                   .trim()
               ) || 0;
 
-
             // =================================================
             // SALVAR CARD
             // =================================================
 
             cardsLidos.push({
-
               id,
-
               atributos: {
-
                 ataque,
-
                 defesa,
-
                 velocidade,
-
                 passe,
-
                 drible,
-
-              },
-
+              }
             });
 
           });
-
-
-        console.log(
-          "CARDS DO RANKING:",
-          cardsLidos
-        );
-
 
         setCards(cardsLidos);
 
@@ -242,11 +210,9 @@ function Ranking({
 
     }
 
-
     carregarCards();
 
   }, []);
-
 
   // =========================================================
   // VINCULAR JOGADORES + CARDS
@@ -264,50 +230,29 @@ function Ranking({
               String(jogador.id)
           );
 
-
-        /*
-         * Se não encontrou card,
-         * utiliza atributos zerados.
-         */
-
         const jogadorComCard = {
 
           ...jogador,
 
           atributos:
             card?.atributos || {
-
               ataque: 0,
-
               defesa: 0,
-
               velocidade: 0,
-
               passe: 0,
-
               drible: 0,
-
             },
 
         };
-
-
-        // =====================================================
-        // CALCULAR OVR
-        // =====================================================
 
         const ovr =
           calcularOVRJogador(
             jogadorComCard
           );
 
-
         return {
-
           ...jogadorComCard,
-
           ovr,
-
         };
 
       }
@@ -315,9 +260,8 @@ function Ranking({
 
   }, [jogadores, cards]);
 
-
   // =========================================================
-  // ESTATÍSTICAS
+  // ESTATÍSTICAS GERAIS
   // =========================================================
 
   const estatisticas = useMemo(() => {
@@ -330,44 +274,55 @@ function Ranking({
         0
       );
 
-
     const assistencias =
       jogadores.reduce(
         (total, jogador) =>
           total +
-          (Number(jogador.assistencias) || 0),
+          (
+            Number(
+              jogador.assistencias
+            ) || 0
+          ),
         0
       );
 
+    const salvamentos =
+      jogadores.reduce(
+        (total, jogador) =>
+          total +
+          (
+            Number(
+              jogador.salvamentos
+            ) || 0
+          ),
+        0
+      );
 
     const goleiros =
       jogadores.filter(
         (jogador) =>
-          jogador.tipo === "GOLEIRO"
+          String(jogador.tipo)
+            .toUpperCase() ===
+          "GOLEIRO"
       ).length;
-
 
     const linha =
       jogadores.filter(
         (jogador) =>
-          jogador.tipo === "LINHA"
+          String(jogador.tipo)
+            .toUpperCase() ===
+          "LINHA"
       ).length;
 
-
     return {
-
       gols,
-
       assistencias,
-
+      salvamentos,
       goleiros,
-
       linha,
-
     };
 
   }, [jogadores]);
-
 
   // =========================================================
   // ARTILHEIROS
@@ -376,7 +331,6 @@ function Ranking({
   const artilheiros = useMemo(() => {
 
     return [...jogadores]
-
       .sort((a, b) => {
 
         const golsA =
@@ -385,13 +339,9 @@ function Ranking({
         const golsB =
           Number(b.gols) || 0;
 
-
         if (golsB !== golsA) {
-
           return golsB - golsA;
-
         }
-
 
         return a.nome.localeCompare(
           b.nome,
@@ -399,21 +349,18 @@ function Ranking({
         );
 
       })
-
       .slice(0, 10);
 
   }, [jogadores]);
 
-
   // =========================================================
-  // ASSISTÊNCIAS
+  // GARÇONS
   // =========================================================
 
   const melhoresAssistentes =
     useMemo(() => {
 
       return [...jogadores]
-
         .sort((a, b) => {
 
           const assistA =
@@ -422,19 +369,14 @@ function Ranking({
           const assistB =
             Number(b.assistencias) || 0;
 
-
           if (
-            assistB !==
-            assistA
+            assistB !== assistA
           ) {
-
             return (
               assistB -
               assistA
             );
-
           }
-
 
           return a.nome.localeCompare(
             b.nome,
@@ -442,103 +384,140 @@ function Ranking({
           );
 
         })
-
         .slice(0, 10);
 
     }, [jogadores]);
 
-
   // =========================================================
-  // MELHORES AVALIADOS
+  // GOLEIROS DA TEMPORADA
   // =========================================================
 
-  const melhoresAvaliados =
+  const melhoresGoleiros =
     useMemo(() => {
 
-      return [...jogadoresComOVR]
-
+      return jogadoresComOVR
+        .filter(
+          (jogador) =>
+            String(jogador.tipo)
+              .toUpperCase() ===
+            "GOLEIRO"
+        )
         .sort((a, b) => {
 
-          // Primeiro: maior OVR
+          const salvA =
+            Number(a.salvamentos) || 0;
 
+          const salvB =
+            Number(b.salvamentos) || 0;
+
+          // 1º critério: salvamentos
+          if (salvB !== salvA) {
+            return salvB - salvA;
+          }
+
+          // 2º critério: OVR
           if (b.ovr !== a.ovr) {
-
-            return (
-              b.ovr -
-              a.ovr
-            );
-
+            return b.ovr - a.ovr;
           }
 
-
-          // Desempate: maior quantidade
-          // de estrelas
-
-          const estrelasA =
-            Number(a.estrelas) || 0;
-
-          const estrelasB =
-            Number(b.estrelas) || 0;
-
-
-          if (
-            estrelasB !==
-            estrelasA
-          ) {
-
-            return (
-              estrelasB -
-              estrelasA
-            );
-
-          }
-
-
-          // Segundo desempate:
-          // nome
-
+          // 3º critério: nome
           return a.nome.localeCompare(
             b.nome,
             "pt-BR"
           );
 
         })
-
         .slice(0, 10);
 
     }, [jogadoresComOVR]);
 
-
   // =========================================================
-  // GOAT DA TEMPORADA
+  // DEFENSORES DA TEMPORADA
+  // =========================================================
   //
-  // O GOAT É AUTOMATICAMENTE O PRIMEIRO
-  // COLOCADO DO RANKING DE MELHORES AVALIADOS
+  // SOMENTE jogadores LINHA.
+  //
+  // O critério é:
+  // 1º - mais salvamentos
+  // 2º - maior OVR
+  // 3º - nome
+  //
+  // GOLEIRO NÃO PARTICIPA.
   // =========================================================
 
+  const melhoresDefensores =
+    useMemo(() => {
+
+      return jogadoresComOVR
+        .filter(
+          (jogador) =>
+            String(jogador.tipo)
+              .toUpperCase() ===
+            "LINHA"
+        )
+        .sort((a, b) => {
+
+          const salvA =
+            Number(a.salvamentos) || 0;
+
+          const salvB =
+            Number(b.salvamentos) || 0;
+
+          // 1º critério: salvamentos
+          if (salvB !== salvA) {
+            return salvB - salvA;
+          }
+
+          // 2º critério: OVR
+          if (b.ovr !== a.ovr) {
+            return b.ovr - a.ovr;
+          }
+
+          // 3º critério: nome
+          return a.nome.localeCompare(
+            b.nome,
+            "pt-BR"
+          );
+
+        })
+        .slice(0, 10);
+
+    }, [jogadoresComOVR]);
+
+  // =========================================================
+  // PREMIADOS DA TEMPORADA
+  // =========================================================
+
+  // GOAT = MAIS GOLS DA TEMPORADA
   const goatTemporada =
-    melhoresAvaliados[0] || null;
+    artilheiros[0] || null;
 
+  // GOLEIRO = MAIS SALVAMENTOS ENTRE GOLEIROS
+  const goleiroTemporada =
+    melhoresGoleiros[0] || null;
+
+  // GARÇOM = MAIS ASSISTÊNCIAS
+  const garcomTemporada =
+    melhoresAssistentes[0] || null;
+
+  // DEFENSOR = MAIS SALVAMENTOS ENTRE JOGADORES DE LINHA
+  const defensorTemporada =
+    melhoresDefensores[0] || null;
 
   // =========================================================
-  // ABRIR CARD DO GOAT
+  // ABRIR FICHA
   // =========================================================
 
-  function abrirCardDoGoat() {
+  function abrirFicha(jogador) {
 
     if (
-      goatTemporada &&
+      jogador &&
       onAbrirFicha
     ) {
-
-      onAbrirFicha(
-        goatTemporada
-      );
-
+      onAbrirFicha(jogador);
     }
 
   }
-
 
   // =========================================================
   // DADOS DOS GRÁFICOS
@@ -549,36 +528,81 @@ function Ranking({
 
       return artilheiros.map(
         (jogador) => ({
-
           nome: jogador.nome,
-
           gols:
             Number(jogador.gols) || 0,
-
         })
       );
 
     }, [artilheiros]);
-
 
   const dadosAssistencias =
     useMemo(() => {
 
       return melhoresAssistentes.map(
         (jogador) => ({
-
           nome: jogador.nome,
-
           assistencias:
             Number(
               jogador.assistencias
             ) || 0,
-
         })
       );
 
     }, [melhoresAssistentes]);
 
+ // =========================================================
+// DADOS DO GRÁFICO DE SALVAMENTOS
+// SOMENTE GOLEIROS
+// =========================================================
+
+const dadosSalvamentos =
+  useMemo(() => {
+
+    return [...jogadores]
+      .filter(
+        (jogador) =>
+          String(jogador.tipo)
+            .toUpperCase() ===
+          "GOLEIRO"
+      )
+      .sort((a, b) => {
+
+        const salvA =
+          Number(a.salvamentos) || 0;
+
+        const salvB =
+          Number(b.salvamentos) || 0;
+
+        return salvB - salvA;
+
+      })
+      .slice(0, 10)
+      .map((jogador) => ({
+        nome: jogador.nome,
+        salvamentos:
+          Number(
+            jogador.salvamentos
+          ) || 0,
+      }));
+
+  }, [jogadores]);
+
+  // DEFENSORES = SALVAMENTOS DOS JOGADORES DE LINHA
+  const dadosDefesa =
+    useMemo(() => {
+
+      return melhoresDefensores.map(
+        (jogador) => ({
+          nome: jogador.nome,
+          salvamentos:
+            Number(
+              jogador.salvamentos
+            ) || 0,
+        })
+      );
+
+    }, [melhoresDefensores]);
 
   // =========================================================
   // TOOLTIP
@@ -586,20 +610,22 @@ function Ranking({
 
   const tooltipStyle = {
 
-    backgroundColor: "#1b1f28",
+    backgroundColor:
+      "#1b1f28",
 
     border:
       "1px solid #343a48",
 
-    borderRadius: "10px",
+    borderRadius:
+      "10px",
 
-    color: "#ffffff",
+    color:
+      "#ffffff",
 
     boxShadow:
       "0 10px 30px rgba(0, 0, 0, 0.35)",
 
   };
-
 
   // =========================================================
   // CARREGANDO
@@ -622,7 +648,6 @@ function Ranking({
     );
 
   }
-
 
   // =========================================================
   // ERRO
@@ -650,7 +675,6 @@ function Ranking({
 
   }
 
-
   // =========================================================
   // TELA
   // =========================================================
@@ -658,7 +682,6 @@ function Ranking({
   return (
 
     <main className="ranking-page">
-
 
       {/* =====================================================
           CABEÇALHO
@@ -689,57 +712,159 @@ function Ranking({
 
       </div>
 
-
       {/* =====================================================
-          GOAT DA TEMPORADA
+          PREMIADOS DA TEMPORADA
       ===================================================== */}
 
-      <div className="ranking-goat">
+      <section className="ranking-premiacoes">
+
+        {/* GOAT */}
 
         <button
           type="button"
-          className="botao-goat"
-          onClick={abrirCardDoGoat}
+          className="botao-premiacao premiacao-goat"
+          onClick={() =>
+            abrirFicha(goatTemporada)
+          }
           disabled={!goatTemporada}
         >
 
-          <span className="goat-icone">
+          <span className="premiacao-icone">
             🐐
           </span>
 
-
-          <span className="goat-texto">
+          <span className="premiacao-texto">
 
             <strong>
               GOAT DA TEMPORADA
             </strong>
 
             <small>
-
               {goatTemporada
                 ? goatTemporada.nome
-                : "Nenhum jogador encontrado"}
-
+                : "Nenhum jogador"}
             </small>
 
           </span>
 
-
-          <span className="goat-seta">
+          <span className="premiacao-seta">
             →
           </span>
 
         </button>
 
-      </div>
+        {/* GOLEIRO */}
 
+        <button
+          type="button"
+          className="botao-premiacao premiacao-goleiro"
+          onClick={() =>
+            abrirFicha(goleiroTemporada)
+          }
+          disabled={!goleiroTemporada}
+        >
+
+          <span className="premiacao-icone">
+            🕷️
+          </span>
+
+          <span className="premiacao-texto">
+
+            <strong>
+              ARANHA NEGRA DA TEMPORADA
+            </strong>
+
+            <small>
+              {goleiroTemporada
+                ? goleiroTemporada.nome
+                : "Nenhum goleiro"}
+            </small>
+
+          </span>
+
+          <span className="premiacao-seta">
+            →
+          </span>
+
+        </button>
+
+        {/* GARÇOM */}
+
+        <button
+          type="button"
+          className="botao-premiacao premiacao-garcom"
+          onClick={() =>
+            abrirFicha(garcomTemporada)
+          }
+          disabled={!garcomTemporada}
+        >
+
+          <span className="premiacao-icone">
+            🎼
+          </span>
+
+          <span className="premiacao-texto">
+
+            <strong>
+              MAESTRO DA TEMPORADA
+            </strong>
+
+            <small>
+              {garcomTemporada
+                ? garcomTemporada.nome
+                : "Nenhum jogador"}
+            </small>
+
+          </span>
+
+          <span className="premiacao-seta">
+            →
+          </span>
+
+        </button>
+
+        {/* DEFENSOR */}
+
+        <button
+          type="button"
+          className="botao-premiacao premiacao-defensor"
+          onClick={() =>
+            abrirFicha(defensorTemporada)
+          }
+          disabled={!defensorTemporada}
+        >
+
+          <span className="premiacao-icone">
+            🦣
+          </span>
+
+          <span className="premiacao-texto">
+
+            <strong>
+              MASTODONTE DA TEMPORADA
+            </strong>
+
+            <small>
+              {defensorTemporada
+                ? defensorTemporada.nome
+                : "Nenhum defensor"}
+            </small>
+
+          </span>
+
+          <span className="premiacao-seta">
+            →
+          </span>
+
+        </button>
+
+      </section>
 
       {/* =====================================================
-          CARDS DE RESUMO
+          RESUMO
       ===================================================== */}
 
       <section className="ranking-resumo">
-
 
         <div className="ranking-card ranking-card-gols">
 
@@ -759,7 +884,6 @@ function Ranking({
 
         </div>
 
-
         <div className="ranking-card ranking-card-assistencias">
 
           <span>🅰️</span>
@@ -778,6 +902,23 @@ function Ranking({
 
         </div>
 
+        <div className="ranking-card ranking-card-salvamentos">
+
+          <span>🛡️</span>
+
+          <div>
+
+            <strong>
+              {estatisticas.salvamentos}
+            </strong>
+
+            <small>
+              Salvamentos
+            </small>
+
+          </div>
+
+        </div>
 
         <div className="ranking-card ranking-card-jogadores">
 
@@ -796,7 +937,6 @@ function Ranking({
           </div>
 
         </div>
-
 
         <div className="ranking-card ranking-card-goleiros">
 
@@ -818,15 +958,11 @@ function Ranking({
 
       </section>
 
-
       {/* =====================================================
-          PÓDIO
+          PÓDIO DE ARTILHEIROS
       ===================================================== */}
 
       <section className="podio">
-
-
-        {/* SEGUNDO */}
 
         <div className="podio-card segundo">
 
@@ -839,13 +975,12 @@ function Ranking({
           </strong>
 
           <small>
-            {artilheiros[1]?.gols || 0} gols
+            {artilheiros[1]?.gols || 0}
+            {" "}
+            gols
           </small>
 
         </div>
-
-
-        {/* PRIMEIRO */}
 
         <div className="podio-card primeiro">
 
@@ -858,13 +993,12 @@ function Ranking({
           </strong>
 
           <small>
-            {artilheiros[0]?.gols || 0} gols
+            {artilheiros[0]?.gols || 0}
+            {" "}
+            gols
           </small>
 
         </div>
-
-
-        {/* TERCEIRO */}
 
         <div className="podio-card terceiro">
 
@@ -877,20 +1011,20 @@ function Ranking({
           </strong>
 
           <small>
-            {artilheiros[2]?.gols || 0} gols
+            {artilheiros[2]?.gols || 0}
+            {" "}
+            gols
           </small>
 
         </div>
 
       </section>
 
-
       {/* =====================================================
           GRÁFICOS
       ===================================================== */}
 
       <section className="graficos">
-
 
         {/* ===================================================
             GOLS
@@ -902,10 +1036,12 @@ function Ranking({
 
             <div>
 
-              <span>⚽</span>
+              <span>
+                ⚽
+              </span>
 
               <h2>
-                Artilheiros
+                Artilharia da Temporada
               </h2>
 
             </div>
@@ -915,7 +1051,6 @@ function Ranking({
             </small>
 
           </div>
-
 
           <div
             className="grafico-container"
@@ -1011,7 +1146,6 @@ function Ranking({
 
         </div>
 
-
         {/* ===================================================
             ASSISTÊNCIAS
         =================================================== */}
@@ -1022,10 +1156,12 @@ function Ranking({
 
             <div>
 
-              <span>🅰️</span>
+              <span>
+                🅰️
+              </span>
 
               <h2>
-                Assistências
+                Assistencias da temporada
               </h2>
 
             </div>
@@ -1035,7 +1171,6 @@ function Ranking({
             </small>
 
           </div>
-
 
           <div
             className="grafico-container"
@@ -1131,15 +1266,253 @@ function Ranking({
 
         </div>
 
+        {/* ===================================================
+            SALVAMENTOS
+        =================================================== */}
+
+        <div className="grafico-card grafico-salvamentos">
+
+          <div className="grafico-header">
+
+            <div>
+
+              <span>
+                🛡️
+              </span>
+
+              <h2>
+                Goleiros da temporada
+              </h2>
+
+            </div>
+
+            <small>
+              Top 10
+            </small>
+
+          </div>
+
+          <div
+            className="grafico-container"
+            style={{
+              width: "100%",
+              height: "350px",
+              minHeight: "350px",
+              overflowX: "auto",
+            }}
+          >
+
+            {dadosSalvamentos.length > 0 ? (
+
+              <BarChart
+                width={600}
+                height={350}
+                data={dadosSalvamentos}
+                layout="vertical"
+                margin={{
+                  top: 10,
+                  right: 30,
+                  left: 20,
+                  bottom: 10,
+                }}
+              >
+
+                <CartesianGrid
+                  stroke="rgba(255, 255, 255, 0.15)"
+                  strokeDasharray="4 4"
+                  horizontal={false}
+                />
+
+                <XAxis
+                  type="number"
+                  allowDecimals={false}
+                  stroke="#ffffff"
+                />
+
+                <YAxis
+                  type="category"
+                  dataKey="nome"
+                  width={110}
+                  stroke="#ffffff"
+                />
+
+                <Tooltip
+                  contentStyle={tooltipStyle}
+                  labelStyle={{
+                    color: "#ffffff",
+                    fontWeight: "600",
+                  }}
+                  itemStyle={{
+                    color: "#51cf66",
+                  }}
+                  cursor={{
+                    fill:
+                      "rgba(255,255,255,0.04)",
+                  }}
+                />
+
+                <Bar
+                  dataKey="salvamentos"
+                  name="Salvamentos"
+                  fill="#51cf66"
+                  radius={[
+                    0,
+                    6,
+                    6,
+                    0,
+                  ]}
+                  barSize={20}
+                />
+
+              </BarChart>
+
+            ) : (
+
+              <div className="grafico-vazio">
+
+                <span>
+                  🛡️
+                </span>
+
+                <p>
+                  Nenhum salvamento registrado.
+                </p>
+
+              </div>
+
+            )}
+
+          </div>
+
+        </div>
+
+        {/* ===================================================
+            DEFENSORES
+        =================================================== */}
+
+        <div className="grafico-card grafico-defesa">
+
+          <div className="grafico-header">
+
+            <div>
+
+              <span>
+                🛡️
+              </span>
+
+              <h2>
+                Defensores da temporada
+              </h2>
+
+            </div>
+
+            <small>
+              Top 10 Defensores
+            </small>
+
+          </div>
+
+          <div
+            className="grafico-container"
+            style={{
+              width: "100%",
+              height: "350px",
+              minHeight: "350px",
+              overflowX: "auto",
+            }}
+          >
+
+            {dadosDefesa.length > 0 ? (
+
+              <BarChart
+                width={600}
+                height={350}
+                data={dadosDefesa}
+                layout="vertical"
+                margin={{
+                  top: 10,
+                  right: 30,
+                  left: 20,
+                  bottom: 10,
+                }}
+              >
+
+                <CartesianGrid
+                  stroke="rgba(255, 255, 255, 0.15)"
+                  strokeDasharray="4 4"
+                  horizontal={false}
+                />
+
+                <XAxis
+                  type="number"
+                  allowDecimals={false}
+                  stroke="#ffffff"
+                />
+
+                <YAxis
+                  type="category"
+                  dataKey="nome"
+                  width={110}
+                  stroke="#ffffff"
+                />
+
+                <Tooltip
+                  contentStyle={tooltipStyle}
+                  labelStyle={{
+                    color: "#ffffff",
+                    fontWeight: "600",
+                  }}
+                  itemStyle={{
+                    color: "#845ef7",
+                  }}
+                  cursor={{
+                    fill:
+                      "rgba(255,255,255,0.04)",
+                  }}
+                />
+
+                <Bar
+                  dataKey="salvamentos"
+                  name="Salvamentos"
+                  fill="#845ef7"
+                  radius={[
+                    0,
+                    6,
+                    6,
+                    0,
+                  ]}
+                  barSize={20}
+                />
+
+              </BarChart>
+
+            ) : (
+
+              <div className="grafico-vazio">
+
+                <span>
+                  🛡️
+                </span>
+
+                <p>
+                  Nenhum defensor encontrado.
+                </p>
+
+              </div>
+
+            )}
+
+          </div>
+
+        </div>
+
       </section>
 
-
       {/* =====================================================
-          LISTAS DO RANKING
+          LISTAS
       ===================================================== */}
 
       <section className="ranking-listas">
-
 
         {/* ===================================================
             ARTILHEIROS
@@ -1151,7 +1524,9 @@ function Ranking({
 
             <div>
 
-              <span>⚽</span>
+              <span>
+                ⚽
+              </span>
 
               <h2>
                 Artilheiros
@@ -1164,7 +1539,6 @@ function Ranking({
             </small>
 
           </div>
-
 
           {artilheiros.map(
             (jogador, index) => (
@@ -1183,7 +1557,11 @@ function Ranking({
                 </span>
 
                 <strong className="valor-gols">
-                  {jogador.gols} ⚽
+
+                  {Number(jogador.gols) || 0}
+                  {" "}
+                  ⚽
+
                 </strong>
 
               </div>
@@ -1193,9 +1571,8 @@ function Ranking({
 
         </div>
 
-
         {/* ===================================================
-            MELHORES AVALIADOS
+            GARÇONS
         =================================================== */}
 
         <div className="ranking-lista">
@@ -1204,22 +1581,23 @@ function Ranking({
 
             <div>
 
-              <span>⭐</span>
+              <span>
+                🅰️
+              </span>
 
               <h2>
-                Melhores avaliados
+                Garçons
               </h2>
 
             </div>
 
             <small>
-              Top 10 OVR
+              Top 10
             </small>
 
           </div>
 
-
-          {melhoresAvaliados.map(
+          {melhoresAssistentes.map(
             (jogador, index) => (
 
               <div
@@ -1236,13 +1614,222 @@ function Ranking({
                 </span>
 
                 <strong className="valor-ovr">
-                  OVR {jogador.ovr}
+
+                  {Number(
+                    jogador.assistencias
+                  ) || 0}
+
+                  {" "}
+
+                  🅰️
+
                 </strong>
 
               </div>
 
             )
           )}
+
+        </div>
+
+        {/* ===================================================
+            GOLEIROS
+        =================================================== */}
+
+        <div className="ranking-lista">
+
+          <div className="lista-ranking-header">
+
+            <div>
+
+              <span>
+                🧤
+              </span>
+
+              <h2>
+                Goleiros
+              </h2>
+
+            </div>
+
+            <small>
+              Top 10 Salvamentos
+            </small>
+
+          </div>
+
+          {melhoresGoleiros.map(
+            (jogador, index) => (
+
+              <div
+                className="ranking-item"
+                key={jogador.id}
+              >
+
+                <span className="posicao">
+                  {index + 1}
+                </span>
+
+                <span className="nome-ranking">
+                  {jogador.nome}
+                </span>
+
+                <strong className="valor-ovr">
+
+                  {Number(
+                    jogador.salvamentos
+                  ) || 0}
+
+                  {" "}
+
+                  🛡️
+
+                </strong>
+
+              </div>
+
+            )
+          )}
+
+        </div>
+
+        {/* ===================================================
+            DEFENSORES
+        =================================================== */}
+
+        <div className="ranking-lista">
+
+          <div className="lista-ranking-header">
+
+            <div>
+
+              <span>
+                🛡️
+              </span>
+
+              <h2>
+                Defensores
+              </h2>
+
+            </div>
+
+            <small>
+              Top 10 Salvamentos
+            </small>
+
+          </div>
+
+          {melhoresDefensores.map(
+            (jogador, index) => (
+
+              <div
+                className="ranking-item"
+                key={jogador.id}
+              >
+
+                <span className="posicao">
+                  {index + 1}
+                </span>
+
+                <span className="nome-ranking">
+                  {jogador.nome}
+                </span>
+
+                <strong className="valor-ovr">
+
+                  {Number(
+                    jogador.salvamentos
+                  ) || 0}
+
+                  {" "}
+
+                  🛡️
+
+                </strong>
+
+              </div>
+
+            )
+          )}
+
+        </div>
+
+        {/* ===================================================
+            MELHORES AVALIADOS
+        =================================================== */}
+
+        <div className="ranking-lista">
+
+          <div className="lista-ranking-header">
+
+            <div>
+
+              <span>
+                ⭐
+              </span>
+
+              <h2>
+                Melhores avaliados
+              </h2>
+
+            </div>
+
+            <small>
+              Top 10 OVR
+            </small>
+
+          </div>
+
+          {jogadoresComOVR
+            .sort((a, b) => {
+
+              if (b.ovr !== a.ovr) {
+                return b.ovr - a.ovr;
+              }
+
+              const estrelasA =
+                Number(a.estrelas) || 0;
+
+              const estrelasB =
+                Number(b.estrelas) || 0;
+
+              if (
+                estrelasB !== estrelasA
+              ) {
+                return estrelasB - estrelasA;
+              }
+
+              return a.nome.localeCompare(
+                b.nome,
+                "pt-BR"
+              );
+
+            })
+            .slice(0, 10)
+            .map(
+              (jogador, index) => (
+
+                <div
+                  className="ranking-item"
+                  key={jogador.id}
+                >
+
+                  <span className="posicao">
+                    {index + 1}
+                  </span>
+
+                  <span className="nome-ranking">
+                    {jogador.nome}
+                  </span>
+
+                  <strong className="valor-ovr">
+                    OVR {jogador.ovr}
+                  </strong>
+
+                </div>
+
+              )
+            )}
 
         </div>
 
@@ -1253,6 +1840,5 @@ function Ranking({
   );
 
 }
-
 
 export default Ranking;

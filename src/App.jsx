@@ -282,40 +282,35 @@ function App() {
   // ==================================================
 
   function atualizarJogador(resultado) {
+  setJogadores((jogadoresAtuais) => {
+    return jogadoresAtuais.map((jogador) => {
+      if (
+        String(jogador.id) !==
+        String(resultado.id)
+      ) {
+        return jogador;
+      }
 
-    setJogadores((jogadoresAtuais) => {
+      return {
+        ...jogador,
 
-      return jogadoresAtuais.map((jogador) => {
+        ...(resultado.gols !== undefined && {
+          gols: Number(resultado.gols),
+        }),
 
-        if (
-          String(jogador.id) !==
-          String(resultado.id)
-        ) {
+        ...(resultado.assistencias !== undefined && {
+          assistencias:
+            Number(resultado.assistencias),
+        }),
 
-          return jogador;
-        }
-
-
-        return {
-
-          ...jogador,
-
-          ...(resultado.gols !== undefined && {
-            gols: Number(resultado.gols),
-          }),
-
-          ...(resultado.assistencias !== undefined && {
-            assistencias:
-              Number(resultado.assistencias),
-          }),
-
-        };
-
-      });
-
+        ...(resultado.salvamentos !== undefined && {
+          salvamentos:
+            Number(resultado.salvamentos),
+        }),
+      };
     });
-
-  }
+  });
+}
 
 
   // ==================================================

@@ -12,6 +12,7 @@ function CardsPage({
   jogadores,
   onAbrirFicha
 }) {
+
   const [cards, setCards] = useState([]);
 
   const [carregando, setCarregando] =
@@ -42,8 +43,11 @@ function CardsPage({
   // ============================================================
 
   useEffect(() => {
+
     async function carregarCards() {
+
       try {
+
         setCarregando(true);
         setErro("");
 
@@ -81,6 +85,7 @@ function CardsPage({
         const cardsLidos = [];
 
         linhas.forEach((linha) => {
+
           if (!linha.startsWith("🆔")) {
             return;
           }
@@ -91,7 +96,7 @@ function CardsPage({
               parte.trim()
             );
 
-          if (partes.length < 8) {
+          if (partes.length < 9) {
             return;
           }
 
@@ -155,16 +160,36 @@ function CardsPage({
                 .trim()
             ) || 0;
 
+          const salvamentos =
+            Number(
+              partes[8]
+                .replace("SALVAMENTOS", "")
+                .replace("SALVAMENTO", "")
+                .trim()
+            ) || 0;
+
           cardsLidos.push({
+
             id,
+
             ataque,
+
             defesa,
+
             velocidade,
+
             passe,
+
             drible,
+
             gols,
-            assistencias
+
+            assistencias,
+
+            salvamentos
+
           });
+
         });
 
         // ========================================================
@@ -172,17 +197,20 @@ function CardsPage({
         //
         // jogador.gols
         // jogador.assistencias
+        // jogador.salvamentos
         //
         // = temporada atual
         //
         // golsGeral
         // assistenciasGeral
+        // salvamentosGeral
         //
         // = histórico geral do cards.txt
         // ========================================================
 
         const jogadoresComCards =
           jogadores.map((jogador) => {
+
             const card =
               cardsLidos.find(
                 (item) =>
@@ -191,6 +219,7 @@ function CardsPage({
               );
 
             return {
+
               ...jogador,
 
               atributos: card
@@ -216,12 +245,20 @@ function CardsPage({
 
               assistenciasGeral: card
                 ? card.assistencias
+                : 0,
+
+              salvamentosGeral: card
+                ? card.salvamentos
                 : 0
+
             };
+
           });
 
         setCards(jogadoresComCards);
+
       } catch (error) {
+
         console.error(
           "ERRO AO CARREGAR CARDS:",
           error
@@ -229,14 +266,19 @@ function CardsPage({
 
         setErro(
           error.message ||
-            "Erro ao carregar cards."
+          "Erro ao carregar cards."
         );
+
       } finally {
+
         setCarregando(false);
+
       }
+
     }
 
     carregarCards();
+
   }, [jogadores]);
 
   // ============================================================
@@ -244,6 +286,7 @@ function CardsPage({
   // ============================================================
 
   const cardsFiltrados = useMemo(() => {
+
     let resultado = [...cards];
 
     // ========================================================
@@ -251,6 +294,7 @@ function CardsPage({
     // ========================================================
 
     if (pesquisa.trim()) {
+
       const termo =
         pesquisa
           .toLowerCase()
@@ -264,12 +308,14 @@ function CardsPage({
             )
               .toLowerCase()
               .includes(termo) ||
+
             String(
               jogador.id || ""
             )
               .toLowerCase()
               .includes(termo)
         );
+
     }
 
     // ========================================================
@@ -277,6 +323,7 @@ function CardsPage({
     // ========================================================
 
     if (ovrMinimo !== "todos") {
+
       const minimo =
         Number(ovrMinimo);
 
@@ -287,6 +334,7 @@ function CardsPage({
               jogador
             ) >= minimo
         );
+
     }
 
     // ========================================================
@@ -297,12 +345,14 @@ function CardsPage({
       atributoFiltro !== "todos" &&
       atributoMinimo !== "todos"
     ) {
+
       const minimo =
         Number(atributoMinimo);
 
       resultado =
         resultado.filter(
           (jogador) => {
+
             const valor =
               Number(
                 jogador.atributos?.[
@@ -311,8 +361,10 @@ function CardsPage({
               ) || 0;
 
             return valor >= minimo;
+
           }
         );
+
     }
 
     // ========================================================
@@ -320,6 +372,7 @@ function CardsPage({
     // ========================================================
 
     if (tipoFiltro !== "todos") {
+
       resultado =
         resultado.filter(
           (jogador) =>
@@ -330,6 +383,7 @@ function CardsPage({
               tipoFiltro
             ).toUpperCase()
         );
+
     }
 
     // ========================================================
@@ -337,14 +391,17 @@ function CardsPage({
     // ========================================================
 
     if (ordenacao === "ovr") {
+
       resultado.sort(
         (a, b) =>
           calcularOVRJogador(b) -
           calcularOVRJogador(a)
       );
+
     }
 
     if (ordenacao === "nome") {
+
       resultado.sort(
         (a, b) =>
           String(
@@ -355,9 +412,11 @@ function CardsPage({
             )
           )
       );
+
     }
 
     if (ordenacao === "gols") {
+
       resultado.sort(
         (a, b) =>
           (Number(
@@ -367,12 +426,14 @@ function CardsPage({
             a.golsGeral
           ) || 0)
       );
+
     }
 
     if (
       ordenacao ===
       "assistencias"
     ) {
+
       resultado.sort(
         (a, b) =>
           (Number(
@@ -382,9 +443,28 @@ function CardsPage({
             a.assistenciasGeral
           ) || 0)
       );
+
+    }
+
+    if (
+      ordenacao ===
+      "salvamentos"
+    ) {
+
+      resultado.sort(
+        (a, b) =>
+          (Number(
+            b.salvamentosGeral
+          ) || 0) -
+          (Number(
+            a.salvamentosGeral
+          ) || 0)
+      );
+
     }
 
     return resultado;
+
   }, [
     cards,
     pesquisa,
@@ -400,12 +480,19 @@ function CardsPage({
   // ============================================================
 
   function limparFiltros() {
+
     setPesquisa("");
+
     setOvrMinimo("todos");
+
     setAtributoFiltro("todos");
+
     setAtributoMinimo("todos");
+
     setOrdenacao("cadastro");
+
     setTipoFiltro("todos");
+
   }
 
   // ============================================================
@@ -413,15 +500,21 @@ function CardsPage({
   // ============================================================
 
   if (carregando) {
+
     return (
       <div className="cards-page">
+
         <div className="cards-estado">
+
           <h2>
             🃏 CARREGANDO CARDS...
           </h2>
+
         </div>
+
       </div>
     );
+
   }
 
   // ============================================================
@@ -429,15 +522,21 @@ function CardsPage({
   // ============================================================
 
   if (erro) {
+
     return (
       <div className="cards-page">
+
         <div className="cards-estado">
+
           <h2>❌ ERRO</h2>
 
           <p>{erro}</p>
+
         </div>
+
       </div>
     );
+
   }
 
   // ============================================================
@@ -445,6 +544,7 @@ function CardsPage({
   // ============================================================
 
   return (
+
     <div className="cards-page">
 
       {/* ======================================================
@@ -452,7 +552,9 @@ function CardsPage({
           ====================================================== */}
 
       <div className="cards-header">
+
         <div>
+
           <h1>
             🃏 CARDS DOS JOGADORES
           </h1>
@@ -460,9 +562,10 @@ function CardsPage({
           <p className="cards-subtitle">
             {cardsFiltrados.length} jogadores
           </p>
-        </div>
-      </div>
 
+        </div>
+
+      </div>
 
       {/* ======================================================
           FILTROS
@@ -473,6 +576,7 @@ function CardsPage({
         {/* PESQUISA */}
 
         <div className="filtro-grupo">
+
           <label>
             PESQUISAR
           </label>
@@ -488,12 +592,13 @@ function CardsPage({
             }
             placeholder="Nome ou ID..."
           />
-        </div>
 
+        </div>
 
         {/* OVR */}
 
         <div className="filtro-grupo">
+
           <label>
             OVR MÍNIMO
           </label>
@@ -506,6 +611,7 @@ function CardsPage({
               )
             }
           >
+
             <option value="todos">
               Todos
             </option>
@@ -529,13 +635,15 @@ function CardsPage({
             <option value="10">
               10+
             </option>
-          </select>
-        </div>
 
+          </select>
+
+        </div>
 
         {/* ATRIBUTO */}
 
         <div className="filtro-grupo">
+
           <label>
             ATRIBUTO
           </label>
@@ -548,6 +656,7 @@ function CardsPage({
               )
             }
           >
+
             <option value="todos">
               Todos
             </option>
@@ -571,13 +680,15 @@ function CardsPage({
             <option value="drible">
               Drible
             </option>
-          </select>
-        </div>
 
+          </select>
+
+        </div>
 
         {/* MÍNIMO */}
 
         <div className="filtro-grupo">
+
           <label>
             MÍNIMO
           </label>
@@ -590,6 +701,7 @@ function CardsPage({
               )
             }
           >
+
             <option value="todos">
               Todos
             </option>
@@ -621,13 +733,15 @@ function CardsPage({
             <option value="50">
               50+
             </option>
-          </select>
-        </div>
 
+          </select>
+
+        </div>
 
         {/* TIPO */}
 
         <div className="filtro-grupo">
+
           <label>
             TIPO
           </label>
@@ -640,6 +754,7 @@ function CardsPage({
               )
             }
           >
+
             <option value="todos">
               Todos
             </option>
@@ -651,13 +766,15 @@ function CardsPage({
             <option value="GOLEIRO">
               Goleiro
             </option>
-          </select>
-        </div>
 
+          </select>
+
+        </div>
 
         {/* ORDENAÇÃO */}
 
         <div className="filtro-grupo">
+
           <label>
             ORDENAR
           </label>
@@ -670,6 +787,7 @@ function CardsPage({
               )
             }
           >
+
             <option value="cadastro">
               Cadastro
             </option>
@@ -689,9 +807,14 @@ function CardsPage({
             <option value="assistencias">
               Assistências
             </option>
-          </select>
-        </div>
 
+            <option value="salvamentos">
+              Salvamentos
+            </option>
+
+          </select>
+
+        </div>
 
         {/* LIMPAR */}
 
@@ -704,7 +827,6 @@ function CardsPage({
 
       </div>
 
-
       {/* ======================================================
           CARDS
           ====================================================== */}
@@ -713,6 +835,7 @@ function CardsPage({
 
         {cardsFiltrados.map(
           (jogador) => {
+
             const ovr =
               calcularOVRJogador(
                 jogador
@@ -727,30 +850,32 @@ function CardsPage({
               tipo === "GOLEIRO";
 
             return (
+
               <div
                 key={jogador.id}
                 className="card-jogador"
-
                 onClick={() =>
                   onAbrirFicha(
                     jogador
                   )
                 }
-
                 role="button"
                 tabIndex={0}
-
                 onKeyDown={(e) => {
+
                   if (
                     e.key === "Enter" ||
                     e.key === " "
                   ) {
+
                     e.preventDefault();
 
                     onAbrirFicha(
                       jogador
                     );
+
                   }
+
                 }}
               >
 
@@ -778,7 +903,6 @@ function CardsPage({
 
                 </div>
 
-
                 {/* ==================================================
                     FOTO
                     ================================================== */}
@@ -787,42 +911,42 @@ function CardsPage({
 
                   <img
                     className="card-foto"
-
                     src={`/fotos/${jogador.id}.png`}
-
                     alt={
                       jogador.nome ||
                       "Jogador"
                     }
-
                     onError={(e) => {
+
                       e.currentTarget.src =
                         "/fotos/default.png";
+
                     }}
                   />
 
                 </div>
-
 
                 {/* ==================================================
                     NOME
                     ================================================== */}
 
                 <div className="card-nome">
+
                   {jogador.nome ||
                     "JOGADOR"}
-                </div>
 
+                </div>
 
                 {/* ==================================================
                     TIPO
                     ================================================== */}
 
                 <div className="card-tipo">
+
                   {jogador.tipo ||
                     "JOGADOR"}
-                </div>
 
+                </div>
 
                 {/* ==================================================
                     ESTRELAS
@@ -838,7 +962,6 @@ function CardsPage({
 
                 </div>
 
-
                 {/* ==================================================
                     ATRIBUTOS
                     ================================================== */}
@@ -846,6 +969,7 @@ function CardsPage({
                 <div className="card-atributos">
 
                   <div>
+
                     <span>
                       {ehGoleiro
                         ? "REF"
@@ -859,10 +983,11 @@ function CardsPage({
                           ?.ataque || 0
                       }
                     </strong>
+
                   </div>
 
-
                   <div>
+
                     <span>
                       DEF
                     </span>
@@ -874,10 +999,11 @@ function CardsPage({
                           ?.defesa || 0
                       }
                     </strong>
+
                   </div>
 
-
                   <div>
+
                     <span>
                       {ehGoleiro
                         ? "SAI"
@@ -892,10 +1018,11 @@ function CardsPage({
                         0
                       }
                     </strong>
+
                   </div>
 
-
                   <div>
+
                     <span>
                       PAS
                     </span>
@@ -907,10 +1034,11 @@ function CardsPage({
                           ?.passe || 0
                       }
                     </strong>
+
                   </div>
 
-
                   <div>
+
                     <span>
                       {ehGoleiro
                         ? "POS"
@@ -924,10 +1052,10 @@ function CardsPage({
                           ?.drible || 0
                       }
                     </strong>
+
                   </div>
 
                 </div>
-
 
                 {/* ==================================================
                     ESTATÍSTICAS GERAIS
@@ -954,7 +1082,6 @@ function CardsPage({
 
                   </div>
 
-
                   <div className="card-estatistica">
 
                     <span className="card-estatistica-icone">
@@ -975,21 +1102,43 @@ function CardsPage({
 
                   </div>
 
+                  <div className="card-estatistica">
+
+                    <span className="card-estatistica-icone">
+                      🛡️
+                    </span>
+
+                    <strong>
+                      {
+                        jogador
+                          .salvamentosGeral ||
+                        0
+                      }
+                    </strong>
+
+                    <small>
+                      SALV.
+                    </small>
+
+                  </div>
+
                 </div>
 
               </div>
+
             );
+
           }
         )}
 
       </div>
-
 
       {/* ======================================================
           NENHUM RESULTADO
           ====================================================== */}
 
       {cardsFiltrados.length === 0 && (
+
         <div className="cards-estado">
 
           <h2>
@@ -1004,10 +1153,13 @@ function CardsPage({
           </button>
 
         </div>
+
       )}
 
     </div>
+
   );
+
 }
 
 export default CardsPage;

@@ -7,6 +7,7 @@ const API_URL =
 // ========================================
 
 export async function listarJogadores() {
+
   const resposta = await fetch(
     `${API_URL}?acao=listarJogadores`
   );
@@ -30,6 +31,7 @@ export async function adicionarGol(
   quantidade,
   pin
 ) {
+
   const parametros = new URLSearchParams({
     acao: "adicionarGol",
     id: id,
@@ -59,6 +61,7 @@ export async function removerGol(
   id,
   pin
 ) {
+
   const parametros = new URLSearchParams({
     acao: "removerGol",
     id: id,
@@ -88,6 +91,7 @@ export async function adicionarAssistencia(
   quantidade,
   pin
 ) {
+
   const parametros = new URLSearchParams({
     acao: "adicionarAssistencia",
     id: id,
@@ -117,6 +121,7 @@ export async function removerAssistencia(
   id,
   pin
 ) {
+
   const parametros = new URLSearchParams({
     acao: "removerAssistencia",
     id: id,
@@ -138,10 +143,71 @@ export async function removerAssistencia(
 
 
 // ========================================
+// ADICIONAR SALVAMENTO
+// ========================================
+
+export async function adicionarSalvamento(
+  id,
+  quantidade,
+  pin
+) {
+
+  const parametros = new URLSearchParams({
+    acao: "adicionarSalvamento",
+    id: id,
+    quantidade: quantidade,
+    pin: pin,
+  });
+
+  const resposta = await fetch(
+    `${API_URL}?${parametros.toString()}`
+  );
+
+  if (!resposta.ok) {
+    throw new Error(
+      "Erro ao adicionar salvamento."
+    );
+  }
+
+  return await resposta.json();
+}
+
+
+// ========================================
+// REMOVER SALVAMENTO
+// ========================================
+
+export async function removerSalvamento(
+  id,
+  pin
+) {
+
+  const parametros = new URLSearchParams({
+    acao: "removerSalvamento",
+    id: id,
+    pin: pin,
+  });
+
+  const resposta = await fetch(
+    `${API_URL}?${parametros.toString()}`
+  );
+
+  if (!resposta.ok) {
+    throw new Error(
+      "Erro ao remover salvamento."
+    );
+  }
+
+  return await resposta.json();
+}
+
+
+// ========================================
 // TIMES
 // ========================================
 
 export async function listarTimes() {
+
   const resposta = await fetch(
     `${API_URL}?acao=listarTimes`
   );
@@ -165,6 +231,7 @@ export async function registrarResultado(
   resultado,
   pin
 ) {
+
   const parametros = new URLSearchParams({
     acao: "registrarResultado",
     id: id,

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+
 import "./ListaJogadores.css";
 
 import {
@@ -6,9 +7,12 @@ import {
   removerGol,
   adicionarAssistencia,
   removerAssistencia,
+  adicionarSalvamento,
+  removerSalvamento,
 } from "../../services/api";
 
 function ListaJogadores({ jogadores, onAtualizarJogador }) {
+
   const [atualizando, setAtualizando] = useState({});
 
   // Modal de quantidade
@@ -21,6 +25,7 @@ function ListaJogadores({ jogadores, onAtualizarJogador }) {
   const [pin, setPin] = useState("");
   const [erroModal, setErroModal] = useState("");
 
+
   /*
    * =========================================================
    * ABRIR MODAL DE QUANTIDADE
@@ -28,6 +33,7 @@ function ListaJogadores({ jogadores, onAtualizarJogador }) {
    */
 
   function abrirAdicionar(jogador, tipo) {
+
     setQuantidade("1");
     setErroModal("");
 
@@ -37,6 +43,7 @@ function ListaJogadores({ jogadores, onAtualizarJogador }) {
     });
   }
 
+
   /*
    * =========================================================
    * ABRIR MODAL DE PIN PARA REMOVER
@@ -44,6 +51,7 @@ function ListaJogadores({ jogadores, onAtualizarJogador }) {
    */
 
   function abrirRemover(jogador, tipo) {
+
     setPin("");
     setErroModal("");
 
@@ -55,6 +63,7 @@ function ListaJogadores({ jogadores, onAtualizarJogador }) {
     });
   }
 
+
   /*
    * =========================================================
    * CONFIRMAR QUANTIDADE
@@ -62,15 +71,24 @@ function ListaJogadores({ jogadores, onAtualizarJogador }) {
    */
 
   function confirmarQuantidade() {
+
     const numero = Number(quantidade);
 
     if (!Number.isInteger(numero) || numero < 1) {
-      setErroModal("Digite uma quantidade válida.");
+
+      setErroModal(
+        "Digite uma quantidade válida."
+      );
+
       return;
     }
 
     if (numero > 10) {
-      setErroModal("A quantidade máxima é 10.");
+
+      setErroModal(
+        "A quantidade máxima é 10."
+      );
+
       return;
     }
 
@@ -87,6 +105,7 @@ function ListaJogadores({ jogadores, onAtualizarJogador }) {
     setModalQuantidade(null);
   }
 
+
   /*
    * =========================================================
    * CONFIRMAR PIN
@@ -94,8 +113,13 @@ function ListaJogadores({ jogadores, onAtualizarJogador }) {
    */
 
   async function confirmarPin() {
+
     if (pin.length !== 4) {
-      setErroModal("Digite o PIN de 4 dígitos.");
+
+      setErroModal(
+        "Digite o PIN de 4 dígitos."
+      );
+
       return;
     }
 
@@ -122,19 +146,28 @@ function ListaJogadores({ jogadores, onAtualizarJogador }) {
     }));
 
     try {
+
       let resultado;
 
+
       /*
+       * =====================================================
        * GOLS
+       * =====================================================
        */
+
       if (tipo === "gol") {
+
         if (operacao === "adicionar") {
+
           resultado = await adicionarGol(
             jogador.id,
             quantidadeSelecionada,
             pin
           );
+
         } else {
+
           resultado = await removerGol(
             jogador.id,
             pin
@@ -142,17 +175,25 @@ function ListaJogadores({ jogadores, onAtualizarJogador }) {
         }
       }
 
+
       /*
+       * =====================================================
        * ASSISTÊNCIAS
+       * =====================================================
        */
+
       if (tipo === "assistencia") {
+
         if (operacao === "adicionar") {
+
           resultado = await adicionarAssistencia(
             jogador.id,
             quantidadeSelecionada,
             pin
           );
+
         } else {
+
           resultado = await removerAssistencia(
             jogador.id,
             pin
@@ -160,26 +201,71 @@ function ListaJogadores({ jogadores, onAtualizarJogador }) {
         }
       }
 
+
+      /*
+       * =====================================================
+       * SALVAMENTOS
+       * =====================================================
+       */
+
+      if (tipo === "salvamento") {
+
+        if (operacao === "adicionar") {
+
+          resultado = await adicionarSalvamento(
+            jogador.id,
+            quantidadeSelecionada,
+            pin
+          );
+
+        } else {
+
+          resultado = await removerSalvamento(
+            jogador.id,
+            pin
+          );
+        }
+      }
+
+
+      /*
+       * =====================================================
+       * VALIDAR RESPOSTA
+       * =====================================================
+       */
+
       if (!resultado?.sucesso) {
+
         throw new Error(
           resultado?.erro ||
-            "Não foi possível atualizar a estatística."
+          "Não foi possível atualizar a estatística."
         );
       }
 
+
       /*
-       * Atualiza o jogador na tela
-       * sem precisar recarregar a página
+       * =====================================================
+       * ATUALIZAR JOGADOR NA TELA
+       * =====================================================
        */
-      if (typeof onAtualizarJogador === "function") {
+
+      if (
+        typeof onAtualizarJogador === "function"
+      ) {
+
         onAtualizarJogador(resultado);
       }
 
+
       // Fecha o modal
+
       setModalPin(null);
       setPin("");
       setErroModal("");
+
+
     } catch (error) {
+
       console.error(
         "Erro ao atualizar estatística:",
         error
@@ -187,15 +273,18 @@ function ListaJogadores({ jogadores, onAtualizarJogador }) {
 
       setErroModal(
         error.message ||
-          "Não foi possível atualizar a estatística."
+        "Não foi possível atualizar a estatística."
       );
+
     } finally {
+
       setAtualizando((estadoAnterior) => ({
         ...estadoAnterior,
         [chave]: false,
       }));
     }
   }
+
 
   /*
    * =========================================================
@@ -204,12 +293,16 @@ function ListaJogadores({ jogadores, onAtualizarJogador }) {
    */
 
   function fecharModais() {
+
     setModalQuantidade(null);
     setModalPin(null);
+
     setQuantidade("1");
     setPin("");
+
     setErroModal("");
   }
+
 
   /*
    * =========================================================
@@ -218,27 +311,33 @@ function ListaJogadores({ jogadores, onAtualizarJogador }) {
    */
 
   function alterarQuantidade(valor) {
-    // Remove qualquer coisa que não seja número
+
     const somenteNumeros = valor
       .replace(/\D/g, "")
       .slice(0, 2);
 
     if (somenteNumeros === "") {
+
       setQuantidade("");
       return;
     }
 
     const numero = Number(somenteNumeros);
 
-    // Limite máximo de 10
     if (numero > 10) {
+
       setQuantidade("10");
+
     } else {
-      setQuantidade(String(numero));
+
+      setQuantidade(
+        String(numero)
+      );
     }
 
     setErroModal("");
   }
+
 
   /*
    * =========================================================
@@ -247,6 +346,7 @@ function ListaJogadores({ jogadores, onAtualizarJogador }) {
    */
 
   function alterarPin(valor) {
+
     const somenteNumeros = valor
       .replace(/\D/g, "")
       .slice(0, 4);
@@ -255,6 +355,7 @@ function ListaJogadores({ jogadores, onAtualizarJogador }) {
     setErroModal("");
   }
 
+
   /*
    * =========================================================
    * TELA VAZIA
@@ -262,27 +363,51 @@ function ListaJogadores({ jogadores, onAtualizarJogador }) {
    */
 
   if (jogadores.length === 0) {
+
     return (
+
       <div className="vazio">
+
         <span>😵</span>
-        <h2>Nenhum jogador encontrado</h2>
-        <p>Tente alterar os filtros.</p>
+
+        <h2>
+          Nenhum jogador encontrado
+        </h2>
+
+        <p>
+          Tente alterar os filtros.
+        </p>
+
       </div>
     );
   }
 
+
   return (
+
     <>
+
       <section className="lista-jogadores">
+
         <div className="lista-header">
+
           <span>JOGADOR</span>
+
           <span>AVALIAÇÃO</span>
+
           <span>POSIÇÃO</span>
+
           <span>GOLS</span>
+
           <span>ASSISTÊNCIAS</span>
+
+          <span>SALVAMENTOS</span>
+
         </div>
 
+
         {jogadores.map((jogador) => {
+
           const inicial =
             jogador.nome?.charAt(0)?.toUpperCase() || "?";
 
@@ -290,81 +415,156 @@ function ListaJogadores({ jogadores, onAtualizarJogador }) {
             jogador.tipo?.trim()?.toUpperCase() ===
             "GOLEIRO";
 
-          const gols = Number(jogador.gols) || 0;
+
+          const gols =
+            Number(jogador.gols) || 0;
+
 
           const assistencias =
             Number(jogador.assistencias) || 0;
+
+
+          const salvamentos =
+            Number(jogador.salvamentos) || 0;
+
 
           const carregandoGol =
             atualizando[
               `${jogador.id}-gol`
             ];
 
+
           const carregandoAssistencia =
             atualizando[
               `${jogador.id}-assistencia`
             ];
 
+
+          const carregandoSalvamento =
+            atualizando[
+              `${jogador.id}-salvamento`
+            ];
+
+
           return (
+
             <div
               className="jogador"
               key={jogador.id}
             >
-              {/* JOGADOR */}
+
+
+              {/* =================================================
+                  JOGADOR
+                 ================================================= */}
+
               <div className="jogador-nome">
+
                 <div className="avatar">
                   {inicial}
                 </div>
 
                 <div className="jogador-identidade">
+
                   <strong>
                     {jogador.nome}
                   </strong>
 
                   <span className="posicao-mobile">
+
                     {isGoleiro
                       ? "🧤 Goleiro"
                       : "⚽ Linha"}
+
                   </span>
+
                 </div>
+
               </div>
 
-              {/* ESTRELAS */}
+
+              {/* =================================================
+                  ESTRELAS
+                 ================================================= */}
+
               <div className="estrelas">
+
                 {"⭐".repeat(
                   Number(jogador.estrelas) || 0
                 )}
+
               </div>
 
-              {/* POSIÇÃO */}
+
+              {/* =================================================
+                  POSIÇÃO
+                 ================================================= */}
+
               <div className="posicao-desktop">
+
                 {isGoleiro ? (
+
                   <span className="badge goleiro">
                     🧤 Goleiro
                   </span>
+
                 ) : (
+
                   <span className="badge linha">
                     ⚽ Linha
                   </span>
+
                 )}
+
               </div>
+
 
               {/* =================================================
                   GOLS
                  ================================================= */}
 
               <div className="estatistica jogador-gols">
+
                 <span className="estatistica-icone">
                   ⚽
                 </span>
 
                 <div className="estatistica-conteudo">
-                  <strong>{gols}</strong>
-                  <small>Gols</small>
+
+                  <strong>
+                    {gols}
+                  </strong>
+
+                  <small>
+                    Gols
+                  </small>
+
                 </div>
 
                 <div className="estatistica-controles">
+
+                  {/* ADICIONAR GOL */}
+
+                  <button
+                    type="button"
+                    className="botao-estatistica adicionar"
+                    disabled={carregandoGol}
+                    onClick={() =>
+                      abrirAdicionar(
+                        jogador,
+                        "gol"
+                      )
+                    }
+                    title="Adicionar gol"
+                  >
+                    {carregandoGol
+                      ? "..."
+                      : "+"}
+                  </button>
+
+
                   {/* REMOVER GOL */}
+
                   <button
                     type="button"
                     className="botao-estatistica remover"
@@ -383,36 +583,23 @@ function ListaJogadores({ jogadores, onAtualizarJogador }) {
                     −
                   </button>
 
-                  {/* ADICIONAR GOL */}
-                  <button
-                    type="button"
-                    className="botao-estatistica adicionar"
-                    disabled={carregandoGol}
-                    onClick={() =>
-                      abrirAdicionar(
-                        jogador,
-                        "gol"
-                      )
-                    }
-                    title="Adicionar gol"
-                  >
-                    {carregandoGol
-                      ? "..."
-                      : "+"}
-                  </button>
                 </div>
+
               </div>
+
 
               {/* =================================================
                   ASSISTÊNCIAS
                  ================================================= */}
 
               <div className="estatistica jogador-assistencias">
+
                 <span className="estatistica-icone">
                   🅰️
                 </span>
 
                 <div className="estatistica-conteudo">
+
                   <strong>
                     {assistencias}
                   </strong>
@@ -420,29 +607,13 @@ function ListaJogadores({ jogadores, onAtualizarJogador }) {
                   <small>
                     Assistências
                   </small>
+
                 </div>
 
                 <div className="estatistica-controles">
-                  {/* REMOVER ASSISTÊNCIA */}
-                  <button
-                    type="button"
-                    className="botao-estatistica remover"
-                    disabled={
-                      assistencias <= 0 ||
-                      carregandoAssistencia
-                    }
-                    onClick={() =>
-                      abrirRemover(
-                        jogador,
-                        "assistencia"
-                      )
-                    }
-                    title="Remover assistência"
-                  >
-                    −
-                  </button>
 
                   {/* ADICIONAR ASSISTÊNCIA */}
+
                   <button
                     type="button"
                     className="botao-estatistica adicionar"
@@ -461,45 +632,150 @@ function ListaJogadores({ jogadores, onAtualizarJogador }) {
                       ? "..."
                       : "+"}
                   </button>
+
+                   {/* REMOVER ASSISTÊNCIA */}
+
+                  <button
+                    type="button"
+                    className="botao-estatistica remover"
+                    disabled={
+                      assistencias <= 0 ||
+                      carregandoAssistencia
+                    }
+                    onClick={() =>
+                      abrirRemover(
+                        jogador,
+                        "assistencia"
+                      )
+                    }
+                    title="Remover assistência"
+                  >
+                    −
+                  </button>
+
                 </div>
+
               </div>
+
+
+              {/* =================================================
+                  SALVAMENTOS
+                 ================================================= */}
+
+              <div className="estatistica jogador-salvamentos">
+
+                <span className="estatistica-icone">
+                  🛡️
+                </span>
+
+                <div className="estatistica-conteudo">
+
+                  <strong>
+                    {salvamentos}
+                  </strong>
+
+                  <small>
+                    Salvamentos
+                  </small>
+
+                </div>
+
+                <div className="estatistica-controles">
+
+                  {/* ADICIONAR SALVAMENTO */}
+
+                  <button
+                    type="button"
+                    className="botao-estatistica adicionar"
+                    disabled={
+                      carregandoSalvamento
+                    }
+                    onClick={() =>
+                      abrirAdicionar(
+                        jogador,
+                        "salvamento"
+                      )
+                    }
+                    title="Adicionar salvamento"
+                  >
+                    {carregandoSalvamento
+                      ? "..."
+                      : "+"}
+                  </button>
+
+                   {/* REMOVER SALVAMENTO */}
+
+                  <button
+                    type="button"
+                    className="botao-estatistica remover"
+                    disabled={
+                      salvamentos <= 0 ||
+                      carregandoSalvamento
+                    }
+                    onClick={() =>
+                      abrirRemover(
+                        jogador,
+                        "salvamento"
+                      )
+                    }
+                    title="Remover salvamento"
+                  >
+                    −
+                  </button>
+
+                </div>
+
+              </div>
+
             </div>
           );
         })}
+
       </section>
+
 
       {/* =========================================================
           MODAL DE QUANTIDADE
          ========================================================= */}
 
       {modalQuantidade && (
+
         <div
           className="modal-pin-overlay"
           onClick={fecharModais}
         >
+
           <div
             className="modal-pin"
             onClick={(event) =>
               event.stopPropagation()
             }
           >
+
             <div className="modal-pin-icone">
-              {modalQuantidade.tipo ===
-              "gol"
+
+              {modalQuantidade.tipo === "gol"
                 ? "⚽"
-                : "🅰️"}
+                : modalQuantidade.tipo === "assistencia"
+                ? "🅰️"
+                : "🛡️"}
+
             </div>
 
             <h3>
+
               Adicionar{" "}
+
               {modalQuantidade.tipo === "gol"
                 ? "gols"
-                : "assistências"}
+                : modalQuantidade.tipo === "assistencia"
+                ? "assistências"
+                : "salvamentos"}
+
             </h3>
 
             <p>
-              Quantos você deseja
-              adicionar?
+              Quantos você deseja adicionar?
             </p>
 
             <input
@@ -514,6 +790,7 @@ function ListaJogadores({ jogadores, onAtualizarJogador }) {
                 )
               }
               onKeyDown={(event) => {
+
                 if (event.key === "Enter") {
                   confirmarQuantidade();
                 }
@@ -521,6 +798,7 @@ function ListaJogadores({ jogadores, onAtualizarJogador }) {
                 if (event.key === "Escape") {
                   fecharModais();
                 }
+
               }}
               autoFocus
             />
@@ -530,12 +808,15 @@ function ListaJogadores({ jogadores, onAtualizarJogador }) {
             </small>
 
             {erroModal && (
+
               <div className="modal-pin-erro">
                 {erroModal}
               </div>
+
             )}
 
             <div className="modal-pin-botoes">
+
               <button
                 type="button"
                 className="modal-pin-cancelar"
@@ -551,26 +832,33 @@ function ListaJogadores({ jogadores, onAtualizarJogador }) {
               >
                 Continuar
               </button>
+
             </div>
+
           </div>
+
         </div>
       )}
+
 
       {/* =========================================================
           MODAL DE PIN
          ========================================================= */}
 
       {modalPin && (
+
         <div
           className="modal-pin-overlay"
           onClick={fecharModais}
         >
+
           <div
             className="modal-pin"
             onClick={(event) =>
               event.stopPropagation()
             }
           >
+
             <div className="modal-pin-icone">
               🔐
             </div>
@@ -580,26 +868,40 @@ function ListaJogadores({ jogadores, onAtualizarJogador }) {
             </h3>
 
             <p>
-              {modalPin.operacao ===
-              "adicionar"
+
+              {modalPin.operacao === "adicionar"
+
                 ? `Adicionar ${modalPin.quantidade} ${
                     modalPin.tipo === "gol"
                       ? modalPin.quantidade === 1
                         ? "gol"
                         : "gols"
+
+                      : modalPin.tipo === "assistencia"
+                      ? modalPin.quantidade === 1
+                        ? "assistência"
+                        : "assistências"
+
                       : modalPin.quantidade === 1
-                      ? "assistência"
-                      : "assistências"
+                      ? "salvamento"
+                      : "salvamentos"
                   } em ${
                     modalPin.jogador.nome
                   }`
+
                 : `Remover ${
                     modalPin.tipo === "gol"
                       ? "1 gol"
-                      : "1 assistência"
+
+                      : modalPin.tipo === "assistencia"
+                      ? "1 assistência"
+
+                      : "1 salvamento"
                   } de ${
                     modalPin.jogador.nome
-                  }`}
+                  }`
+              }
+
             </p>
 
             <label className="modal-pin-label">
@@ -618,6 +920,7 @@ function ListaJogadores({ jogadores, onAtualizarJogador }) {
                 )
               }
               onKeyDown={(event) => {
+
                 if (event.key === "Enter") {
                   confirmarPin();
                 }
@@ -625,17 +928,21 @@ function ListaJogadores({ jogadores, onAtualizarJogador }) {
                 if (event.key === "Escape") {
                   fecharModais();
                 }
+
               }}
               autoFocus
             />
 
             {erroModal && (
+
               <div className="modal-pin-erro">
                 {erroModal}
               </div>
+
             )}
 
             <div className="modal-pin-botoes">
+
               <button
                 type="button"
                 className="modal-pin-cancelar"
@@ -652,10 +959,14 @@ function ListaJogadores({ jogadores, onAtualizarJogador }) {
               >
                 Confirmar
               </button>
+
             </div>
+
           </div>
+
         </div>
       )}
+
     </>
   );
 }

@@ -1,3 +1,4 @@
+
 /* =========================================================
    LISTA DE JOGADORES
    ========================================================= */
@@ -13,7 +14,15 @@
 
 .lista-header {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+
+  grid-template-columns:
+    2fr
+    1fr
+    1fr
+    1fr
+    1fr
+    1fr;
+
   align-items: center;
 
   padding: 12px 20px;
@@ -21,6 +30,7 @@
   color: #888;
 
   font-size: 11px;
+
   font-weight: 700;
 
   letter-spacing: 0.5px;
@@ -33,7 +43,14 @@
 
 .lista-jogadores .jogador {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+
+  grid-template-columns:
+    2fr
+    1fr
+    1fr
+    1fr
+    1fr
+    1fr;
 
   align-items: center;
 
@@ -46,6 +63,7 @@
   background: #fff;
 
   border: 1px solid #e8e8e8;
+
   border-radius: 10px;
 
   margin-bottom: 8px;
@@ -61,7 +79,8 @@
 
   transform: translateY(-1px);
 
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.04);
 }
 
 
@@ -71,6 +90,7 @@
 
 .lista-jogadores .jogador-nome {
   display: flex;
+
   align-items: center;
 
   gap: 12px;
@@ -85,10 +105,13 @@
 
 .lista-jogadores .avatar {
   width: 42px;
+
   height: 42px;
 
   display: flex;
+
   align-items: center;
+
   justify-content: center;
 
   flex-shrink: 0;
@@ -100,6 +123,7 @@
   border-radius: 50%;
 
   font-size: 15px;
+
   font-weight: 700;
 }
 
@@ -112,6 +136,7 @@
   min-width: 0;
 
   display: flex;
+
   flex-direction: column;
 
   gap: 4px;
@@ -121,10 +146,13 @@
   color: #222;
 
   font-size: 14px;
+
   font-weight: 600;
 
   white-space: nowrap;
+
   overflow: hidden;
+
   text-overflow: ellipsis;
 }
 
@@ -163,6 +191,7 @@
 
 .lista-jogadores .posicao-desktop {
   display: flex;
+
   align-items: center;
 }
 
@@ -173,6 +202,7 @@
 
 .lista-jogadores .badge {
   display: inline-flex;
+
   align-items: center;
 
   padding: 5px 9px;
@@ -180,6 +210,7 @@
   border-radius: 20px;
 
   font-size: 11px;
+
   font-weight: 600;
 
   white-space: nowrap;
@@ -187,24 +218,24 @@
 
 .lista-jogadores .badge.goleiro {
   background: #eef6ff;
+
   color: #3575b8;
 }
 
 .lista-jogadores .badge.linha {
   background: #f1f1f1;
+
   color: #555;
 }
 
 
 /* =========================================================
    ESTATÍSTICAS
-   IMPORTANTE:
-   Tudo está dentro de .lista-jogadores para evitar
-   conflito com CardsPage.css
    ========================================================= */
 
 .lista-jogadores .estatistica {
   display: flex;
+
   align-items: center;
 
   gap: 9px;
@@ -222,6 +253,7 @@
   min-width: 0;
 
   display: flex;
+
   flex-direction: column;
 
   gap: 2px;
@@ -231,6 +263,7 @@
   color: #222;
 
   font-size: 15px;
+
   font-weight: 700;
 }
 
@@ -249,6 +282,7 @@
 
 .lista-jogadores .estatistica-controles {
   display: flex;
+
   align-items: center;
 
   gap: 4px;
@@ -263,21 +297,27 @@
 
 .lista-jogadores .botao-estatistica {
   width: 25px;
+
   height: 25px;
 
   display: flex;
+
   align-items: center;
+
   justify-content: center;
 
   padding: 0;
 
   border: 1px solid #ddd;
+
   border-radius: 6px;
 
   background: #fff;
+
   color: #333;
 
   font-size: 16px;
+
   font-weight: 700;
 
   line-height: 1;
@@ -359,9 +399,11 @@
   box-sizing: border-box;
 
   display: flex;
+
   flex-direction: column;
 
   align-items: center;
+
   justify-content: center;
 
   text-align: center;
@@ -396,7 +438,9 @@
   z-index: 9999;
 
   display: flex;
+
   align-items: center;
+
   justify-content: center;
 
   padding: 20px;
@@ -408,6 +452,7 @@
 
 .modal-pin {
   width: 100%;
+
   max-width: 380px;
 
   padding: 25px;
@@ -418,19 +463,23 @@
 
   border-radius: 14px;
 
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.3);
 
   text-align: center;
 }
 
 .modal-pin-icone {
   width: 50px;
+
   height: 50px;
 
   margin: 0 auto 15px;
 
   display: flex;
+
   align-items: center;
+
   justify-content: center;
 
   background: #f5f5f5;
@@ -448,6 +497,7 @@
   color: #444;
 
   font-size: 12px;
+
   font-weight: 700;
 
   text-align: left;
@@ -463,6 +513,7 @@
   box-sizing: border-box;
 
   border: 1px solid #ddd;
+
   border-radius: 8px;
 
   outline: none;
@@ -510,6 +561,7 @@
   border-radius: 8px;
 
   font-size: 12px;
+
   font-weight: 700;
 
   cursor: pointer;
@@ -557,31 +609,40 @@
    ========================================================= */
 
 @media (max-width: 900px) {
+
   .lista-header,
   .lista-jogadores .jogador {
+
     grid-template-columns:
       2fr
       0.9fr
       0.9fr
       1fr
+      1fr
       1fr;
   }
 
   .lista-jogadores .jogador {
+
     padding-left: 15px;
+
     padding-right: 15px;
   }
 
   .lista-jogadores .estatistica {
+
     gap: 6px;
   }
 
   .lista-jogadores .estatistica-controles {
+
     margin-left: 3px;
   }
 
   .lista-jogadores .botao-estatistica {
+
     width: 23px;
+
     height: 23px;
   }
 }
@@ -592,11 +653,13 @@
    ========================================================= */
 
 @media (max-width: 768px) {
+
   .lista-header {
     display: none;
   }
 
   .lista-jogadores .jogador {
+
     display: grid;
 
     grid-template-columns: 1fr auto;
@@ -609,28 +672,37 @@
   }
 
   .lista-jogadores .jogador-nome {
+
     min-width: 0;
   }
 
   .lista-jogadores .avatar {
+
     width: 40px;
+
     height: 40px;
   }
 
   .lista-jogadores .jogador-identidade strong {
+
     font-size: 14px;
 
     white-space: nowrap;
+
     overflow: hidden;
+
     text-overflow: ellipsis;
   }
 
   .lista-jogadores .posicao-mobile {
+
     display: block;
   }
 
   .lista-jogadores .estrelas {
+
     grid-column: 2;
+
     grid-row: 1;
 
     align-self: center;
@@ -639,27 +711,42 @@
   }
 
   .lista-jogadores .posicao-desktop {
+
     display: none;
   }
 
+
+  /* =======================================================
+     ESTATÍSTICAS MOBILE
+     ======================================================= */
+
   .lista-jogadores .estatistica {
+
     min-width: 0;
 
-    grid-column: span 1;
+    grid-column: 1 / -1;
+
+    justify-self: stretch;
   }
 
   .lista-jogadores .jogador-gols {
-    grid-column: 1;
+
+    grid-column: 1 / -1;
   }
 
   .lista-jogadores .jogador-assistencias {
-    grid-column: 2;
 
-    justify-self: end;
+    grid-column: 1 / -1;
+  }
+
+  .lista-jogadores .jogador-salvamentos {
+
+    grid-column: 1 / -1;
   }
 
   .lista-jogadores .estatistica-controles {
-    margin-left: 4px;
+
+    margin-left: auto;
   }
 }
 
@@ -669,61 +756,76 @@
    ========================================================= */
 
 @media (max-width: 480px) {
+
   .lista-jogadores .jogador {
+
     padding: 12px;
 
     gap: 8px;
   }
 
   .lista-jogadores .avatar {
+
     width: 38px;
+
     height: 38px;
 
     font-size: 14px;
   }
 
   .lista-jogadores .jogador-nome {
+
     gap: 9px;
   }
 
   .lista-jogadores .jogador-identidade strong {
+
     font-size: 13px;
   }
 
   .lista-jogadores .posicao-mobile {
+
     font-size: 10px;
   }
 
   .lista-jogadores .estrelas {
+
     font-size: 12px;
 
     letter-spacing: 0;
   }
 
   .lista-jogadores .estatistica {
+
     gap: 5px;
   }
 
   .lista-jogadores .estatistica-icone {
+
     font-size: 15px;
   }
 
   .lista-jogadores .estatistica-conteudo strong {
+
     font-size: 14px;
   }
 
   .lista-jogadores .estatistica-conteudo small {
+
     font-size: 9px;
   }
 
   .lista-jogadores .estatistica-controles {
+
     gap: 3px;
 
-    margin-left: 2px;
+    margin-left: auto;
   }
 
   .lista-jogadores .botao-estatistica {
+
     width: 23px;
+
     height: 23px;
 
     font-size: 14px;
@@ -736,33 +838,43 @@
    ========================================================= */
 
 @media (max-width: 350px) {
+
   .lista-jogadores .jogador {
+
     padding: 10px;
   }
 
   .lista-jogadores .avatar {
+
     width: 35px;
+
     height: 35px;
 
     font-size: 13px;
   }
 
   .lista-jogadores .jogador-nome {
+
     gap: 7px;
   }
 
   .lista-jogadores .estatistica {
+
     gap: 3px;
   }
 
   .lista-jogadores .estatistica-conteudo small {
+
     font-size: 8px;
   }
 
   .lista-jogadores .botao-estatistica {
+
     width: 21px;
+
     height: 21px;
 
     font-size: 13px;
   }
 }
+
