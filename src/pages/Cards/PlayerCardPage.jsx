@@ -400,6 +400,10 @@ function PlayerCardPage({ jogador, onVoltar }) {
         <h2>
           ESTATÍSTICAS DA TEMPORADA ATUAL
         </h2>
+        <h5>
+          Os gols, assistências e salvamentos da temporada atual são contabilizados no GERAL ao fim da Temporada.
+        </h5>
+
 
         <div className="player-card-estatisticas">
 
