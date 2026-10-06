@@ -712,83 +712,86 @@ function PeladaPage({ jogadores }) {
   // ==================================================
 
   async function copiarTimes() {
+  if (times.length === 0) {
+    return;
+  }
+
+  let texto =
+    "⚰️☠️ PELADA DOS MORTOS\n";
+
+  texto +=
+    "🏆 TIMES SORTEADOS\n";
+
+  texto +=
+    "━━━━━━━━━━━━━━━━━━━━\n\n";
+
+  times.forEach((time) => {
+    texto +=
+      `🔢 ${time.numero} - ${time.nome}\n`;
+
+    // ============================================
+    // TIME VAZIO
+    // ============================================
+
     if (
-      times.length === 0
+      !time.jogadores ||
+      time.jogadores.length === 0
     ) {
+      texto +=
+        "👤 - SEM JOGADORES / AGUARDANDO CHEGAR\n\n";
+
       return;
     }
 
-    let texto =
-      "⚰️☠️ PELADA DOS MORTOS\n";
+    // ============================================
+    // GOLEIRO
+    // ============================================
 
-    texto +=
-      "🏆 TIMES SORTEADOS\n";
+    if (time.goleiro) {
+      texto +=
+        `🧤 ${time.goleiro.nome}\n`;
+    }
 
-    texto +=
-      "━━━━━━━━━━━━━━━━━━━━\n\n";
+    // ============================================
+    // JOGADORES
+    // ============================================
 
-    times.forEach(
-      (time) => {
+    time.jogadores.forEach(
+      (jogador) => {
         texto +=
-          `🔢 ${time.numero} - ${time.nome}\n`;
-
-        if (
-          time.goleiro
-        ) {
-          texto +=
-            `🧤 Goleiro: ${time.goleiro.nome}\n`;
-        } else {
-          texto +=
-            "🧤 Goleiro: Não definido\n";
-        }
-
-        if (
-          time.jogadores
-            .length > 0
-        ) {
-          time.jogadores.forEach(
-            (jogador) => {
-              texto +=
-                `⚽ ${jogador.nome}\n`;
-            }
-          );
-        } else {
-          texto +=
-            "⚽ Jogadores: Aguardando\n";
-        }
-
-        texto +=
-          `⭐ Força: ${time.forca}\n`;
-
-        texto += "\n";
+          `⚽ ${jogador.nome}\n`;
       }
     );
 
     texto +=
-      "━━━━━━━━━━━━━━━━━━━━\n";
+      `⭐ Força: ${time.forca}\n\n`;
+  });
 
-    texto +=
-      "🔐 PELADA_APP_V1";
+  texto +=
+    "━━━━━━━━━━━━━━━━━━━━\n";
 
-    try {
-      await navigator.clipboard.writeText(
-        texto
-      );
+  texto +=
+    "🔐 PELADA_APP_V1";
 
-      alert(
-        "Times copiados! 📋⚽"
-      );
-    } catch (error) {
-      console.error(
-        "Erro ao copiar:",
-        error
-      );
+  try {
+    await navigator.clipboard.writeText(
+      texto
+    );
 
-      alert(
-        "Não foi possível copiar os times."
-      );
-    }
+    alert(
+      "Times copiados! 📋⚽"
+    );
+  } catch (error) {
+    console.error(
+      "Erro ao copiar:",
+      error
+    );
+
+    alert(
+      "Não foi possível copiar os times."
+    );
   }
+}
 
   // ==================================================
   // LIMPAR TUDO
