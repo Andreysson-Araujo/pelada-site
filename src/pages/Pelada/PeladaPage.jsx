@@ -1,189 +1,768 @@
-import React, { useMemo, useRef, useState } from "react";
+import React, {
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 
 import "./PeladaPage.css";
 
 import { sortearTimes } from "./sortearTimes";
-
 import { nomesTimes } from "./nomesTimes";
 
 function PeladaPage({ jogadores }) {
-  const [selecionados, setSelecionados] = useState([]);
-
-  const [jogadoresPorTime, setJogadoresPorTime] =
-    useState(4);
-
-  const [times, setTimes] = useState([]);
-
-  const resultadoRef = useRef(null);
-
   // ==================================================
-  // SELECIONAR / DESELECIONAR JOGADOR
+  // ESTADOS
   // ==================================================
 
-  function alternarJogador(id) {
-    setSelecionados((atuais) => {
-      if (atuais.includes(id)) {
-        return atuais.filter(
-          (jogadorId) => jogadorId !== id
-        );
-      }
+  const [textoLista, setTextoLista] =
+    useState("");
 
-      return [...atuais, id];
-    });
+  const [
+    listaProcessada,
+    setListaProcessada,
+  ] = useState(false);
+
+  const [
+    jogadoresPresentes,
+    setJogadoresPresentes,
+  ] = useState([]);
+
+  const [
+    jogadoresPorTime,
+    setJogadoresPorTime,
+  ] = useState(4);
+
+  const [times, setTimes] =
+    useState([]);
+
+  const resultadoRef =
+    useRef(null);
+
+  const [
+    restricoes,
+    setRestricoes,
+  ] = useState([]);
+
+  const [
+    jogadorRestricaoA,
+    setJogadorRestricaoA,
+  ] = useState("");
+
+  const [
+    jogadorRestricaoB,
+    setJogadorRestricaoB,
+  ] = useState("");
+
+  // ==================================================
+  // NORMALIZAR NOME
+  // ==================================================
+
+  function normalizarNome(nome) {
+    return String(nome || "")
+      .normalize("NFD")
+      .replace(
+        /[\u0300-\u036f]/g,
+        ""
+      )
+      .replace(
+        /[\u200B-\u200D\uFEFF]/g,
+        ""
+      )
+      .replace(
+        /⁠/g,
+        ""
+      )
+      .trim()
+      .toLowerCase()
+      .replace(
+        /\s+/g,
+        " "
+      );
   }
 
   // ==================================================
-  // SELECIONAR TODOS
+  // PROCESSAR LISTA DO WHATSAPP
   // ==================================================
 
-  function selecionarTodos() {
-    setSelecionados(
-      jogadores.map((jogador) => jogador.id)
-    );
-  }
-
-  // ==================================================
-  // LIMPAR
-  // ==================================================
-
-  function limparSelecao() {
-    setSelecionados([]);
-    setTimes([]);
-  }
-
-  // ==================================================
-  // JOGADORES PRESENTES
-  // ==================================================
-
-  const jogadoresPresentes = useMemo(() => {
-    return jogadores.filter((jogador) =>
-      selecionados.includes(jogador.id)
-    );
-  }, [jogadores, selecionados]);
-
-  // ==================================================
-  // GOLEIROS
-  // ==================================================
-
-  const goleirosPresentes = useMemo(() => {
-    return jogadoresPresentes.filter(
-      (jogador) =>
-        jogador.tipo
-          ?.trim()
-          .toUpperCase() === "GOLEIRO"
-    );
-  }, [jogadoresPresentes]);
-
-  // ==================================================
-  // JOGADORES DE LINHA
-  // ==================================================
-
-  const jogadoresLinhaPresentes = useMemo(() => {
-    return jogadoresPresentes.filter(
-      (jogador) =>
-        jogador.tipo
-          ?.trim()
-          .toUpperCase() !== "GOLEIRO"
-    );
-  }, [jogadoresPresentes]);
-
-  // ==================================================
-  // SORTEAR TIMES
-  // ==================================================
-
-  function realizarSorteio() {
-    if (jogadoresLinhaPresentes.length === 0) {
+  function processarLista() {
+    if (
+      !textoLista.trim()
+    ) {
       alert(
-        "Selecione pelo menos um jogador de linha."
+        "Cole primeiro a lista da pelada."
       );
 
       return;
     }
 
-    if (goleirosPresentes.length === 0) {
-      const continuar = window.confirm(
-        "Nenhum goleiro foi selecionado. Deseja continuar mesmo assim?"
+    const linhas =
+      textoLista
+        .split(/\r?\n/)
+        .map((linha) =>
+          linha
+            .replace(
+              /[\u200B-\u200D\uFEFF]/g,
+              ""
+            )
+            .replace(
+              /⁠/g,
+              ""
+            )
+            .trim()
+        )
+        .filter(Boolean);
+
+    const nomesDaLista = [];
+
+    let categoria = null;
+
+    // ==================================================
+    // LER TODAS AS LINHAS
+    // ==================================================
+
+    linhas.forEach(
+      (linha) => {
+        const linhaMaiuscula =
+          linha
+            .normalize("NFD")
+            .replace(
+              /[\u0300-\u036f]/g,
+              ""
+            )
+            .toUpperCase();
+
+        // ----------------------------------------------
+        // GOLEIRO
+        // ----------------------------------------------
+
+        if (
+          linhaMaiuscula.includes(
+            "GOLEIRO"
+          )
+        ) {
+          categoria =
+            "GOLEIRO";
+
+          return;
+        }
+
+        // ----------------------------------------------
+        // JOGADORES DE LINHA
+        // ----------------------------------------------
+
+        if (
+          linhaMaiuscula.includes(
+            "JOGADOR LINHA"
+          ) ||
+          linhaMaiuscula.includes(
+            "JOGADORES LINHA"
+          ) ||
+          linhaMaiuscula.includes(
+            "JOGADOR DE LINHA"
+          ) ||
+          linhaMaiuscula.includes(
+            "JOGADORES DE LINHA"
+          )
+        ) {
+          categoria =
+            "JOGADOR";
+
+          return;
+        }
+
+        // ----------------------------------------------
+        // SEPARADORES
+        // ----------------------------------------------
+
+        if (
+          /^[-_=]+$/.test(
+            linha.replace(
+              /\s/g,
+              ""
+            )
+          )
+        ) {
+          return;
+        }
+
+        // ----------------------------------------------
+        // CABEÇALHOS
+        // ----------------------------------------------
+
+        if (
+          linhaMaiuscula.includes(
+            "PELADA DOS MORTOS"
+          ) ||
+          linhaMaiuscula.includes(
+            "PELADA APP"
+          ) ||
+          linhaMaiuscula.includes(
+            "CAMPO SINTETICO"
+          ) ||
+          linhaMaiuscula.includes(
+            "CAMPO SINTÉTICO"
+          ) ||
+          linhaMaiuscula.includes(
+            "TERCA"
+          ) ||
+          linhaMaiuscula.includes(
+            "TERÇA"
+          ) ||
+          linhaMaiuscula.includes(
+            "21H"
+          ) ||
+          linhaMaiuscula.includes(
+            "22H"
+          ) ||
+          linhaMaiuscula.includes(
+            "23H"
+          )
+        ) {
+          return;
+        }
+
+        // ----------------------------------------------
+        // AINDA NÃO CHEGOU NA LISTA
+        // ----------------------------------------------
+
+        if (!categoria) {
+          return;
+        }
+
+        // ----------------------------------------------
+        // REMOVER NÚMERO
+        // ----------------------------------------------
+
+        let nome =
+          linha.replace(
+            /^\s*\d+\s*[.)\-:]?\s*/,
+            ""
+          );
+
+        // ----------------------------------------------
+        // REMOVER CARACTERES DE LISTA
+        // ----------------------------------------------
+
+        nome = nome
+          .replace(
+            /^[•▪️🔹🔸◾◽]+\s*/,
+            ""
+          )
+          .replace(
+            /[\u200B-\u200D\uFEFF]/g,
+            ""
+          )
+          .replace(
+            /⁠/g,
+            ""
+          )
+          .trim();
+
+        if (!nome) {
+          return;
+        }
+
+        // ----------------------------------------------
+        // ADICIONAR
+        // ----------------------------------------------
+
+        nomesDaLista.push({
+          nome,
+          tipo: categoria,
+        });
+      }
+    );
+
+    // ==================================================
+    // SEPARAR NOMES DUPLICADOS
+    // ==================================================
+
+    const nomesUnicos =
+      nomesDaLista.filter(
+        (item, index, array) =>
+          index ===
+          array.findIndex(
+            (outro) =>
+              normalizarNome(
+                outro.nome
+              ) ===
+              normalizarNome(
+                item.nome
+              )
+          )
       );
+
+    // ==================================================
+    // TRANSFORMAR NOMES EM JOGADORES
+    // ==================================================
+
+    const encontrados = [];
+
+    nomesUnicos.forEach(
+      (
+        item,
+        index
+      ) => {
+        const nomeNormalizado =
+          normalizarNome(
+            item.nome
+          );
+
+        // ----------------------------------------------
+        // PROCURAR CADASTRADO
+        // ----------------------------------------------
+
+        let jogador =
+          jogadores.find(
+            (jogador) =>
+              normalizarNome(
+                jogador.nome
+              ) ===
+              nomeNormalizado
+          );
+
+        // ----------------------------------------------
+        // BUSCA MAIS FLEXÍVEL
+        // ----------------------------------------------
+
+        if (!jogador) {
+          jogador =
+            jogadores.find(
+              (jogador) => {
+                const nomeBanco =
+                  normalizarNome(
+                    jogador.nome
+                  );
+
+                return (
+                  nomeBanco.includes(
+                    nomeNormalizado
+                  ) ||
+                  nomeNormalizado.includes(
+                    nomeBanco
+                  )
+                );
+              }
+            );
+        }
+
+        // ==================================================
+        // CADASTRADO
+        // ==================================================
+
+        if (jogador) {
+          encontrados.push({
+            ...jogador,
+
+            // O tipo da lista tem prioridade
+            tipo: item.tipo,
+
+            temporario: false,
+          });
+
+          return;
+        }
+
+        // ==================================================
+        // NÃO CADASTRADO
+        // ==================================================
+        //
+        // ELE ENTRA MESMO ASSIM
+        // ==================================================
+
+        encontrados.push({
+          id: `lista-${Date.now()}-${index}`,
+
+          nome: item.nome,
+
+          tipo: item.tipo,
+
+          estrelas: 0,
+
+          temporario: true,
+        });
+      }
+    );
+
+    // ==================================================
+    // VERIFICAR
+    // ==================================================
+
+    if (
+      encontrados.length ===
+      0
+    ) {
+      alert(
+        "Nenhum jogador foi encontrado na lista."
+      );
+
+      return;
+    }
+
+    // ==================================================
+    // SALVAR
+    // ==================================================
+
+    setJogadoresPresentes(
+      encontrados
+    );
+
+    setRestricoes([]);
+
+    setJogadorRestricaoA("");
+
+    setJogadorRestricaoB("");
+
+    setTimes([]);
+
+    setListaProcessada(
+      true
+    );
+
+    // ==================================================
+    // CONTAGEM
+    // ==================================================
+
+    const cadastrados =
+      encontrados.filter(
+        (jogador) =>
+          !jogador.temporario
+      ).length;
+
+    const temporarios =
+      encontrados.filter(
+        (jogador) =>
+          jogador.temporario
+      ).length;
+
+    // ==================================================
+    // MENSAGEM
+    // ==================================================
+
+    setTimeout(() => {
+      alert(
+        `Lista processada!\n\n` +
+          `👥 Total: ${encontrados.length}\n` +
+          `✅ Cadastrados: ${cadastrados}\n` +
+          `🆕 Vindos da lista: ${temporarios}`
+      );
+    }, 100);
+
+    // ==================================================
+    // ROLAR
+    // ==================================================
+
+    setTimeout(() => {
+      document
+        .querySelector(
+          ".pelada-configuracao"
+        )
+        ?.scrollIntoView({
+          behavior:
+            "smooth",
+          block: "start",
+        });
+    }, 150);
+  }
+
+  // ==================================================
+  // REMOVER/ADICIONAR JOGADOR
+  // ==================================================
+
+  function alternarPresenca(
+    id
+  ) {
+    setJogadoresPresentes(
+      (atuais) => {
+        const existe =
+          atuais.some(
+            (jogador) =>
+              jogador.id === id
+          );
+
+        if (existe) {
+          return atuais.filter(
+            (jogador) =>
+              jogador.id !== id
+          );
+        }
+
+        const jogador =
+          jogadores.find(
+            (item) =>
+              item.id === id
+          );
+
+        if (!jogador) {
+          return atuais;
+        }
+
+        return [
+          ...atuais,
+          jogador,
+        ];
+      }
+    );
+
+    setTimes([]);
+  }
+
+  // ==================================================
+  // GOLEIROS
+  // ==================================================
+
+  const goleirosPresentes =
+    useMemo(() => {
+      return jogadoresPresentes.filter(
+        (jogador) =>
+          jogador.tipo
+            ?.trim()
+            .toUpperCase() ===
+          "GOLEIRO"
+      );
+    }, [
+      jogadoresPresentes,
+    ]);
+
+  // ==================================================
+  // JOGADORES DE LINHA
+  // ==================================================
+
+  const jogadoresLinhaPresentes =
+    useMemo(() => {
+      return jogadoresPresentes.filter(
+        (jogador) =>
+          jogador.tipo
+            ?.trim()
+            .toUpperCase() !==
+          "GOLEIRO"
+      );
+    }, [
+      jogadoresPresentes,
+    ]);
+
+  // ==================================================
+  // ADICIONAR RESTRIÇÃO
+  // ==================================================
+
+  function adicionarRestricao() {
+    if (
+      !jogadorRestricaoA ||
+      !jogadorRestricaoB
+    ) {
+      alert(
+        "Selecione os dois jogadores."
+      );
+
+      return;
+    }
+
+    if (
+      jogadorRestricaoA ===
+      jogadorRestricaoB
+    ) {
+      alert(
+        "Escolha jogadores diferentes."
+      );
+
+      return;
+    }
+
+    const existe =
+      restricoes.some(
+        ([a, b]) =>
+          (a ===
+            jogadorRestricaoA &&
+            b ===
+              jogadorRestricaoB) ||
+          (a ===
+            jogadorRestricaoB &&
+            b ===
+              jogadorRestricaoA)
+      );
+
+    if (existe) {
+      alert(
+        "Essa restrição já foi adicionada."
+      );
+
+      return;
+    }
+
+    setRestricoes(
+      (atuais) => [
+        ...atuais,
+        [
+          jogadorRestricaoA,
+          jogadorRestricaoB,
+        ],
+      ]
+    );
+
+    setJogadorRestricaoA("");
+
+    setJogadorRestricaoB("");
+
+    setTimes([]);
+  }
+
+  // ==================================================
+  // REMOVER RESTRIÇÃO
+  // ==================================================
+
+  function removerRestricao(
+    index
+  ) {
+    setRestricoes(
+      (atuais) =>
+        atuais.filter(
+          (_, i) =>
+            i !== index
+        )
+    );
+
+    setTimes([]);
+  }
+
+  // ==================================================
+  // REALIZAR SORTEIO
+  // ==================================================
+
+  function realizarSorteio() {
+    if (
+      jogadoresLinhaPresentes.length ===
+      0
+    ) {
+      alert(
+        "Nenhum jogador de linha foi selecionado."
+      );
+
+      return;
+    }
+
+    if (
+      goleirosPresentes.length ===
+      0
+    ) {
+      const continuar =
+        window.confirm(
+          "Nenhum goleiro foi selecionado.\n\nDeseja continuar mesmo assim?"
+        );
 
       if (!continuar) {
         return;
       }
     }
 
-    const resultado = sortearTimes(
-      jogadoresPresentes,
-      jogadoresPorTime,
-      nomesTimes
-    );
+    try {
+      const resultado =
+        sortearTimes(
+          jogadoresPresentes,
+          jogadoresPorTime,
+          nomesTimes,
+          restricoes
+        );
 
-    setTimes(resultado);
+      setTimes(
+        resultado
+      );
 
-    setTimeout(() => {
-      resultadoRef.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }, 100);
+      setTimeout(() => {
+        resultadoRef.current?.scrollIntoView(
+          {
+            behavior:
+              "smooth",
+            block: "start",
+          }
+        );
+      }, 100);
+    } catch (error) {
+      console.error(
+        "Erro no sorteio:",
+        error
+      );
+
+      alert(
+        error.message ||
+          "Não foi possível realizar o sorteio."
+      );
+    }
   }
 
   // ==================================================
   // PRIMEIRA PARTIDA
   // ==================================================
 
-  const primeiraPartida = useMemo(() => {
-    if (times.length < 2) {
-      return null;
-    }
+  const primeiraPartida =
+    useMemo(() => {
+      if (
+        times.length < 2
+      ) {
+        return null;
+      }
 
-    return {
-      time1: times[0],
-      time2: times[1],
-    };
-  }, [times]);
+      return {
+        time1: times[0],
+        time2: times[1],
+      };
+    }, [times]);
 
   // ==================================================
   // COPIAR TIMES
   // ==================================================
 
   async function copiarTimes() {
-    if (times.length === 0) {
+    if (
+      times.length === 0
+    ) {
       return;
     }
 
-    let texto = "";
+    let texto =
+      "⚰️☠️ PELADA DOS MORTOS\n";
 
-    texto += "⚽ PELADA APP\n";
-    texto += "🏆 TIMES SORTEADOS\n";
+    texto +=
+      "🏆 TIMES SORTEADOS\n";
+
     texto +=
       "━━━━━━━━━━━━━━━━━━━━\n\n";
 
-    times.forEach((time) => {
-      texto +=
-        `🔢 ${time.numero} - ${time.nome}\n`;
-
-      if (time.goleiro) {
+    times.forEach(
+      (time) => {
         texto +=
-          `🧤 Goleiro: ${time.goleiro.nome}\n`;
-      } else {
-        texto +=
-          "🧤 Goleiro: Não definido\n";
-      }
+          `🔢 ${time.numero} - ${time.nome}\n`;
 
-      if (time.jogadores.length > 0) {
-        time.jogadores.forEach((jogador) => {
+        if (
+          time.goleiro
+        ) {
           texto +=
-            `⚽ ${jogador.nome}\n`;
-        });
-      } else {
+            `🧤 Goleiro: ${time.goleiro.nome}\n`;
+        } else {
+          texto +=
+            "🧤 Goleiro: Não definido\n";
+        }
+
+        if (
+          time.jogadores
+            .length > 0
+        ) {
+          time.jogadores.forEach(
+            (jogador) => {
+              texto +=
+                `⚽ ${jogador.nome}\n`;
+            }
+          );
+        } else {
+          texto +=
+            "⚽ Jogadores: Aguardando\n";
+        }
+
         texto +=
-          "⚽ Jogadores: Aguardando\n";
+          `⭐ Força: ${time.forca}\n`;
+
+        texto += "\n";
       }
-
-      texto +=
-        `⭐ Força: ${time.forca}\n`;
-
-      texto += "\n";
-    });
+    );
 
     texto +=
       "━━━━━━━━━━━━━━━━━━━━\n";
@@ -197,11 +776,11 @@ function PeladaPage({ jogadores }) {
       );
 
       alert(
-        "Times copiados! Agora é só mandar no grupo. 📋⚽"
+        "Times copiados! 📋⚽"
       );
     } catch (error) {
       console.error(
-        "Erro ao copiar times:",
+        "Erro ao copiar:",
         error
       );
 
@@ -209,6 +788,34 @@ function PeladaPage({ jogadores }) {
         "Não foi possível copiar os times."
       );
     }
+  }
+
+  // ==================================================
+  // LIMPAR TUDO
+  // ==================================================
+
+  function limparTudo() {
+    setTextoLista("");
+
+    setListaProcessada(
+      false
+    );
+
+    setJogadoresPresentes(
+      []
+    );
+
+    setRestricoes([]);
+
+    setJogadorRestricaoA(
+      ""
+    );
+
+    setJogadorRestricaoB(
+      ""
+    );
+
+    setTimes([]);
   }
 
   // ==================================================
@@ -233,235 +840,525 @@ function PeladaPage({ jogadores }) {
         </h1>
 
         <p>
-          Selecione quem está presente e
-          monte times equilibrados.
+          Cole a lista do WhatsApp
+          e monte times
+          equilibrados.
         </p>
 
       </div>
 
       {/* ==========================================
-          CONTROLES
+          IMPORTAR LISTA
       ========================================== */}
 
-      <section className="pelada-controles">
+      {!listaProcessada && (
+        <section className="pelada-importacao">
 
-        <div className="pelada-controle">
+          <div className="pelada-secao-titulo">
 
-          <label>
-            Jogadores de linha por time
-          </label>
+            <span className="subtitle">
+              LISTA DA PELADA
+            </span>
 
-          <select
-            value={jogadoresPorTime}
-            onChange={(e) =>
-              setJogadoresPorTime(
-                Number(e.target.value)
-              )
-            }
-          >
-            <option value={4}>
-              4 jogadores
-            </option>
-
-            <option value={5}>
-              5 jogadores
-            </option>
-
-            <option value={6}>
-              6 jogadores
-            </option>
-
-            <option value={7}>
-              7 jogadores
-            </option>
-
-          </select>
-
-        </div>
-
-        <div className="pelada-acoes">
-
-          <button
-            type="button"
-            onClick={selecionarTodos}
-          >
-            ☑️ Selecionar todos
-          </button>
-
-          <button
-            type="button"
-            onClick={limparSelecao}
-          >
-            Limpar
-          </button>
-
-        </div>
-
-      </section>
-
-      {/* ==========================================
-          JOGADORES
-      ========================================== */}
-
-      <section className="pelada-selecao">
-
-        <div className="pelada-selecao-header">
-
-          <div>
-
-            <h2 className="titulo-cont">
-              Jogadores presentes
+            <h2>
+              Cole a lista do WhatsApp
             </h2>
 
-            <span>
-              {selecionados.length} selecionados
-            </span>
+            <p>
+              O sistema identifica
+              goleiros e jogadores
+              de linha automaticamente.
+            </p>
 
           </div>
 
-        </div>
+          <textarea
+            className="pelada-textarea"
+            value={textoLista}
+            onChange={(event) =>
+              setTextoLista(
+                event.target.value
+              )
+            }
+            placeholder={`⚰️☠️PELADA DOS MORTOS
 
-        <div className="pelada-jogadores">
+🕘21h às 23h ou mais
+🗓️ TERÇA-FEIRA - XX/XX
+📍CAMPO SINTÉTICO TANGARÁ
 
-          {jogadores.map((jogador) => {
+___________________
+GOLEIRO
+1. GOLEIRO 1
+2. GOleiro 2
 
-            const selecionado =
-              selecionados.includes(
-                jogador.id
-              );
+____________________
+JOGADOR LINHA
+1. Jogador 1
+2. Jogador 2
+3. Jogador 3
+4. Jogador 4
+5. Jogador 5
+`}
+          />
 
-            const goleiro =
-              jogador.tipo
-                ?.trim()
-                .toUpperCase() ===
-              "GOLEIRO";
+          <div className="pelada-importacao-acoes">
 
-            return (
-              <button
-                type="button"
-                key={jogador.id}
-                className={
-                  `pelada-jogador ${
-                    selecionado
-                      ? "selecionado"
-                      : ""
-                  }`
+            <button
+              type="button"
+              className="botao-sortear"
+              onClick={
+                processarLista
+              }
+            >
+              📋 Processar lista
+            </button>
+
+          </div>
+
+        </section>
+      )}
+
+      {/* ==========================================
+          CONFIGURAÇÃO
+      ========================================== */}
+
+      {listaProcessada && (
+        <section className="pelada-configuracao">
+
+          {/* ========================================
+              CONTROLES
+          ======================================== */}
+
+          <section className="pelada-controles">
+
+            <div className="pelada-controle">
+
+              <label>
+                Jogadores de linha
+                por time
+              </label>
+
+              <select
+                value={
+                  jogadoresPorTime
                 }
-                onClick={() =>
-                  alternarJogador(
-                    jogador.id
+                onChange={(
+                  event
+                ) =>
+                  setJogadoresPorTime(
+                    Number(
+                      event.target
+                        .value
+                    )
                   )
                 }
               >
 
-                <span className="pelada-check">
-                  {selecionado ? "✓" : ""}
-                </span>
+                <option value={4}>
+                  4 jogadores
+                </option>
 
-                <span className="pelada-avatar">
-                  {jogador.nome
-                    ?.charAt(0)
-                    ?.toUpperCase()}
-                </span>
+                <option value={5}>
+                  5 jogadores
+                </option>
 
-                <span className="pelada-jogador-info">
+                <option value={6}>
+                  6 jogadores
+                </option>
 
-                  <strong>
-                    {jogador.nome}
-                  </strong>
+                <option value={7}>
+                  7 jogadores
+                </option>
 
-                  <small>
-                    {goleiro
-                      ? "🧤 Goleiro"
-                      : "⚽ Linha"}
-                  </small>
+              </select>
 
-                </span>
+            </div>
 
-                <span className="pelada-estrelas">
-                  {"⭐".repeat(
-                    Number(
-                      jogador.estrelas
-                    ) || 0
-                  )}
-                </span>
+            <div className="pelada-acoes">
 
+              <button
+                type="button"
+                onClick={
+                  limparTudo
+                }
+              >
+                🔄 Nova lista
               </button>
-            );
-          })}
 
-        </div>
+            </div>
 
-      </section>
+          </section>
 
-      {/* ==========================================
-          RESUMO
-      ========================================== */}
+          {/* ========================================
+              JOGADORES
+          ======================================== */}
 
-      <section className="pelada-resumo">
+          <section className="pelada-selecao">
 
-        <div>
+            <div className="pelada-selecao-header">
 
-          <strong>
-            {jogadoresLinhaPresentes.length}
-          </strong>
+              <div>
 
-          <span>
-            jogadores de linha
-          </span>
+                <h2 className="titulo-cont">
+                  Jogadores presentes
+                </h2>
 
-        </div>
+                <span>
+                  {
+                    jogadoresPresentes.length
+                  }{" "}
+                  presentes
+                </span>
 
-        <div>
+              </div>
 
-          <strong>
-            {goleirosPresentes.length}
-          </strong>
+            </div>
 
-          <span>
-            goleiros
-          </span>
+            <div className="pelada-jogadores">
 
-        </div>
+              {jogadoresPresentes.map(
+                (jogador) => {
+                  const goleiro =
+                    jogador.tipo
+                      ?.trim()
+                      .toUpperCase() ===
+                    "GOLEIRO";
 
-        <div>
+                  return (
+                    <button
+                      type="button"
+                      key={
+                        jogador.id
+                      }
+                      className="pelada-jogador selecionado"
+                      onClick={() =>
+                        alternarPresenca(
+                          jogador.id
+                        )
+                      }
+                    >
 
-          <strong>
-            {selecionados.length}
-          </strong>
+                      <span className="pelada-check">
+                        ✓
+                      </span>
 
-          <span>
-            presentes
-          </span>
+                      <span className="pelada-avatar">
+                        {jogador.nome
+                          ?.charAt(
+                            0
+                          )
+                          ?.toUpperCase()}
+                      </span>
 
-        </div>
+                      <span className="pelada-jogador-info">
 
-      </section>
+                        <strong>
+                          {
+                            jogador.nome
+                          }
 
-      {/* ==========================================
-          SORTEAR
-      ========================================== */}
+                          {jogador.temporario && (
+                            <small
+                              style={{
+                                display:
+                                  "block",
+                                opacity:
+                                  0.65,
+                              }}
+                            >
+                              🆕 Não
+                              cadastrado
+                            </small>
+                          )}
 
-      <button
-        type="button"
-        className="botao-sortear"
-        onClick={realizarSorteio}
-      >
-        🎲 Sortear times
-      </button>
+                        </strong>
+
+                        <small>
+                          {goleiro
+                            ? "🧤 Goleiro"
+                            : "⚽ Linha"}
+                        </small>
+
+                      </span>
+
+                      <span className="pelada-estrelas">
+                        {"⭐".repeat(
+                          Number(
+                            jogador.estrelas
+                          ) || 0
+                        )}
+                      </span>
+
+                    </button>
+                  );
+                }
+              )}
+
+            </div>
+
+            <p className="pelada-ajuda">
+              Clique em um jogador
+              para retirá-lo da pelada.
+            </p>
+
+          </section>
+
+          {/* ========================================
+              RESUMO
+          ======================================== */}
+
+          <section className="pelada-resumo">
+
+            <div>
+
+              <strong>
+                {
+                  jogadoresLinhaPresentes.length
+                }
+              </strong>
+
+              <span>
+                jogadores de linha
+              </span>
+
+            </div>
+
+            <div>
+
+              <strong>
+                {
+                  goleirosPresentes.length
+                }
+              </strong>
+
+              <span>
+                goleiros
+              </span>
+
+            </div>
+
+            <div>
+
+              <strong>
+                {
+                  jogadoresPresentes.length
+                }
+              </strong>
+
+              <span>
+                presentes
+              </span>
+
+            </div>
+
+          </section>
+
+          {/* ========================================
+              RESTRIÇÕES
+          ======================================== */}
+
+          <section className="pelada-restricoes">
+
+            <div className="pelada-secao-titulo">
+
+              <span className="subtitle">
+                REGRAS DO SORTEIO
+              </span>
+
+              <h2>
+                🚫 Não podem ficar
+                juntos
+              </h2>
+
+              <p>
+                Escolha dois jogadores
+                que não podem cair no
+                mesmo time.
+              </p>
+
+            </div>
+
+            <div className="restricao-form">
+
+              <select
+                value={
+                  jogadorRestricaoA
+                }
+                onChange={(
+                  event
+                ) =>
+                  setJogadorRestricaoA(
+                    event.target
+                      .value
+                  )
+                }
+              >
+
+                <option value="">
+                  Jogador 1
+                </option>
+
+                {jogadoresLinhaPresentes.map(
+                  (jogador) => (
+                    <option
+                      key={
+                        jogador.id
+                      }
+                      value={
+                        jogador.nome
+                      }
+                    >
+                      {
+                        jogador.nome
+                      }
+                    </option>
+                  )
+                )}
+
+              </select>
+
+              <span className="restricao-x">
+                ×
+              </span>
+
+              <select
+                value={
+                  jogadorRestricaoB
+                }
+                onChange={(
+                  event
+                ) =>
+                  setJogadorRestricaoB(
+                    event.target
+                      .value
+                  )
+                }
+              >
+
+                <option value="">
+                  Jogador 2
+                </option>
+
+                {jogadoresLinhaPresentes.map(
+                  (jogador) => (
+                    <option
+                      key={
+                        jogador.id
+                      }
+                      value={
+                        jogador.nome
+                      }
+                    >
+                      {
+                        jogador.nome
+                      }
+                    </option>
+                  )
+                )}
+
+              </select>
+
+              <button
+                type="button"
+                onClick={
+                  adicionarRestricao
+                }
+              >
+                + Adicionar
+              </button>
+
+            </div>
+
+            {/* --------------------------------------
+                RESTRIÇÕES ADICIONADAS
+            -------------------------------------- */}
+
+            {restricoes.length >
+              0 && (
+              <div className="restricoes-lista">
+
+                {restricoes.map(
+                  (
+                    [
+                      jogadorA,
+                      jogadorB,
+                    ],
+                    index
+                  ) => (
+                    <div
+                      className="restricao-item"
+                      key={
+                        `${jogadorA}-${jogadorB}`
+                      }
+                    >
+
+                      <strong>
+                        {
+                          jogadorA
+                        }
+                      </strong>
+
+                      <span>
+                        🚫
+                      </span>
+
+                      <strong>
+                        {
+                          jogadorB
+                        }
+                      </strong>
+
+                      <button
+                        type="button"
+                        onClick={() =>
+                          removerRestricao(
+                            index
+                          )
+                        }
+                        aria-label="Remover restrição"
+                      >
+                        ×
+                      </button>
+
+                    </div>
+                  )
+                )}
+
+              </div>
+            )}
+
+          </section>
+
+          {/* ========================================
+              SORTEAR
+          ======================================== */}
+
+          <button
+            type="button"
+            className="botao-sortear"
+            onClick={
+              realizarSorteio
+            }
+          >
+            🎲 Sortear times
+          </button>
+
+        </section>
+      )}
 
       {/* ==========================================
           RESULTADO
       ========================================== */}
 
       {times.length > 0 && (
-
         <section
           className="times-resultado"
           ref={resultadoRef}
         >
 
-          {/* CABEÇALHO */}
+          {/* ========================================
+              CABEÇALHO
+          ======================================== */}
 
           <div className="times-header">
 
@@ -482,14 +1379,18 @@ function PeladaPage({ jogadores }) {
               <button
                 type="button"
                 className="botao-copiar-times"
-                onClick={copiarTimes}
+                onClick={
+                  copiarTimes
+                }
               >
                 📋 Copiar times
               </button>
 
               <button
                 type="button"
-                onClick={realizarSorteio}
+                onClick={
+                  realizarSorteio
+                }
               >
                 🔄 Sortear novamente
               </button>
@@ -498,12 +1399,11 @@ function PeladaPage({ jogadores }) {
 
           </div>
 
-          {/* ======================================
+          {/* ========================================
               PRIMEIRA PARTIDA
-          ====================================== */}
+          ======================================== */}
 
           {primeiraPartida && (
-
             <div className="proxima-partida">
 
               <span className="subtitle">
@@ -519,11 +1419,19 @@ function PeladaPage({ jogadores }) {
                 <div className="confronto-time">
 
                   <span className="numero-time">
-                    {primeiraPartida.time1.numero}
+                    {
+                      primeiraPartida
+                        .time1
+                        .numero
+                    }
                   </span>
 
                   <strong>
-                    {primeiraPartida.time1.nome}
+                    {
+                      primeiraPartida
+                        .time1
+                        .nome
+                    }
                   </strong>
 
                 </div>
@@ -535,11 +1443,19 @@ function PeladaPage({ jogadores }) {
                 <div className="confronto-time">
 
                   <span className="numero-time">
-                    {primeiraPartida.time2.numero}
+                    {
+                      primeiraPartida
+                        .time2
+                        .numero
+                    }
                   </span>
 
                   <strong>
-                    {primeiraPartida.time2.nome}
+                    {
+                      primeiraPartida
+                        .time2
+                        .nome
+                    }
                   </strong>
 
                 </div>
@@ -547,17 +1463,17 @@ function PeladaPage({ jogadores }) {
               </div>
 
               <p>
-                O vencedor continua e enfrenta
-                o próximo time da fila.
+                O vencedor continua e
+                enfrenta o próximo time
+                da fila.
               </p>
 
             </div>
-
           )}
 
-          {/* ======================================
+          {/* ========================================
               FILA
-          ====================================== */}
+          ======================================== */}
 
           <div className="fila-times">
 
@@ -568,176 +1484,214 @@ function PeladaPage({ jogadores }) {
               </span>
 
               <p>
-                Os números definem a ordem
-                dos confrontos.
+                Os números definem a
+                ordem dos confrontos.
               </p>
 
             </div>
 
             <div className="fila-lista">
 
-              {times.map((time, index) => (
-
-                <div
-                  className={
-                    `fila-time ${
+              {times.map(
+                (
+                  time,
+                  index
+                ) => (
+                  <div
+                    className={`fila-time ${
                       index < 2
                         ? "fila-primeiros"
                         : ""
-                    }`
-                  }
-                  key={time.numero}
-                >
+                    }`}
+                    key={
+                      time.numero
+                    }
+                  >
 
-                  <span className="numero-time">
-                    {time.numero}
-                  </span>
-
-                  <strong>
-                    {time.nome}
-                  </strong>
-
-                  {index < 2 && (
-
-                    <span className="fila-status">
-                      ⚔️ Jogando
+                    <span className="numero-time">
+                      {
+                        time.numero
+                      }
                     </span>
 
-                  )}
+                    <strong>
+                      {
+                        time.nome
+                      }
+                    </strong>
 
-                  {index >= 2 && (
+                    {index < 2 ? (
+                      <span className="fila-status">
+                        ⚔️ Jogando
+                      </span>
+                    ) : (
+                      <span className="fila-status">
+                        🔒 Fila{" "}
+                        {index - 1}
+                      </span>
+                    )}
 
-                    <span className="fila-status">
-                      🔒 Cerca {index - 1}
-                    </span>
-
-                  )}
-
-                </div>
-
-              ))}
+                  </div>
+                )
+              )}
 
             </div>
 
           </div>
 
-          {/* ======================================
+          {/* ========================================
               CARDS DOS TIMES
-          ====================================== */}
+          ======================================== */}
 
           <div className="times-grid">
 
-            {times.map((time) => (
-
-              <article
-                className={
-                  `time-card ${
-                    time.jogadores.length === 0
+            {times.map(
+              (time) => (
+                <article
+                  className={`time-card ${
+                    time.jogadores
+                      .length === 0
                       ? "time-vazio"
                       : ""
-                  }`
-                }
-                key={time.numero}
-              >
+                  }`}
+                  key={
+                    time.numero
+                  }
+                >
 
-                <div className="time-card-header">
+                  {/* --------------------------------
+                      CABEÇALHO
+                  -------------------------------- */}
 
-                  <div className="time-identificacao">
+                  <div className="time-card-header">
 
-                    <span className="numero-time-card">
-                      {time.numero}
-                    </span>
+                    <div className="time-identificacao">
 
-                    <h3>
-                      🏆 {time.nome}
-                    </h3>
-
-                  </div>
-
-                  <span>
-                    Força: {time.forca}
-                  </span>
-
-                </div>
-
-                {/* GOLEIRO */}
-
-                <div className="time-goleiro">
-
-                  <span>
-                    🧤
-                  </span>
-
-                  <strong>
-                    {time.goleiro
-                      ? time.goleiro.nome
-                      : "Sem goleiro"}
-                  </strong>
-
-                </div>
-
-                {/* JOGADORES */}
-
-                <div className="time-jogadores">
-
-                  {time.jogadores.length > 0 ? (
-
-                    time.jogadores.map(
-                      (jogador) => (
-
-                        <div
-                          className="time-jogador"
-                          key={jogador.id}
-                        >
-
-                          <span>
-                            {jogador.nome}
-                          </span>
-
-                          <small>
-                            {"⭐".repeat(
-                              Number(
-                                jogador.estrelas
-                              ) || 0
-                            )}
-                          </small>
-
-                        </div>
-
-                      )
-                    )
-
-                  ) : (
-
-                    <div className="time-sem-jogadores">
-
-                      <span>
-                        👤
+                      <span className="numero-time-card">
+                        {
+                          time.numero
+                        }
                       </span>
 
-                      <strong>
-                        Aguardando jogadores
-                      </strong>
-
-                      <small>
-                        Time disponível para
-                        jogadores atrasados
-                      </small>
+                      <h3>
+                        🏆{" "}
+                        {
+                          time.nome
+                        }
+                      </h3>
 
                     </div>
 
-                  )}
+                    <span>
+                      Força:{" "}
+                      {
+                        time.forca
+                      }
+                    </span>
 
-                </div>
+                  </div>
 
-              </article>
+                  {/* --------------------------------
+                      GOLEIRO
+                  -------------------------------- */}
 
-            ))}
+                  <div className="time-goleiro">
+
+                    <span>
+                      🧤
+                    </span>
+
+                    <strong>
+                      {time.goleiro
+                        ? time
+                            .goleiro
+                            .nome
+                        : "Sem goleiro"}
+                    </strong>
+
+                  </div>
+
+                  {/* --------------------------------
+                      JOGADORES
+                  -------------------------------- */}
+
+                  <div className="time-jogadores">
+
+                    {time.jogadores
+                      .length >
+                    0 ? (
+                      time.jogadores.map(
+                        (
+                          jogador
+                        ) => (
+                          <div
+                            className="time-jogador"
+                            key={
+                              jogador.id
+                            }
+                          >
+
+                            <span>
+                              {
+                                jogador.nome
+                              }
+
+                              {jogador.temporario && (
+                                <small
+                                  style={{
+                                    marginLeft:
+                                      "6px",
+                                    opacity:
+                                      0.6,
+                                  }}
+                                >
+                                  🆕
+                                </small>
+                              )}
+                            </span>
+
+                            <small>
+                              {"⭐".repeat(
+                                Number(
+                                  jogador.estrelas
+                                ) ||
+                                  0
+                              )}
+                            </small>
+
+                          </div>
+                        )
+                      )
+                    ) : (
+                      <div className="time-sem-jogadores">
+
+                        <span>
+                          👤
+                        </span>
+
+                        <strong>
+                          Aguardando
+                          jogadores
+                        </strong>
+
+                        <small>
+                          Time disponível
+                          para jogadores
+                          atrasados
+                        </small>
+
+                      </div>
+                    )}
+
+                  </div>
+
+                </article>
+              )
+            )}
 
           </div>
 
         </section>
-
       )}
 
     </main>
@@ -745,4 +1699,3 @@ function PeladaPage({ jogadores }) {
 }
 
 export default PeladaPage;
-
